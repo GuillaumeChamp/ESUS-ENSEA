@@ -86,6 +86,7 @@ public class AdminView extends VerticalLayout {
         User user = (User) event.getObject();
         user.setRole("ROLE_USER");
         user.setActive(1);
+        user.setPassword(accountForm.getPassword());
         if (!service.accountExist(user.getUsername())) {
             if (!accountForm.getEmail().isEmpty())MailSender.accountCreation(user.getUsername(), accountForm.getPassword(), accountForm.getEmail());
             service.updateAccount(user);
