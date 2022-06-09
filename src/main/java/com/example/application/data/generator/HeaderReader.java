@@ -147,8 +147,8 @@ public class HeaderReader {
             return;
         }
 
-        if (parameter[0].contains("http")){
-            Anchor anchor = new Anchor(parameter[0],parameter[1]);
+        if (parameter[0].contains("link")){
+            Anchor anchor = new Anchor(parameter[1],parameter[2]);
             layout.add(anchor);
             return;
         }

@@ -129,8 +129,14 @@ public class CsvExportService {
                 "ORIGINE",
                 "EMAIL",
                 "TELEPHONE",
+                "RESEAU_SOCIAL",
+                "MOYEN_DE_TRANSPORT",
+                "LIEU_ARRIVEE",
+                "TERNMINAL",
+                "LIEU_DEPART",
                 "DATE",
-                "LIEU"
+                "NUMERO_VOL"
+
         );
         try (CSVPrinter csvPrinter = new CSVPrinter(writer, format))
         {
@@ -143,8 +149,14 @@ public class CsvExportService {
                         student.getCountry().getCountry_name(),
                         student.getEmail(),
                         student.getFlight().getPhoneNumber(),
+                        student.getFlight().getNetwork(),
+                        student.getFlight().getMeansOfTransport(),
+                        student.getFlight().getPlace(),
+                        student.getFlight().getAirportTerminal(),
+                        student.getFlight().getDeparture(),
                         student.getFlight().getDate(),
-                        student.getFlight().getPlace()
+                        student.getFlight().getTransportID()
+
                 );
             }
         } catch (IOException e) {
