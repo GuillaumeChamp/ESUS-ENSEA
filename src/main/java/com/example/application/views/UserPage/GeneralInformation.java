@@ -41,6 +41,8 @@ public class GeneralInformation extends HorizontalLayout {
         content.setSizeFull();
         add(drawer,content);
         content.setDefaultHorizontalComponentAlignment(FlexComponent.Alignment.CENTER);
+        getElement().getStyle().set("background-image","url('images/test.png')");
+        getElement().getStyle().set("background-repeat", "no-repeat");
     }
 
     /**
@@ -54,12 +56,12 @@ public class GeneralInformation extends HorizontalLayout {
             is = new  FileInputStream("./drive/resources/general.properties");
         }catch (Exception e) {
             is = getClass().getResourceAsStream("/META-INF/resources/general.properties");
-            System.out.println("Using build in general information");
         }
         drawer.setSizeFull();
         properties.load(is);
         for (String prop: properties.stringPropertyNames()) {
             Button button = new Button(properties.getProperty(prop));
+            button.setSizeFull();
             button.addClickListener(e-> {
                 content.removeAll();
                 HeaderReader.headerReader(content,prop);
@@ -82,5 +84,4 @@ public class GeneralInformation extends HorizontalLayout {
         }
         activated.setEnabled(false);
     }
-    //TODO might need to lock some step
 }

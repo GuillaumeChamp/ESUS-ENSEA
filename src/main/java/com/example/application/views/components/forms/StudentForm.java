@@ -18,21 +18,21 @@ import java.util.List;
 
 public class StudentForm extends AbstractForm<Student> {
 
-    TextField firstName = new TextField("First name");
-    TextField lastName = new TextField("Last name");
-    ComboBox<String> gender = new ComboBox<>("Gender");
+    TextField firstName = new TextField("First name/prénom");
+    TextField lastName = new TextField("Last name/nom");
+    ComboBox<String> gender = new ComboBox<>("Gender/genre");
     EmailField email = new EmailField("Email");
-    ComboBox<ExchangeType> exchangeType = new ComboBox<>("ExchangeType");
-    ComboBox<School> school = new ComboBox<>("School");
-    ComboBox<Country> country = new ComboBox<>("Country");
-    ComboBox<String> civility = new ComboBox<>("Civility");
-    ComboBox<Job> job1 = new ComboBox<>("First Parent's Job");
-    ComboBox<Job> job2 = new ComboBox<>("Second Parent's Job");
+    ComboBox<ExchangeType> exchangeType = new ComboBox<>("ExchangeType/type d'échange");
+    ComboBox<School> school = new ComboBox<>("School/école");
+    ComboBox<Country> country = new ComboBox<>("Country/pays");
+    ComboBox<String> civility = new ComboBox<>("Civility/civilité");
+    ComboBox<Job> job1 = new ComboBox<>("First Parent's Job/profession parent 1");
+    ComboBox<Job> job2 = new ComboBox<>("Second Parent's Job/profession parent 2");
     Checkbox checkbox = new Checkbox("I certify the truth of all this information");
-    DatePicker born = new DatePicker("When were you born");
-    TextField phoneNumber = new TextField("Phone number");
-    TextField endYear = new TextField("Last year of secondary school");
-    TextField bornPlace = new TextField("BornPlace");
+    DatePicker born = new DatePicker("When were you born/date de naissance");
+    TextField phoneNumber = new TextField("Phone number/numéro de téléphone");
+    TextField endYear = new TextField("Last year of secondary school/année de fin d'étude dans le secondaire");
+    TextField bornPlace = new TextField("BornPlace/lieu de naissance");
     Button addSchool;
 
 
@@ -40,7 +40,7 @@ public class StudentForm extends AbstractForm<Student> {
     public StudentForm(List<School> schools, List<ExchangeType> exchangeTypes,List<Country> countries,List<Job> jobs) {
         this.binder = new BeanValidationBinder<>(Student.class);
         configureField(schools,exchangeTypes,countries,jobs);
-        addSchool = new Button("School Not Found");
+        addSchool = new Button("School Not Found/école non trouvée");
         addSchool.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         HorizontalLayout schoolLayout = new HorizontalLayout(school,addSchool);
         schoolLayout.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.CENTER);
@@ -82,7 +82,7 @@ public class StudentForm extends AbstractForm<Student> {
         job1.setItemLabelGenerator(Job::getJob);
         job2.setItemLabelGenerator(Job::getJob);
         setResponsiveSteps();
-        phoneNumber.setPattern("^[+]?[0-9]{2,3}?[ ]?[0-9]{10}$");
+        phoneNumber.setPattern("^[+][0-9]{2,3}[ ][0-9]{9,10}$");
         phoneNumber.setHelperText("Format : +123 456789000");
         born.setI18n(new DatePicker.DatePickerI18n().setDateFormat("dd.MM.yyyy"));
     }

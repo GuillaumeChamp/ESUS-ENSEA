@@ -16,7 +16,7 @@ public class FlightForm extends AbstractForm<Flight>{
     public FlightForm(){
         this.binder = new BeanValidationBinder<>(Flight.class);
         binder.bindInstanceFields(this);
-        phoneNumber.setPattern("^[+]?[0-9]{2,3}?[ ]?[0-9]{10}$");
+        phoneNumber.setPattern("^[+][0-9]{2,3}[ ][0-9]{9,10}$");
         phoneNumber.setHelperText("Format : +123 456789000");
         date.setStep(Duration.ofMinutes(10));
         add(date,place,phoneNumber,createButtonsLayout());
