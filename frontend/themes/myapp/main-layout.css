@@ -1,3 +1,7 @@
+html {
+    --lumo-border-radius-m: 1em;
+}
+
 [slot='drawer'] {
   background-image: linear-gradient(0deg, var(--lumo-shade-5pct), var(--lumo-shade-5pct));
 }

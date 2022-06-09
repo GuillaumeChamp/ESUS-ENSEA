@@ -1,142 +1,116 @@
 package com.example.application.views;
 
+import com.example.application.data.PathFinder;
+import com.example.application.security.SecurityService;
+import com.example.application.views.UserPage.CheckList;
+import com.example.application.views.UserPage.GeneralInformation;
+import com.example.application.views.UserPage.TextView;
 
-import com.example.application.views.about.AboutView;
-import com.example.application.views.helloworld.HelloWorldView;
-import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.Unit;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.dependency.NpmPackage;
-import com.vaadin.flow.component.html.Footer;
+import com.vaadin.flow.component.combobox.ComboBox;
+import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H1;
-import com.vaadin.flow.component.html.H2;
-import com.vaadin.flow.component.html.Header;
-import com.vaadin.flow.component.html.ListItem;
-import com.vaadin.flow.component.html.Nav;
-import com.vaadin.flow.component.html.Span;
-import com.vaadin.flow.component.html.UnorderedList;
-import com.vaadin.flow.router.PageTitle;
+import com.vaadin.flow.component.orderedlayout.FlexComponent;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.progressbar.ProgressBar;
+import com.vaadin.flow.component.progressbar.ProgressBarVariant;
+import com.vaadin.flow.router.HighlightConditions;
 import com.vaadin.flow.router.RouterLink;
 
-/**
- * The main view is a top-level placeholder for other views.
- */
-public class MainLayout extends AppLayout {
 
-    /**
-     * A simple navigation item component, based on ListItem element.
-     */
-    public static class MenuItemInfo extends ListItem {
+public class MainLayout extends AppLayout{
+    private final SecurityService securityService;
+    public static boolean EN = true;
 
-        private final Class<? extends Component> view;
+    public MainLayout(SecurityService securityService) {
+        this.securityService = securityService;
+        createHeader();
+        createDrawer();
+    }
 
-        public MenuItemInfo(String menuTitle, String iconClass, Class<? extends Component> view) {
-            this.view = view;
-            RouterLink link = new RouterLink();
-            link.addClassNames("menu-item-link");
-            link.setRoute(view);
-
-            Span text = new Span(menuTitle);
-            text.addClassNames("menu-item-text");
-
-            link.add(new LineAwesomeIcon(iconClass), text);
-            add(link);
-        }
-
-        public Class<?> getView() {
-            return view;
-        }
-
-        /**
-         * Simple wrapper to create icons using LineAwesome iconset. See
-         * https://icons8.com/line-awesome
-         */
-        @NpmPackage(value = "line-awesome", version = "1.3.0")
-        public static class LineAwesomeIcon extends Span {
-            public LineAwesomeIcon(String lineawesomeClassnames) {
-                addClassNames("menu-item-icon");
-                if (!lineawesomeClassnames.isEmpty()) {
-                    addClassNames(lineawesomeClassnames);
-                }
+    private void createHeader() {
+        H1 logo = new H1("Welcome at ENSEA");
+        logo.addClassNames("text-l", "m-m");
+        ComboBox<String> language = new ComboBox<>("language");
+        language.setItems("French", "English");
+        language.setValue("English");
+        language.addValueChangeListener(e->{
+            EN = language.getValue().equals("English");
+            UI.getCurrent().getPage().reload();
+        });
+        Button logout = new Button("Log out", e -> securityService.logout());
+        logout.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        HorizontalLayout header = new HorizontalLayout(
+          new DrawerToggle(), 
+          logo
+        );
+        if (!securityService.getAuthenticatedUser().isAdmin() && securityService.getAuthenticatedUser().getStudent()!=null) {
+            VerticalLayout progressBox = new VerticalLayout();
+            ProgressBar progressBar = new ProgressBar();
+            try {
+                PathFinder.load();
+            } catch (Exception ignored) {
             }
-        }
-
-    }
-
-    private H1 viewTitle;
-
-    public MainLayout() {
-        setPrimarySection(Section.DRAWER);
-        addToNavbar(true, createHeaderContent());
-        addToDrawer(createDrawerContent());
-    }
-
-    private Component createHeaderContent() {
-        DrawerToggle toggle = new DrawerToggle();
-        toggle.addClassNames("view-toggle");
-        toggle.addThemeVariants(ButtonVariant.LUMO_CONTRAST);
-        toggle.getElement().setAttribute("aria-label", "Menu toggle");
-
-        viewTitle = new H1();
-        viewTitle.addClassNames("view-title");
-
-        Header header = new Header(toggle, viewTitle);
-        header.addClassNames("view-header");
-        return header;
-    }
-
-    private Component createDrawerContent() {
-        H2 appName = new H2("My App");
-        appName.addClassNames("app-name");
-
-        com.vaadin.flow.component.html.Section section = new com.vaadin.flow.component.html.Section(appName,
-                createNavigation(), createFooter());
-        section.addClassNames("drawer-section");
-        return section;
-    }
-
-    private Nav createNavigation() {
-        Nav nav = new Nav();
-        nav.addClassNames("menu-item-container");
-        nav.getElement().setAttribute("aria-labelledby", "views");
-
-        // Wrap the links in a list; improves accessibility
-        UnorderedList list = new UnorderedList();
-        list.addClassNames("navigation-list");
-        nav.add(list);
-
-        for (MenuItemInfo menuItem : createMenuItems()) {
-            list.add(menuItem);
+            String[] progress = securityService.getAuthenticatedUser().getStudent().getProgress().split("\\.");
+            int readValue = Integer.parseInt(progress[0]);
+            double value = readValue/Double.parseDouble(PathFinder.lastStep);
+            progressBar.setValue(value);
+            Div progressBarLabel = new Div();
+            progressBarLabel.setText("Admission process "+securityService.getAuthenticatedUser().getStudent().getProgress() +"/"+ PathFinder.lastStep);
+            progressBox.add(progressBarLabel,progressBar);
+            progressBar.addThemeVariants(ProgressBarVariant.LUMO_CONTRAST);
+            header.add(progressBox);
+            header.expand(progressBox);
 
         }
-        return nav;
+        header.add(logout,language);
+        header.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.CENTER);
+        header.expand(logo);
+        header.setWidth("100%");
+        header.addClassNames("py-0", "px-m");
+        addToNavbar(header);
     }
 
-    private MenuItemInfo[] createMenuItems() {
-        return new MenuItemInfo[]{ //
-                new MenuItemInfo("Hello World", "la la-globe", HelloWorldView.class), //
-
-                new MenuItemInfo("About", "la la-file", AboutView.class), //
-
-        };
-    }
-
-    private Footer createFooter() {
-        Footer layout = new Footer();
-        layout.addClassNames("footer");
-
-        return layout;
-    }
-
-    @Override
-    protected void afterNavigation() {
-        super.afterNavigation();
-        viewTitle.setText(getCurrentPageTitle());
-    }
-
-    private String getCurrentPageTitle() {
-        PageTitle title = getContent().getClass().getAnnotation(PageTitle.class);
-        return title == null ? "" : title.value();
+    private void createDrawer() {
+        RouterLink textView = new RouterLink("Information for incoming student", TextView.class);
+        textView.setHighlightCondition(HighlightConditions.sameLocation());
+        RouterLink admin = new RouterLink("Admin", AdminView.class);
+        RouterLink list = new RouterLink("Student list", ListView.class);
+        RouterLink page2 = new RouterLink("General information", GeneralInformation.class);
+        RouterLink account = new RouterLink("Account", AccountView.class);
+        RouterLink dashboard = new RouterLink("Dashboard", DashboardView.class);
+        RouterLink schoolList = new RouterLink("School List", SchoolView.class);
+        RouterLink checkList = new RouterLink("CheckList", CheckList.class);
+        RouterLink download = new RouterLink("My depository",UploadView.class);
+        RouterLink parkour = new RouterLink("Parkour List",ParkourGrid.class);
+        RouterLink map = new RouterLink("Map",MapView.class);
+        if (securityService.getAuthenticatedUser().isAdmin())
+        addToDrawer(new VerticalLayout(
+                admin,
+                dashboard,
+                list,
+                schoolList,
+                parkour,
+                textView,
+                page2,
+                download,
+                map,
+                account
+        ));
+        else
+            addToDrawer(new VerticalLayout(
+                    textView,
+                    page2,
+                    checkList,
+                    download,
+                    map,
+                    account
+            ));
     }
 }

@@ -1,0 +1,102 @@
+package com.example.application.views.components.forms;
+
+import com.example.application.data.entity.*;
+import com.vaadin.flow.component.ClickEvent;
+import com.vaadin.flow.component.ComponentEventListener;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.checkbox.Checkbox;
+import com.vaadin.flow.component.combobox.ComboBox;
+import com.vaadin.flow.component.datepicker.DatePicker;
+import com.vaadin.flow.component.orderedlayout.FlexComponent;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.textfield.EmailField;
+import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.data.binder.BeanValidationBinder;
+import java.util.Arrays;
+import java.util.List;
+
+public class StudentForm extends AbstractForm<Student> {
+
+    TextField firstName = new TextField("First name");
+    TextField lastName = new TextField("Last name");
+    ComboBox<String> gender = new ComboBox<>("Gender");
+    EmailField email = new EmailField("Email");
+    ComboBox<ExchangeType> exchangeType = new ComboBox<>("ExchangeType");
+    ComboBox<School> school = new ComboBox<>("School");
+    ComboBox<Country> country = new ComboBox<>("Country");
+    ComboBox<String> civility = new ComboBox<>("Civility");
+    ComboBox<Job> job1 = new ComboBox<>("First Parent's Job");
+    ComboBox<Job> job2 = new ComboBox<>("Second Parent's Job");
+    Checkbox checkbox = new Checkbox("I certify the truth of all this information");
+    DatePicker born = new DatePicker("When were you born");
+    TextField phoneNumber = new TextField("Phone number");
+    TextField endYear = new TextField("Last year of secondary school");
+    TextField bornPlace = new TextField("BornPlace");
+    Button addSchool;
+
+
+
+    public StudentForm(List<School> schools, List<ExchangeType> exchangeTypes,List<Country> countries,List<Job> jobs) {
+        this.binder = new BeanValidationBinder<>(Student.class);
+        configureField(schools,exchangeTypes,countries,jobs);
+        addSchool = new Button("School Not Found");
+        addSchool.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        HorizontalLayout schoolLayout = new HorizontalLayout(school,addSchool);
+        schoolLayout.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.CENTER);
+        add(firstName,
+            lastName,
+            civility,
+            gender,
+            born,
+            bornPlace,
+            country,
+            email,
+            phoneNumber,
+            endYear,
+            schoolLayout,
+            exchangeType,
+            job1,
+            job2,
+            checkbox,
+            createButtonsLayout());
+        verify();
+    }
+    public void updateSchool(List<School> newSchool){
+        school.setItems(newSchool);
+    }
+
+    private void configureField(List<School> schools, List<ExchangeType> exchangeTypes,List<Country> countries,List<Job> jobs){
+        checkbox.addClickListener(e->verify());
+        civility.setItems(Arrays.asList("Mr","Ms"));
+        gender.setItems(Arrays.asList("Male","Female","Non-Binary"));
+        binder.bindInstanceFields(this);
+        school.setItems(schools);
+        school.setItemLabelGenerator(School::getName);
+        exchangeType.setItems(exchangeTypes);
+        exchangeType.setItemLabelGenerator(ExchangeType::getName_ext);
+        country.setItems(countries);
+        country.setItemLabelGenerator(Country::getCountry_name);
+        job1.setItems(jobs);
+        job2.setItems(jobs);
+        job1.setItemLabelGenerator(Job::getJob);
+        job2.setItemLabelGenerator(Job::getJob);
+        setResponsiveSteps();
+        phoneNumber.setPattern("^[+]?[0-9]{2,3}?[ ]?[0-9]{10}$");
+        phoneNumber.setHelperText("Format : +123 456789000");
+        born.setI18n(new DatePicker.DatePickerI18n().setDateFormat("dd.MM.yyyy"));
+    }
+
+    /**
+     * Use to force re-reading
+     */
+    public void verify(){
+        exchangeType.setEnabled(checkbox.getValue());
+    }
+    /**
+     * Allow to add a school on the database
+     */
+    public void addEvent(ComponentEventListener<ClickEvent<Button>> event){
+        addSchool.addClickListener(event);
+    }
+}

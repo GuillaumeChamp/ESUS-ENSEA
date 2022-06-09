@@ -1,0 +1,13 @@
+input:disabled  {
+    color : var(lumo-success-color);
+}
+html, host {
+    --lumo-disabled-text-color: rgba(149, 196, 31, 0.5);
+}
+/* disabled checkbox or radio */
+input[type="checkbox"]:disabled+label,
+{
+	opacity: .5;
+	color : blue;
+	cursor: default; /* or cursor: no-drop */
+}
