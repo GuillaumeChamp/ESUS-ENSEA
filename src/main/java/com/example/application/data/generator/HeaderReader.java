@@ -43,8 +43,8 @@ public class HeaderReader {
             }
         } catch (FileNotFoundException e) {
             if (MainLayout.EN) return (HeaderReader.class.getResourceAsStream("/META-INF/resources/"+file));
-            InputStream ans = (HeaderReader.class.getResourceAsStream("/META-INF/resources/FR"+file));
-             if (ans == null) ans = (HeaderReader.class.getResourceAsStream("/META-INF/resources/"+file));
+            InputStream ans = (HeaderReader.class.getResourceAsStream("/META-INF/resources/FR/"+file));
+            if (ans == null) ans = (HeaderReader.class.getResourceAsStream("/META-INF/resources/"+file));
             return ans;
         }
     }
@@ -56,8 +56,11 @@ public class HeaderReader {
      */
     public static void headerRead(TextView layout,String file){
         layout.buttonNext = new Button("next");
+        if(!MainLayout.EN) layout.buttonNext.setText("suivant");
         layout.buttonPrevious = new Button("previous");
+        if(!MainLayout.EN) layout.buttonPrevious.setText("précédent");
         layout.back = new Button("Back to progression");
+        if(!MainLayout.EN) layout.back.setText("retour");
         try {
             BufferedReader reader = new BufferedReader(new InputStreamReader((findFile("header/"+file+".txt")), StandardCharsets.UTF_8));
             String line = reader.readLine();
@@ -264,11 +267,11 @@ public class HeaderReader {
                 layout.user.getStudent().getExchangeType().getName());
         layout.buttonNext.addClickListener(e-> layout.next());
         HorizontalLayout buttonBox = new HorizontalLayout();
-        layout.buttonNext.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        layout.buttonNext.addThemeVariants(ButtonVariant.LUMO_PRIMARY,ButtonVariant.LUMO_SUCCESS);
 
         layout.buttonPrevious.addClickListener(e-> layout.previous());
         layout.back.addClickListener(e->layout.back());
-        layout.back.addThemeVariants(ButtonVariant.LUMO_PRIMARY,ButtonVariant.LUMO_PRIMARY);
+        layout.back.addThemeVariants(ButtonVariant.LUMO_PRIMARY,ButtonVariant.LUMO_ERROR);
         layout.buttonPrevious.setEnabled(false);
         layout.buttonPrevious.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         if (!layout.currentPageIndex.equals("0")){

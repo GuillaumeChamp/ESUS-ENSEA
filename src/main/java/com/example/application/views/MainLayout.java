@@ -42,7 +42,8 @@ public class MainLayout extends AppLayout{
         logo.addClassNames("text-l", "m-m");
         ComboBox<String> language = new ComboBox<>("language");
         language.setItems("French", "English");
-        language.setValue("English");
+        if (EN) language.setValue("English");
+        else language.setValue("French");
         language.addValueChangeListener(e->{
             EN = language.getValue().equals("English");
             UI.getCurrent().getPage().reload();
@@ -77,9 +78,9 @@ public class MainLayout extends AppLayout{
         addToNavbar(header);
     }
 
-    public static void progress(float value){
+    public static void progress(int value){
         int lastIndex = PathFinder.lastIndex(student.getExchangeType().getName());
-        progressBar.setValue(value/lastIndex);
+        progressBar.setValue((float)value/lastIndex);
         if (value != 0) progressBarLabel.setText("Admission process "+value +"/"+ lastIndex);
     }
 

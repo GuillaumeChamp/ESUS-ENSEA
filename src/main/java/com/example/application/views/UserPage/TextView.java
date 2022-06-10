@@ -46,8 +46,6 @@ public class TextView extends VerticalLayout implements BeforeLeaveObserver{
             HeaderReader.headerRead(this,"admin");
         }
         PathFinder.load();
-        setSpacing(false);
-        setSizeFull();
         addClassName("TextView");
         getElement().getStyle().set("background-image","url('images/test.png')");
         getElement().getStyle().set("background-repeat", "no-repeat");
@@ -58,7 +56,7 @@ public class TextView extends VerticalLayout implements BeforeLeaveObserver{
 
     public void next(){
         Student student = user.getStudent();
-        if (PathFinder.isNotFurther(student.getProgress(), currentPageIndex,student.getExchangeType().getName())){
+        if (PathFinder.isNotFurther(student.getProgress(), nextId,student.getExchangeType().getName())){
             student.setProgress(nextId);
             MainLayout.progress(PathFinder.index(user.getStudent().getExchangeType().getName(),nextId));}
         currentPageIndex = nextId;

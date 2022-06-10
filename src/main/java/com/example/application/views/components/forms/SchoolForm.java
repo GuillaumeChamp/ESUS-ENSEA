@@ -9,10 +9,10 @@ import com.vaadin.flow.data.binder.BeanValidationBinder;
 import java.util.List;
 
 public class SchoolForm extends AbstractForm<School>{
-    TextField name = new TextField("School Name");
-    TextField city = new TextField("City");
-    TextField contact = new TextField("International relation office address");
-    ComboBox<Country> country = new ComboBox<>("Country");
+    TextField name = new TextField("School Name/Nom de l'école");
+    TextField city = new TextField("City/Ville");
+    TextField contact = new TextField("International relation office address/contact");
+    ComboBox<Country> country = new ComboBox<>("Country/Pays");
 
     public SchoolForm(List<Country> countries){
         this.binder = new BeanValidationBinder<>(School.class);
