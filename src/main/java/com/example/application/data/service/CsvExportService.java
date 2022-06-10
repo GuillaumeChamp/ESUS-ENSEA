@@ -20,9 +20,10 @@ public class CsvExportService {
      * @param writer service writer
      */
     public static void writeAurion(List<Student> students, Writer writer) {
-        CSVFormat format = CSVFormat.EXCEL.withDelimiter(';').withHeader("UUID",
+        CSVFormat format = CSVFormat.Builder.create().setDelimiter(';').setHeader("UUID",
                 "CIVILITE",
                 "GENRE",
+                "NATIONALITE",
                 "PRENOM",
                 "NOM",
                 "EMAIL",
@@ -32,13 +33,14 @@ public class CsvExportService {
                 "ECOLE",
                 "FIN_ETUDE_SECONDAIRE",
                 "PROFESSION_PARENT1",
-                "PROFESSION_PARENT2");
+                "PROFESSION_PARENT2").build();
         try (CSVPrinter csvPrinter = new CSVPrinter(writer, format))
         {
             for (Student student : students) {
                 csvPrinter.printRecord(student.getId(),
                         student.getCivility(),
                         student.getGender(),
+                        student.getNationality(),
                         student.getFirstName(),
                         student.getLastName(),
                         student.getEmail(),
@@ -56,9 +58,10 @@ public class CsvExportService {
         }
     }
     public static void writeRI(List<Student> students, Writer writer) {
-        CSVFormat format = CSVFormat.EXCEL.withDelimiter(';').withHeader("UUID",
+        CSVFormat format = CSVFormat.Builder.create().setDelimiter(';').setHeader("UUID",
                 "CIVILITE",
                 "GENRE",
+                "NATIONALITE",
                 "PRENOM",
                 "NOM",
                 "EMAIL",
@@ -69,13 +72,14 @@ public class CsvExportService {
                 "EXCHANGE_TYPE",
                 "FIN_ETUDE_SECONDAIRE",
                 "PROFESSION_PARENT1",
-                "PROFESSION_PARENT2");
+                "PROFESSION_PARENT2").build();
         try (CSVPrinter csvPrinter = new CSVPrinter(writer, format))
         {
             for (Student student : students) {
                 csvPrinter.printRecord(student.getId(),
                         student.getCivility(),
                         student.getGender(),
+                        student.getNationality().getCountry_name(),
                         student.getFirstName(),
                         student.getLastName(),
                         student.getEmail(),
@@ -95,14 +99,14 @@ public class CsvExportService {
     }
 
     public static void writeMajor(List<Student> students, Writer writer) {
-        CSVFormat format = CSVFormat.EXCEL.withDelimiter(';').withHeader("UUID",
+        CSVFormat format = CSVFormat.Builder.create().setDelimiter(';').setHeader("UUID",
                 "GENRE",
                 "PRENOM",
                 "NOM",
                 "EMAIL",
                 "MAJEUR",
                 "OPTION"
-                );
+                ).build();
         try (CSVPrinter csvPrinter = new CSVPrinter(writer, format))
         {
             for (Student student : students) {
@@ -122,7 +126,7 @@ public class CsvExportService {
         }
     }
     public static void writeFIP(List<Student> students, Writer writer) {
-        CSVFormat format = CSVFormat.EXCEL.withDelimiter(';').withHeader("UUID",
+        CSVFormat format = CSVFormat.Builder.create().setDelimiter(';').setHeader("UUID",
                 "GENRE",
                 "PRENOM",
                 "NOM",
@@ -136,8 +140,7 @@ public class CsvExportService {
                 "LIEU_DEPART",
                 "DATE",
                 "NUMERO_VOL"
-
-        );
+        ).build();
         try (CSVPrinter csvPrinter = new CSVPrinter(writer, format))
         {
             for (Student student : students) {

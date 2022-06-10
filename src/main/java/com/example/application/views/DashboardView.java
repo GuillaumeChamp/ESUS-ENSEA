@@ -116,7 +116,8 @@ public class DashboardView extends VerticalLayout {
 
     private Component getContactStats() {
         Span stats = new Span(service.countStudents() + " étudiants inscrits\n"
-        + service.countCas() + " comptes CAS créés"
+            + service.countCas() + " comptes CAS créés\n"
+            + service.countFlight() + " trajets programmés"
                 );
         stats.addClassNames("text-xl", "mt-m");
         return stats;

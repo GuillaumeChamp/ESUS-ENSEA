@@ -41,7 +41,7 @@ public class MajorLayout extends VerticalLayout {
      * Set up the drawer form
      */
     private void setup(){
-        List<Parkour> list = service.findAllParkours();
+        List<Parkour> list = service.findAllParkour();
         List<String> list_semester = new ArrayList<>();
         for(Parkour p : list){
             if (!list_semester.contains(p.getSemester())) list_semester.add(p.getSemester());

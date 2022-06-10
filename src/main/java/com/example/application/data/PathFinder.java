@@ -8,7 +8,6 @@ import java.util.Arrays;
 import java.util.Properties;
 
 public class PathFinder {
-    //TODO move to PathFinder and linked to TextView
     public static String lastStep;
     private static ArrayList<String> KA131Step;
     private static ArrayList<String> KA171Step;
@@ -106,5 +105,11 @@ public class PathFinder {
         int currentIndex = progression.indexOf(studentProgress);
         int destinationIndex = progression.indexOf(destination);
         return currentIndex<destinationIndex;
+    }
+    public static int lastIndex(String exchange){
+        return getProgression(exchange).lastIndexOf("10");
+    }
+    public static int index(String exchange,String step){
+        return getProgression(exchange).lastIndexOf(step);
     }
 }

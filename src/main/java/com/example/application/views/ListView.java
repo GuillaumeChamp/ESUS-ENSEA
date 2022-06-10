@@ -71,6 +71,7 @@ public class ListView extends VerticalLayout {
         grid.addClassNames("Student-grid");
         grid.setSizeFull();
         grid.setColumns("civility","firstName", "lastName");
+        grid.addColumn(student -> student.getNationality().getCountry_name());
         grid.addColumn(student -> student.getExchangeType().getName()).setHeader("Type d'échange");
         grid.addColumn(Student::getProgress).setHeader("Etape");
         grid.addColumn(contact -> contact.getSchool().getName()).setHeader("School");

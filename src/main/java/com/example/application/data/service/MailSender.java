@@ -170,7 +170,7 @@ public class MailSender {
     }
     public static void sendAnswer(User student,String question,String answerValue){
         if(session==null) init();
-        String content = "The student "+ student.getStudent().getFirstName()+ " "+student.getStudent().getLastName()+"answer to the question :" +question
+        String content = "The student "+ student.getStudent().getFirstName()+ " "+student.getStudent().getLastName().toUpperCase()+" answer to the question :" +question
                 +"\nThe answer is : " + answerValue;
         String email = dev;
         try {

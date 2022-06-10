@@ -45,7 +45,6 @@ public class AccountView extends RegisterView {
             form.setVisible(true);
             addClassName("editing");
         }else form.setEnabled(false);
-        form.verify();
         accountForm = new AccountForm(securityService.getAuthenticatedUser().getUser());
         accountForm.removeDelete();
         accountForm.clear();

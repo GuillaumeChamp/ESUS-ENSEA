@@ -227,18 +227,18 @@ public class HeaderReader {
                     layout.next();
                 }
         );
-        if (!PathFinder.isNotFurther(layout.user.getStudent().getProgress(), layout.currentPageIndex, layout.user.getStudent().getExchangeType().getName())) form.disabled();
+        if (PathFinder.isNotFurther(layout.user.getStudent().getProgress(), layout.currentPageIndex, layout.user.getStudent().getExchangeType().getName())) form.disabled();
         layout.add(form);
     }
     private static void addForm(TextView layout, String type){
         layout.trigger++;
+        layout.verify();
         if (type.contains("flight")){
             FlightLayout flightLayout = new FlightLayout(layout.user, layout.crmService);
             flightLayout.form.addListener(AbstractForm.SaveEvent.class,e->{
                 flightLayout.save(e);
                 layout.trigger--;
                 layout.verify();
-                flightLayout.setEnabled(false);
             });
             layout.add(flightLayout);
             return;
@@ -249,7 +249,6 @@ public class HeaderReader {
                 majorLayout.submit();
                 layout.trigger--;
                 layout.verify();
-                majorLayout.setEnabled(false);
             });
             layout.add(majorLayout);
         }

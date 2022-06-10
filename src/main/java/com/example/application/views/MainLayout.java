@@ -1,13 +1,13 @@
 package com.example.application.views;
 
 import com.example.application.data.PathFinder;
+import com.example.application.data.entity.Student;
 import com.example.application.security.SecurityService;
 import com.example.application.views.UserPage.CheckList;
 import com.example.application.views.UserPage.GeneralInformation;
 import com.example.application.views.UserPage.TextView;
 
 import com.vaadin.flow.component.UI;
-import com.vaadin.flow.component.Unit;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.button.Button;
@@ -27,6 +27,9 @@ import com.vaadin.flow.router.RouterLink;
 public class MainLayout extends AppLayout{
     private final SecurityService securityService;
     public static boolean EN = true;
+    private static Div progressBarLabel;
+    private static Student student;
+    private static ProgressBar progressBar;
 
     public MainLayout(SecurityService securityService) {
         this.securityService = securityService;
@@ -52,22 +55,19 @@ public class MainLayout extends AppLayout{
         );
         if (!securityService.getAuthenticatedUser().isAdmin() && securityService.getAuthenticatedUser().getStudent()!=null) {
             VerticalLayout progressBox = new VerticalLayout();
-            ProgressBar progressBar = new ProgressBar();
+            progressBar = new ProgressBar();
             try {
                 PathFinder.load();
             } catch (Exception ignored) {
             }
-            String[] progress = securityService.getAuthenticatedUser().getStudent().getProgress().split("\\.");
-            int readValue = Integer.parseInt(progress[0]);
-            double value = readValue/Double.parseDouble(PathFinder.lastStep);
-            progressBar.setValue(value);
-            Div progressBarLabel = new Div();
+            student = securityService.getAuthenticatedUser().getStudent();
+            progress(PathFinder.index(student.getExchangeType().getName(), student.getProgress()));
+            progressBarLabel = new Div();
             progressBarLabel.setText("Admission process "+securityService.getAuthenticatedUser().getStudent().getProgress() +"/"+ PathFinder.lastStep);
             progressBox.add(progressBarLabel,progressBar);
             progressBar.addThemeVariants(ProgressBarVariant.LUMO_CONTRAST);
             header.add(progressBox);
             header.expand(progressBox);
-
         }
         header.add(logout,language);
         header.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.CENTER);
@@ -77,18 +77,28 @@ public class MainLayout extends AppLayout{
         addToNavbar(header);
     }
 
+    public static void progress(float value){
+        int lastIndex = PathFinder.lastIndex(student.getExchangeType().getName());
+        progressBar.setValue(value/lastIndex);
+        if (value != 0) progressBarLabel.setText("Admission process "+value +"/"+ lastIndex);
+    }
+
     private void createDrawer() {
         RouterLink textView = new RouterLink("Information for incoming student", TextView.class);
+        if (!EN) textView.setText("Information d'inscription");
         textView.setHighlightCondition(HighlightConditions.sameLocation());
         RouterLink admin = new RouterLink("Admin", AdminView.class);
-        RouterLink list = new RouterLink("Student list", ListView.class);
+        RouterLink list = new RouterLink("Liste des étudiants", ListView.class);
         RouterLink page2 = new RouterLink("General information", GeneralInformation.class);
+        if (!EN) page2.setText("Informations génerales");
         RouterLink account = new RouterLink("Account", AccountView.class);
+        if (!EN) account.setText("Mon compte");
         RouterLink dashboard = new RouterLink("Dashboard", DashboardView.class);
-        RouterLink schoolList = new RouterLink("School List", SchoolView.class);
+        RouterLink schoolList = new RouterLink("Liste des Ecoles", SchoolView.class);
         RouterLink checkList = new RouterLink("CheckList", CheckList.class);
         RouterLink download = new RouterLink("My depository",UploadView.class);
-        RouterLink parkour = new RouterLink("Parkour List",ParkourGrid.class);
+        if (!EN) download.setText("Mon drive");
+        RouterLink parkour = new RouterLink("Liste des majeurs/options",ParkourGrid.class);
         RouterLink map = new RouterLink("Map",MapView.class);
         if (securityService.getAuthenticatedUser().isAdmin())
         addToDrawer(new VerticalLayout(

@@ -38,7 +38,6 @@ public class RegisterView extends VerticalLayout {
         form.addListener(StudentForm.SaveEvent.class, this::saveStudent);
         form.addListener(StudentForm.CloseEvent.class, e -> this.closeEditor());
         form.removeDelete();
-        form.verify();
         Student newStudent =new Student();
         newStudent.setProgress("0");
         newStudent.setBorn(LocalDate.of(2000, Month.MAY,10));
@@ -52,7 +51,7 @@ public class RegisterView extends VerticalLayout {
         Student formObject = (Student) event.getObject();
         User user = securityService.getAuthenticatedUser().getUser();
         service.saveStudent(formObject);
-        securityService.getAuthenticatedUser().setStudent(formObject);
+        user.setStudent(formObject);
         service.updateAccount(user);
         closeEditor();
     }

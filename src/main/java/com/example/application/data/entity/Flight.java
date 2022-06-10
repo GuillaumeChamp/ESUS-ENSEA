@@ -13,17 +13,6 @@ public class Flight {
     @GeneratedValue
     @Type(type = "int")
     private int id;
-    /*
-
-Are you using any social network ENSEA’s students could use to join you (WhatsApp, Facebook, Telegram…)?
-Arriving by train/plane/other
-Airport or train station name
-Airport Terminal (if applicable)
-City of departure
-Date of arrival
-Hour of arrival
-Flight or train number
-     */
 
     private String place;
     private String phoneNumber;

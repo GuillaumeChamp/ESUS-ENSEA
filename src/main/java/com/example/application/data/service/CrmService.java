@@ -90,6 +90,9 @@ public class CrmService {
         students.removeIf(s -> s.getProgress().contains("0")||s.getProgress().contains("1"));
         return students.size();
     }
+    public long countFlight(){
+        return flightRepository.count();
+    }
     public void saveStudent(Student student) {
         if (student == null) {
             return;
@@ -101,7 +104,7 @@ public class CrmService {
         Flight studentFlight = student.getFlight();
         studentRepository.delete(student);
         triggersRepository.delete(studentTriggers);
-        flightRepository.delete(studentFlight);
+        if (studentFlight!=null) flightRepository.delete(studentFlight);
     }
 
     //SCHOOL
@@ -124,13 +127,13 @@ public class CrmService {
     //JOB
     public List<Job> findAllJobs(){return jobRepository.findAll();}
     //PARKOUR
-    public List<Parkour> findAllParkours(){
+    public List<Parkour> findAllParkour(){
         return parkourRepository.findAll();
     }
     public Parkour findParkour(String semester,String major, String option){
         if (major==null) major="";
         if (option==null) option="";
-        List<Parkour> list = findAllParkours();
+        List<Parkour> list = findAllParkour();
         for (Parkour p : list){
             if (p.getMajor().equals(major) && p.getSemester().equals(semester)&& p.getOption_suivi().equals(option))
                 return p;

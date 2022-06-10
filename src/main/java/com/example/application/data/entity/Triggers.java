@@ -1,19 +1,11 @@
 package com.example.application.data.entity;
 
-import javax.annotation.Nullable;
 import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import java.util.LinkedList;
-import java.util.List;
+
 
 
 @Entity
 public class Triggers extends AbstractEntity{
-
-    @OneToOne(mappedBy = "parkour")
-    @Nullable
-    private Student student;
 
     public boolean register;
     public boolean french_account;
@@ -29,12 +21,4 @@ public class Triggers extends AbstractEntity{
         this.register = register;
     }
 
-    public void setStudent(@Nullable Student student) {
-        this.student = student;
-    }
-
-    @Nullable
-    public Student getStudent() {
-        return student;
-    }
 }

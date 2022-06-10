@@ -13,7 +13,6 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
 
 
 @Entity
@@ -24,13 +23,16 @@ public class Student extends AbstractEntity {
 
     @NotEmpty
     private String gender = "";
-
+    @ManyToOne
+    @JoinColumn(name = "nationality")
+    @NotNull
+    @JsonIgnoreProperties({"students"})
+    private Country nationality;
     @NotEmpty
     private String firstName = "";
-
     @NotEmpty
     private String lastName = "";
-
+    @NotNull
     private LocalDate born;
     @ManyToOne
     @JoinColumn(name = "step_list_id")
@@ -38,7 +40,9 @@ public class Student extends AbstractEntity {
     private Triggers triggers;
 
     private String phoneNumber;
+    @NotNull
     private String bornPlace;
+    @NotEmpty
     private String endYear;
     private String progress;
 
@@ -55,7 +59,7 @@ public class Student extends AbstractEntity {
     private Country country;
     @ManyToOne
     @JoinColumn(name = "parkour_id")
-    @Cascade(CascadeType.ALL)
+    //@Cascade(CascadeType.ALL)
     private Parkour parkour;
 
     @ManyToOne
@@ -90,6 +94,9 @@ public class Student extends AbstractEntity {
     }
     public String getLastName() {
         return lastName;
+    }
+    public Country getNationality() {
+        return nationality;
     }
     public School getSchool() {
         return school;
@@ -137,7 +144,6 @@ public class Student extends AbstractEntity {
     public Triggers getTriggers() {
         return triggers;
     }
-
     public Parkour getParkour() {
         return parkour;
     }
@@ -177,6 +183,9 @@ public class Student extends AbstractEntity {
         born.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
         this.born = born;
     }
+    public void setNationality(Country nationality) {
+        this.nationality = nationality;
+    }
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
@@ -195,7 +204,6 @@ public class Student extends AbstractEntity {
     public void setTriggers(Triggers triggers) {
         this.triggers = triggers;
     }
-
     public void setParkour(Parkour parkour) {
         this.parkour = parkour;
     }

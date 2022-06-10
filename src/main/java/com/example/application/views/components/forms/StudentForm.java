@@ -5,7 +5,6 @@ import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
@@ -15,11 +14,12 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import java.util.Arrays;
 import java.util.List;
-
+@SuppressWarnings("SpellCheckingInspection")
 public class StudentForm extends AbstractForm<Student> {
 
     TextField firstName = new TextField("First name/prénom");
     TextField lastName = new TextField("Last name/nom");
+    ComboBox<Country> nationality = new ComboBox<>("Nationality/nationalité");
     ComboBox<String> gender = new ComboBox<>("Gender/genre");
     EmailField email = new EmailField("Email");
     ComboBox<ExchangeType> exchangeType = new ComboBox<>("ExchangeType/type d'échange");
@@ -28,14 +28,11 @@ public class StudentForm extends AbstractForm<Student> {
     ComboBox<String> civility = new ComboBox<>("Civility/civilité");
     ComboBox<Job> job1 = new ComboBox<>("First Parent's Job/profession parent 1");
     ComboBox<Job> job2 = new ComboBox<>("Second Parent's Job/profession parent 2");
-    Checkbox checkbox = new Checkbox("I certify the truth of all this information");
     DatePicker born = new DatePicker("When were you born/date de naissance");
     TextField phoneNumber = new TextField("Phone number/numéro de téléphone");
     TextField endYear = new TextField("Last year of secondary school/année de fin d'étude dans le secondaire");
     TextField bornPlace = new TextField("BornPlace/lieu de naissance");
     Button addSchool;
-
-
 
     public StudentForm(List<School> schools, List<ExchangeType> exchangeTypes,List<Country> countries,List<Job> jobs) {
         this.binder = new BeanValidationBinder<>(Student.class);
@@ -46,6 +43,7 @@ public class StudentForm extends AbstractForm<Student> {
         schoolLayout.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.CENTER);
         add(firstName,
             lastName,
+            nationality,
             civility,
             gender,
             born,
@@ -58,16 +56,13 @@ public class StudentForm extends AbstractForm<Student> {
             exchangeType,
             job1,
             job2,
-            checkbox,
             createButtonsLayout());
-        verify();
     }
     public void updateSchool(List<School> newSchool){
         school.setItems(newSchool);
     }
 
     private void configureField(List<School> schools, List<ExchangeType> exchangeTypes,List<Country> countries,List<Job> jobs){
-        checkbox.addClickListener(e->verify());
         civility.setItems(Arrays.asList("Mr","Ms"));
         gender.setItems(Arrays.asList("Male","Female","Non-Binary"));
         binder.bindInstanceFields(this);
@@ -77,6 +72,8 @@ public class StudentForm extends AbstractForm<Student> {
         exchangeType.setItemLabelGenerator(ExchangeType::getName_ext);
         country.setItems(countries);
         country.setItemLabelGenerator(Country::getCountry_name);
+        nationality.setItems(countries);
+        nationality.setItemLabelGenerator(Country::getCountry_name);
         job1.setItems(jobs);
         job2.setItems(jobs);
         job1.setItemLabelGenerator(Job::getJob);
@@ -87,12 +84,7 @@ public class StudentForm extends AbstractForm<Student> {
         born.setI18n(new DatePicker.DatePickerI18n().setDateFormat("dd.MM.yyyy"));
     }
 
-    /**
-     * Use to force re-reading
-     */
-    public void verify(){
-        exchangeType.setEnabled(checkbox.getValue());
-    }
+
     /**
      * Allow to add a school on the database
      */

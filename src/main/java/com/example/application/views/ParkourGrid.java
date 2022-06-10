@@ -116,6 +116,6 @@ public class ParkourGrid extends VerticalLayout {
     }
 
     private void updateList() {
-        grid.setItems(service.findAllParkours());
+        grid.setItems(service.findAllParkour());
     }
 }

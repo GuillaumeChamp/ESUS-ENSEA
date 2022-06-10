@@ -2,6 +2,7 @@ package com.example.application.views.UserPage;
 
 import com.example.application.data.PathFinder;
 import com.example.application.data.entity.Request;
+import com.example.application.data.entity.Student;
 import com.example.application.data.entity.User;
 import com.example.application.data.generator.HeaderReader;
 import com.example.application.data.service.CrmService;
@@ -56,10 +57,13 @@ public class TextView extends VerticalLayout implements BeforeLeaveObserver{
     }
 
     public void next(){
-        if (PathFinder.isNotFurther(user.getStudent().getProgress(), currentPageIndex,user.getStudent().getExchangeType().getName()))
-            user.getStudent().setProgress(nextId);
+        Student student = user.getStudent();
+        if (PathFinder.isNotFurther(student.getProgress(), currentPageIndex,student.getExchangeType().getName())){
+            student.setProgress(nextId);
+            MainLayout.progress(PathFinder.index(user.getStudent().getExchangeType().getName(),nextId));}
         currentPageIndex = nextId;
         this.removeAll();
+
         HeaderReader.headerRead(this,"page"+nextId);
     }
     public void previous(){
@@ -79,7 +83,7 @@ public class TextView extends VerticalLayout implements BeforeLeaveObserver{
         this.add(checkbox);
     }
     public void verify(){
-        buttonNext.setEnabled(trigger == 0);
+        buttonNext.setEnabled(trigger <= 0);
     }
 
     @Override

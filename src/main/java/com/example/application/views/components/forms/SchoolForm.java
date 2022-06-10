@@ -19,6 +19,6 @@ public class SchoolForm extends AbstractForm<School>{
         country.setItems(countries);
         country.setItemLabelGenerator(Country::getCountry_name);
         binder.bindInstanceFields(this);
-        add(name,city,contact,country,createButtonsLayout());
+        add(name,city,country,contact,createButtonsLayout());
     }
 }
