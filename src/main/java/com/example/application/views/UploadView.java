@@ -110,7 +110,8 @@ public class UploadView extends VerticalLayout {
         String directoryName = path;
         File directory = new File(directoryName);
         if (! directory.exists()){
-            System.out.println("creating repository "+directory.mkdirs());
+            //noinspection ResultOfMethodCallIgnored
+            directory.mkdirs();
         }
 
         File targetFile = new File(directoryName+"/"+fileName);

@@ -152,6 +152,7 @@ public class HeaderReader {
 
         if (parameter[0].contains("link")){
             Anchor anchor = new Anchor(parameter[1],parameter[2]);
+            anchor.setTarget("_blank");
             layout.add(anchor);
             return;
         }
