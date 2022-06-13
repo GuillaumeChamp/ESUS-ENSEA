@@ -35,6 +35,9 @@ public class MajorLayout extends VerticalLayout {
         setSizeFull();
         setDefaultHorizontalComponentAlignment(Alignment.CENTER);
         setup();
+        if (user.getStudent().getParkour()!= null){
+            setParkour(user.getStudent().getParkour());
+        }
     }
 
     /**
@@ -111,5 +114,15 @@ public class MajorLayout extends VerticalLayout {
         option_suivi.clear();
         option_suivi.setVisible(false);
         confirm.setEnabled(false);
+    }
+    private void setParkour(Parkour parkour){
+        semester.setValue(parkour.getSemester());
+        try {
+            major.setValue(parkour.getMajor());
+        }catch (Exception ignored){}
+        try{
+            option_suivi.setValue(parkour.getOption_suivi());
+        }catch (Exception ignored){
+        }
     }
 }

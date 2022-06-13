@@ -1,7 +1,9 @@
 package com.example.application.views.components;
 
 import com.example.application.data.PathFinder;
+import com.example.application.data.entity.User;
 import com.example.application.security.SecurityService;
+import com.example.application.security.UserPrincipal;
 import com.example.application.views.ListView;
 import com.example.application.views.MainLayout;
 import com.example.application.views.UserPage.GeneralInformation;
@@ -26,16 +28,19 @@ public class Routing extends VerticalLayout implements BeforeEnterObserver {
 
     @Override
     public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
-        if (service.getAuthenticatedUser().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))){
+        UserPrincipal user = service.getAuthenticatedUser();
+        if (user.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))){
             beforeEnterEvent.rerouteTo(ListView.class);
             return;
         }
-        if(service.getAuthenticatedUser().getStudent()==null) {
+        if(user.getStudent()==null) {
             beforeEnterEvent.rerouteTo(RegisterView.class);
             return;
         }
-        if (service.getAuthenticatedUser().getStudent().getProgress().equals(PathFinder.lastStep))
+        if (PathFinder.index(user.getStudent().getExchangeType().getName(),user.getStudent().getProgress()) == PathFinder.lastIndex(user.getStudent().getExchangeType().getName())) {
             beforeEnterEvent.rerouteTo(GeneralInformation.class);
-        else beforeEnterEvent.rerouteTo(TextView.class);
+            return;
+        }
+        beforeEnterEvent.rerouteTo(TextView.class);
     }
 }

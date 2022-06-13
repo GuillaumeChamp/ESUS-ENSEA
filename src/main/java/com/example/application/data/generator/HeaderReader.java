@@ -263,25 +263,28 @@ public class HeaderReader {
      * @param layout textView
      */
     private static void navigationButton(TextView layout){
-        //next
-        layout.nextId = PathFinder.getNext(layout.currentPageIndex,
-                layout.user.getStudent().getExchangeType().getName());
-        layout.buttonNext.addClickListener(e-> layout.next());
+        String exchange = layout.user.getStudent().getExchangeType().getName();
+        int currentPageIndex = PathFinder.index(exchange,layout.currentPageIndex);
         HorizontalLayout buttonBox = new HorizontalLayout();
-        layout.buttonNext.addThemeVariants(ButtonVariant.LUMO_PRIMARY,ButtonVariant.LUMO_SUCCESS);
 
+        layout.buttonNext.addThemeVariants(ButtonVariant.LUMO_PRIMARY,ButtonVariant.LUMO_SUCCESS);
         layout.buttonPrevious.addClickListener(e-> layout.previous());
         layout.back.addClickListener(e->layout.back());
         layout.back.addThemeVariants(ButtonVariant.LUMO_PRIMARY,ButtonVariant.LUMO_ERROR);
         layout.buttonPrevious.setEnabled(false);
         layout.buttonPrevious.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        if (!layout.currentPageIndex.equals("0")){
-            layout.previousId = PathFinder.getPrevious(layout.currentPageIndex,layout.user.getStudent().getExchangeType().getName());
+        if (currentPageIndex!=0){
+            layout.previousId = PathFinder.getPrevious(layout.currentPageIndex,exchange);
             layout.buttonPrevious.setEnabled((true));
         }
 
-        if (layout.currentPageIndex.equals((PathFinder.lastStep))) {
-            return;
+        if (currentPageIndex != PathFinder.lastIndex(exchange)){
+            layout.nextId = PathFinder.getNext(layout.currentPageIndex,
+                    layout.user.getStudent().getExchangeType().getName());
+            layout.buttonNext.addClickListener(e-> layout.next());
+        }
+        else{
+            layout.buttonNext.setVisible(false);
         }
         buttonBox.add(layout.buttonPrevious,layout.back,layout.buttonNext);
         layout.add(buttonBox);

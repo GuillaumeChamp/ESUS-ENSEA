@@ -62,7 +62,6 @@ public class MainLayout extends AppLayout{
             }
             student = securityService.getAuthenticatedUser().getStudent();
             progress(PathFinder.index(student.getExchangeType().getName(), student.getProgress()));
-            progressBarLabel.setText("Admission process "+securityService.getAuthenticatedUser().getStudent().getProgress() +"/"+ PathFinder.lastStep);
             progressBox.add(progressBarLabel,progressBar);
             progressBar.addThemeVariants(ProgressBarVariant.LUMO_CONTRAST);
             header.add(progressBox);

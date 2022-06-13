@@ -8,8 +8,8 @@ import java.util.Arrays;
 import java.util.Properties;
 
 public class PathFinder {
-    public static String lastStep;
     private static ArrayList<String> KA131Step;
+    private static boolean init = false;
     private static ArrayList<String> KA171Step;
     private static ArrayList<String> freeStep;
     private static ArrayList<String> internERAStep;
@@ -17,15 +17,17 @@ public class PathFinder {
     private static ArrayList<String> fame;
     private static ArrayList<String> accordExtraEUStep;
 
-    public static void load() throws Exception{
+    public static void load(){
         if (KA131Step != null) return;
+        init = true;
         Properties properties = new Properties();
         InputStream is = PathFinder.class.getResourceAsStream("/META-INF/resources/path.properties");
         try{
             is = new FileInputStream("./drive/resources/path.properties");
         }catch (FileNotFoundException ignored) {}
-        properties.load(is);
-        lastStep = properties.getProperty("finalStep");
+        try {
+            properties.load(is);
+        }catch (Exception ignored){}
         String[] KA131 = properties.getProperty("KA131").split(",");
         KA131Step = new ArrayList<>(Arrays.asList(KA131));
 
@@ -62,10 +64,12 @@ public class PathFinder {
     public static String getPrevious(String current,String exchange){
         ArrayList<String> progression = getProgression(exchange);
         int currentId =progression.indexOf(current);
+        if (currentId==0) return current;
         return progression.get(currentId-1);
     }
 
     private static ArrayList<String> getProgression(String exchange){
+        if (!PathFinder.init) PathFinder.load();
         ArrayList<String> progression;
         switch (exchange){
             case "KA171Intern":
