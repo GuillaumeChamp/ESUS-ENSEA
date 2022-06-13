@@ -34,8 +34,10 @@ public class FileForm extends FormLayout {
         if (file.isFile()) {
             name.setValue(file.getName());
             download.setEnabled(true);
-            FileDownloadWrapper buttonWrapper = new FileDownloadWrapper(
-                    new StreamResource(file.getName(), () -> new ByteArrayInputStream(file.getPath().getBytes())));
+            FileDownloadWrapper buttonWrapper =
+                    new FileDownloadWrapper(file.getName(),file);
+            //new FileDownloadWrapper(
+                    //new StreamResource(file.getName(), () -> new ByteArrayInputStream(file.getAbsolutePath().getBytes())));
             buttonWrapper.wrapComponent(download);
             add(buttonWrapper);
         }
