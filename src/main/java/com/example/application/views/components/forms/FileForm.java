@@ -30,6 +30,7 @@ public class FileForm extends FormLayout {
 
     public void setFile(File file) {
         this.file = file;
+        delete.setVisible(true);
         if (file.isFile()) {
             name.setValue(file.getName());
             download.setEnabled(true);
@@ -42,6 +43,10 @@ public class FileForm extends FormLayout {
             name.setValue(file.getName());
             download.setEnabled(false);
         }
+    }
+    public void disableDelete(){
+        delete.setVisible(false);
+        save.setVisible(false);
     }
     private HorizontalLayout createButtonsLayout() {
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);

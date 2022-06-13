@@ -40,7 +40,7 @@ public class CsvExportService {
                 csvPrinter.printRecord(student.getId(),
                         student.getCivility(),
                         student.getGender(),
-                        student.getNationality(),
+                        student.getNationality().getCountry_name(),
                         student.getFirstName(),
                         student.getLastName(),
                         student.getEmail(),
@@ -71,6 +71,7 @@ public class CsvExportService {
                 "ECOLE",
                 "EXCHANGE_TYPE",
                 "FIN_ETUDE_SECONDAIRE",
+                "DEBUT_ETUDE_SUPERIEUR",
                 "PROFESSION_PARENT1",
                 "PROFESSION_PARENT2").build();
         try (CSVPrinter csvPrinter = new CSVPrinter(writer, format))
@@ -89,6 +90,7 @@ public class CsvExportService {
                         student.getSchool().getName(),
                         student.getExchangeType().getName(),
                         student.getEndYear(),
+                        student.getStartSuperior(),
                         student.getJob1().getJob(),
                         student.getJob2().getJob()
                 );

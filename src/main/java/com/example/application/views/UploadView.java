@@ -12,7 +12,7 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.treegrid.TreeGrid;
 import com.vaadin.flow.component.upload.Upload;
-import com.vaadin.flow.component.upload.receivers.MultiFileMemoryBuffer;
+import com.vaadin.flow.component.upload.receivers.FileBuffer;
 import com.vaadin.flow.router.Route;
 import org.apache.commons.io.FileUtils;
 import org.atmosphere.util.IOUtils;
@@ -49,10 +49,10 @@ public class UploadView extends VerticalLayout {
         if (!service.getAuthenticatedUser().isAdmin())
             path = path.concat(service.getAuthenticatedUser().getUsername()+"/");
 
-        MultiFileMemoryBuffer buffer = new MultiFileMemoryBuffer();
+        FileBuffer buffer = new FileBuffer();
         Upload upload = new Upload(buffer);
 
-        int maxFileSizeInBytes = 5 * 1024 * 1024*8; // 5 Mo
+        int maxFileSizeInBytes = 5 * 1024 * 1024 ; // 5 Mo
         upload.setMaxFileSize(maxFileSizeInBytes);
 
         upload.addFileRejectedListener(event -> {
@@ -68,18 +68,17 @@ public class UploadView extends VerticalLayout {
 
         upload.addSucceededListener(event -> {
             String fileName = event.getFileName();
-            InputStream inputStream = buffer.getInputStream(fileName);
+            InputStream inputStream = buffer.getInputStream();
             try {
                 processFile(inputStream, fileName);
                 refreshAll();
             }catch (Exception e){
                 e.printStackTrace();
-                add(new Paragraph("unable to upload file"));
             }
         });
 
         H4 title = new H4("Upload file");
-        Paragraph hint = new Paragraph("Maximum file size: 5 Mo");
+        Paragraph hint = new Paragraph("Maximum file size: 5 MB");
         return new Div(title,hint,upload);
     }
 
@@ -133,6 +132,8 @@ public class UploadView extends VerticalLayout {
             resource.mkdirs();
             resource = new File("./drive/resources/mail");
             resource.mkdirs();
+            resource = new File("./drive/public");
+            resource.mkdirs();
             resource = new File("./drive/resources/text");
             resource.mkdirs();
             resource = new File("./drive/resources/FR/text");
@@ -141,6 +142,7 @@ public class UploadView extends VerticalLayout {
             resource.mkdirs();
         }
         FilesystemData root = new FilesystemData(rootFile, true);
+        if (!service.getAuthenticatedUser().isAdmin()) root.addRootItems(new File("./drive/public").listFiles());
         FilesystemDataProvider fileSystem = new FilesystemDataProvider(root);
         tree = new TreeGrid<>();
         tree.setSizeFull();
@@ -189,11 +191,12 @@ public class UploadView extends VerticalLayout {
         form.setVisible(false);
     }
     private void fileSelected(File file){
-        if (file.isDirectory()) path = file.getPath();
+        if (file.isDirectory() && (!file.getPath().contains("public") || service.getAuthenticatedUser().isAdmin())) path = file.getPath();
         List<String> forbidden = List.of(new String[]{service.getAuthenticatedUser().getUsername(),
-                "drive", "resources","header","images","mail","text"});
+                "drive", "resources","header","images","mail","text","public"});
         if (forbidden.contains(file.getName())) return;
         form.setVisible(true);
         form.setFile(file);
+        if(!service.getAuthenticatedUser().isAdmin() && file.getAbsolutePath().contains("drive\\public")) form.disableDelete();
     }
 }

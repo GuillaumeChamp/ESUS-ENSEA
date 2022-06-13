@@ -44,6 +44,8 @@ public class Student extends AbstractEntity {
     private String bornPlace;
     @NotEmpty
     private String endYear;
+    @NotEmpty
+    private String startSuperior = "";
     private String progress;
 
     @ManyToOne
@@ -113,6 +115,11 @@ public class Student extends AbstractEntity {
     public Country getCountry() {
         return country;
     }
+
+    public String getStartSuperior() {
+        return startSuperior;
+    }
+
     public Job getJob1() {
         return job1;
     }
@@ -152,6 +159,11 @@ public class Student extends AbstractEntity {
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
+
+    public void setStartSuperior(String startSuperior) {
+        this.startSuperior = startSuperior;
+    }
+
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }

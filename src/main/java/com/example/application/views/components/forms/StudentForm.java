@@ -7,6 +7,7 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.datepicker.DatePicker;
+import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.EmailField;
@@ -23,14 +24,16 @@ public class StudentForm extends AbstractForm<Student> {
     ComboBox<String> gender = new ComboBox<>("Gender/genre");
     EmailField email = new EmailField("Email");
     ComboBox<ExchangeType> exchangeType = new ComboBox<>("ExchangeType/type d'échange");
-    ComboBox<School> school = new ComboBox<>("School/école");
-    ComboBox<Country> country = new ComboBox<>("Country/pays");
+    ComboBox<School> school = new ComboBox<>("sending institut/institut d'origine");
+    ComboBox<Country> country = new ComboBox<>("Born country/pays de naissance");
     ComboBox<String> civility = new ComboBox<>("Civility/civilité");
     ComboBox<Job> job1 = new ComboBox<>("First Parent's Job/profession parent 1");
     ComboBox<Job> job2 = new ComboBox<>("Second Parent's Job/profession parent 2");
     DatePicker born = new DatePicker("When were you born/date de naissance");
     TextField phoneNumber = new TextField("Phone number/numéro de téléphone");
-    TextField endYear = new TextField("Last year of secondary school/année de fin d'étude dans le secondaire");
+    Paragraph paragraph = new Paragraph("Last year at hight school/dernière année de lycée");
+    TextField endYear = new TextField("Last year of secondary /année de fin d'étude dans le secondaire");
+    TextField startSuperior = new TextField("First year of superior/première année dans le supérior");
     TextField bornPlace = new TextField("BornPlace/lieu de naissance");
     Button addSchool;
 
@@ -51,7 +54,9 @@ public class StudentForm extends AbstractForm<Student> {
             country,
             email,
             phoneNumber,
+            paragraph,
             endYear,
+            startSuperior,
             schoolLayout,
             exchangeType,
             job1,

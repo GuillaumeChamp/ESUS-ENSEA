@@ -80,6 +80,7 @@ public class ListView extends VerticalLayout {
         grid.addColumn(Student::getBornPlace).setHeader("Born Place");
         grid.addColumn(Student::getPhoneNumber).setHeader("Phone Number");
         grid.addColumn(Student::getEndYear).setHeader("End of secondary");
+        grid.addColumn(Student::getStartSuperior).setHeader("Start Superior");
         grid.addColumn(student -> student.getJob1().getJob()).setHeader("Job First Parent");
         grid.addColumn(student -> student.getJob2().getJob()).setHeader("Job Second Parent");
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
