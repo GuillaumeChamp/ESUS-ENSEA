@@ -27,9 +27,9 @@ import com.vaadin.flow.router.RouterLink;
 public class MainLayout extends AppLayout{
     private final SecurityService securityService;
     public static boolean EN = true;
-    private static final Div progressBarLabel= new Div();
+    private static Div progressBarLabel;
     private static Student student;
-    private static final ProgressBar progressBar= new ProgressBar();
+    private static ProgressBar progressBar;
 
     public MainLayout(SecurityService securityService) {
         this.securityService = securityService;
@@ -56,6 +56,8 @@ public class MainLayout extends AppLayout{
         );
         if (!securityService.getAuthenticatedUser().isAdmin() && securityService.getAuthenticatedUser().getStudent()!=null) {
             VerticalLayout progressBox = new VerticalLayout();
+            progressBarLabel= new Div();
+            progressBar= new ProgressBar();
             try {
                 PathFinder.load();
             } catch (Exception ignored) {

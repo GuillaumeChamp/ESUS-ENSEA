@@ -160,7 +160,7 @@ public class HeaderReader {
             ((TextView) layout).addCheck(parameter[1]);
             return;
         }
-        if(line.contains("lock") && PathFinder.isNotFurther(((TextView) layout).user.getStudent().getProgress(), ((TextView) layout).currentPageIndex,((TextView) layout).user.getStudent().getExchangeType().getName())){
+        if(line.contains("lock") && !PathFinder.isNotFurther( ((TextView) layout).currentPageIndex,((TextView) layout).user.getStudent().getProgress(),((TextView) layout).user.getStudent().getExchangeType().getName())){
             ((TextView) layout).buttonNext.setEnabled(false);
             Paragraph paragraph;
             Button contact = new Button("Click me to ask unlock");

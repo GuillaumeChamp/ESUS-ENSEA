@@ -52,7 +52,7 @@ public class UploadView extends VerticalLayout {
         MultiFileMemoryBuffer buffer = new MultiFileMemoryBuffer();
         Upload upload = new Upload(buffer);
 
-        int maxFileSizeInBytes = 10 * 1024 * 1024; // 10MB
+        int maxFileSizeInBytes = 5 * 1024 * 1024*8; // 5 Mo
         upload.setMaxFileSize(maxFileSizeInBytes);
 
         upload.addFileRejectedListener(event -> {
@@ -79,7 +79,7 @@ public class UploadView extends VerticalLayout {
         });
 
         H4 title = new H4("Upload file");
-        Paragraph hint = new Paragraph("Maximum file size: 10 MB");
+        Paragraph hint = new Paragraph("Maximum file size: 5 Mo");
         return new Div(title,hint,upload);
     }
 
