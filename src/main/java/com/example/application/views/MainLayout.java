@@ -27,9 +27,9 @@ import com.vaadin.flow.router.RouterLink;
 public class MainLayout extends AppLayout{
     private final SecurityService securityService;
     public static boolean EN = true;
-    private static Div progressBarLabel;
+    private static final Div progressBarLabel= new Div();
     private static Student student;
-    private static ProgressBar progressBar;
+    private static final ProgressBar progressBar= new ProgressBar();
 
     public MainLayout(SecurityService securityService) {
         this.securityService = securityService;
@@ -56,14 +56,12 @@ public class MainLayout extends AppLayout{
         );
         if (!securityService.getAuthenticatedUser().isAdmin() && securityService.getAuthenticatedUser().getStudent()!=null) {
             VerticalLayout progressBox = new VerticalLayout();
-            progressBar = new ProgressBar();
             try {
                 PathFinder.load();
             } catch (Exception ignored) {
             }
             student = securityService.getAuthenticatedUser().getStudent();
             progress(PathFinder.index(student.getExchangeType().getName(), student.getProgress()));
-            progressBarLabel = new Div();
             progressBarLabel.setText("Admission process "+securityService.getAuthenticatedUser().getStudent().getProgress() +"/"+ PathFinder.lastStep);
             progressBox.add(progressBarLabel,progressBar);
             progressBar.addThemeVariants(ProgressBarVariant.LUMO_CONTRAST);
@@ -81,7 +79,7 @@ public class MainLayout extends AppLayout{
     public static void progress(int value){
         int lastIndex = PathFinder.lastIndex(student.getExchangeType().getName());
         progressBar.setValue((float)value/lastIndex);
-        if (value != 0) progressBarLabel.setText("Admission process "+value +"/"+ lastIndex);
+        progressBarLabel.setText("Admission process "+value +"/"+ lastIndex);
     }
 
     private void createDrawer() {
