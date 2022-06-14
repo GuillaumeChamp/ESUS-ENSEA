@@ -32,6 +32,10 @@ public class UploadView extends VerticalLayout {
     private FileForm form;
     private TreeGrid<File> tree;
 
+    /**
+     * This view lead to a drive
+     * @param service security service to identify permissions
+     */
     public UploadView(SecurityService service){
         this.service = service;
         setSizeFull();
@@ -186,10 +190,21 @@ public class UploadView extends VerticalLayout {
         }
         closeEditor();
     }
+
+    /**
+     * Update the view to include change (no better option found than to refresh)
+     */
     private void closeEditor(){
         refreshAll();
         form.setVisible(false);
     }
+
+    /**
+     * Apply the behaviour when a file is selected
+     * If allowed directory, modify the upload destination
+     * If forbidden or public repository apply restricted options
+     * @param file selected file to analyse
+     */
     private void fileSelected(File file){
         if (file.isDirectory() && (!file.getPath().contains("public") || service.getAuthenticatedUser().isAdmin())) path = file.getPath();
         List<String> forbidden = List.of(new String[]{service.getAuthenticatedUser().getUsername(),

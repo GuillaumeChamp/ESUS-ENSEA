@@ -6,13 +6,14 @@ import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import net.bytebuddy.utility.RandomString;
 
 public class AccountForm extends AbstractForm<User>{
     TextField username = new TextField("username");
-    TextField password = new TextField("password");
+    PasswordField password = new PasswordField("password");
     Button generate = new Button(new Icon(VaadinIcon.RANDOM));
 
     public AccountForm(User user){

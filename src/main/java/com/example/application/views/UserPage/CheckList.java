@@ -3,6 +3,7 @@ package com.example.application.views.UserPage;
 import com.example.application.data.entity.Student;
 import com.example.application.data.entity.Triggers;
 import com.example.application.data.entity.User;
+import com.example.application.data.generator.CheckListBuilder;
 import com.example.application.data.service.CrmService;
 import com.example.application.security.SecurityService;
 import com.example.application.views.MainLayout;
@@ -49,30 +50,10 @@ public class CheckList extends VerticalLayout {
      */
     private void buildStudent(){
         Student student = logUser.getStudent();
-        Field[]  fields= student.getTriggers().getClass().getFields();
-        for (Field f :fields){
-            if(f.getType().equals(Boolean.TYPE)) {
-                try {
-                    list.add(build(f,student.getTriggers()));
-                } catch (IllegalAccessException ignored) {}
-            }
-        }
         H1 header = new H1("Student CheckList | " + student.getFirstName() + " " + student.getLastName());
         H3 subHeader = new H3("some information are shared with admin" );
         add(header,subHeader);
-    }
-    private Checkbox build(Field f,Triggers triggers) throws IllegalAccessException {
-        Checkbox checkbox = new Checkbox(f.getName());
-        checkbox.setValue(f.getBoolean(triggers));
-        checkbox.getStyle().set("lumo-disabled-text-color","rgba(149, 196, 31, 0.5)");
-        checkbox.addClickListener(e-> {
-            try {
-                f.setBoolean(triggers,checkbox.getValue());
-            } catch (IllegalAccessException exception) {
-                System.out.println("unable to set action on checkbox");
-            }
-        });
-        return checkbox;
+        CheckListBuilder.fill(this,student.getTriggers());
     }
 
     /**

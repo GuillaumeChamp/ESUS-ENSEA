@@ -1,6 +1,7 @@
 package com.example.application.views;
 
 import com.example.application.data.entity.Student;
+import com.example.application.data.generator.CheckListBuilder;
 import com.example.application.data.service.CrmService;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.grid.Grid;
@@ -56,10 +57,8 @@ public class StepList extends VerticalLayout {
         grid.setColumns("civility", "firstName", "lastName");
         grid.addColumn(student -> student.getNationality().getCountry_name()).setHeader("Nationalité");
         grid.addColumn(student -> student.getExchangeType().getName()).setHeader("Type d'échange");
-        grid.addColumn(student -> student.getTriggers().french_account).setHeader("Compte Français");
-        grid.addColumn(student -> student.getTriggers().security_social).setHeader("Sécurité Social");
+        CheckListBuilder.configureView(grid);
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
-
         grid.asSingleSelect().addValueChangeListener(
                 e -> UI.getCurrent().getPage().executeJs("const textarea = document.createElement(\"textarea\");\n" +
                         "  textarea.value = $0;\n" +

@@ -1,25 +1,33 @@
 package com.example.application.data.entity;
 
-import javax.persistence.Entity;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.DynamicUpdate;
 
+import javax.persistence.CollectionTable;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Entity
 public class Triggers extends AbstractEntity{
 
-    public boolean register;
-    public boolean french_account;
-    public boolean flight_planning;
-    public boolean security_social;
+    @ElementCollection(fetch= FetchType.EAGER)
+    @CollectionTable(name="listOfTrigger")
+    private List<String> checked = new ArrayList<>();
 
-    public void setFlightPlanning(boolean flightPlanning) {
-        this.flight_planning = flightPlanning;
-    }
-    public void setFrenchAccount(boolean frenchAccount) {
-        this.french_account = frenchAccount;
-    }
-    public void setRegister(boolean register) {
-        this.register = register;
+    public void setChecked(ArrayList<String> checked) {
+        this.checked = checked;
     }
 
+    public void add(String s){
+        if (checked.contains(s)) return;
+        checked.add(s);
+    }
+
+    public List<String> getChecked() {
+        return checked;
+    }
 }

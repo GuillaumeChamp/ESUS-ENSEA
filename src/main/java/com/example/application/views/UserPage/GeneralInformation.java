@@ -5,6 +5,7 @@ import com.example.application.views.MainLayout;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Unit;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.menubar.MenuBarVariant;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -12,6 +13,7 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
 import javax.annotation.security.PermitAll;
+import java.awt.*;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,8 +22,8 @@ import java.util.Properties;
 @PermitAll
 @PageTitle("general information")
 @Route(value = "general",layout = MainLayout.class)
-public class GeneralInformation extends HorizontalLayout {
-    VerticalLayout drawer = new VerticalLayout();
+public class GeneralInformation extends VerticalLayout {
+    com.vaadin.flow.component.menubar.MenuBar menuBar = new com.vaadin.flow.component.menubar.MenuBar();
     VerticalLayout content = new VerticalLayout();
 
     /**
@@ -29,17 +31,16 @@ public class GeneralInformation extends HorizontalLayout {
      */
     public GeneralInformation(){
         setSizeFull();
+        menuBar.addThemeVariants(MenuBarVariant.LUMO_PRIMARY);
         try {
             buildDrawer();
         } catch (IOException e) {
             e.printStackTrace();
         }
         HeaderReader.headerReader(content,"contact");
-        setFlexGrow(1,drawer);
         setFlexGrow(5,content);
-        drawer.setWidth(20,Unit.PERCENTAGE);
         content.setSizeFull();
-        add(drawer,content);
+        add(menuBar,content);
         content.setDefaultHorizontalComponentAlignment(FlexComponent.Alignment.CENTER);
         getElement().getStyle().set("background-image","url('images/test.png')");
         getElement().getStyle().set("background-repeat", "no-repeat");
@@ -57,31 +58,13 @@ public class GeneralInformation extends HorizontalLayout {
         }catch (Exception e) {
             is = getClass().getResourceAsStream("/META-INF/resources/general.properties");
         }
-        drawer.setSizeFull();
         properties.load(is);
         for (String prop: properties.stringPropertyNames()) {
-            Button button = new Button(properties.getProperty(prop));
-            button.setSizeFull();
-            button.addClickListener(e-> {
+            menuBar.addItem(properties.getProperty(prop),e-> {
                 content.removeAll();
                 HeaderReader.headerReader(content,prop);
-                manageButton(button);
             });
-            drawer.add(button);
         }
     }
 
-    /**
-     * This methode reactive the previous button and deactivate the new
-     * @param activated button clicked
-     */
-    private void manageButton(Button activated){
-        for (int i = 0;i<drawer.getComponentCount();i++){
-            Component component = drawer.getComponentAt(i);
-            if (component instanceof Button){
-                ((Button) component).setEnabled(true);
-            }
-        }
-        activated.setEnabled(false);
-    }
 }

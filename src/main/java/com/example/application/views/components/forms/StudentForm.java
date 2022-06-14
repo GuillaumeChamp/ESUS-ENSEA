@@ -11,6 +11,7 @@ import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.EmailField;
+import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import java.util.Arrays;
@@ -32,8 +33,8 @@ public class StudentForm extends AbstractForm<Student> {
     DatePicker born = new DatePicker("When were you born/date de naissance");
     TextField phoneNumber = new TextField("Phone number/numéro de téléphone");
     Paragraph paragraph = new Paragraph("Last year at hight school/dernière année de lycée");
-    TextField endYear = new TextField("Last year of secondary /année de fin d'étude dans le secondaire");
-    TextField startSuperior = new TextField("First year of superior/première année dans le supérior");
+    NumberField endYear = new NumberField("Last year of secondary /année de fin d'étude dans le secondaire");
+    NumberField startSuperior = new NumberField("First year of superior/première année dans le supérior");
     TextField bornPlace = new TextField("BornPlace/lieu de naissance");
     Button addSchool;
 
@@ -41,6 +42,8 @@ public class StudentForm extends AbstractForm<Student> {
         this.binder = new BeanValidationBinder<>(Student.class);
         configureField(schools,exchangeTypes,countries,jobs);
         addSchool = new Button("School Not Found/école non trouvée");
+        startSuperior.setMin(2000);
+        endYear.setMin(2000);
         addSchool.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         HorizontalLayout schoolLayout = new HorizontalLayout(school,addSchool);
         schoolLayout.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.CENTER);

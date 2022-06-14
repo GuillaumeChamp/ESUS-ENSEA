@@ -26,6 +26,10 @@ public class SchoolView extends VerticalLayout {
     SchoolForm schoolForm;
     CrmService service;
 
+    /**
+     * This view lead to the school database manager
+     * @param service database manager
+     */
     public SchoolView(CrmService service) {
         this.service = service;
         addClassName("list-view");

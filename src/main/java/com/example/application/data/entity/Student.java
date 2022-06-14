@@ -42,10 +42,10 @@ public class Student extends AbstractEntity {
     private String phoneNumber;
     @NotNull
     private String bornPlace;
-    @NotEmpty
-    private String endYear;
-    @NotEmpty
-    private String startSuperior = "";
+    @NotNull
+    private double endYear;
+    @NotNull
+    private double startSuperior;
     private String progress;
 
     @ManyToOne
@@ -116,7 +116,7 @@ public class Student extends AbstractEntity {
         return country;
     }
 
-    public String getStartSuperior() {
+    public double getStartSuperior() {
         return startSuperior;
     }
 
@@ -139,7 +139,7 @@ public class Student extends AbstractEntity {
     public String getBornPlace() {
         return bornPlace;
     }
-    public String getEndYear() {
+    public double getEndYear() {
         return endYear;
     }
     public String getProgress() {
@@ -160,7 +160,7 @@ public class Student extends AbstractEntity {
         this.firstName = firstName;
     }
 
-    public void setStartSuperior(String startSuperior) {
+    public void setStartSuperior(double startSuperior) {
         this.startSuperior = startSuperior;
     }
 
@@ -204,7 +204,7 @@ public class Student extends AbstractEntity {
     public void setBornPlace(String bornPlace) {
         this.bornPlace = bornPlace;
     }
-    public void setEndYear(String endYear) {
+    public void setEndYear(double endYear) {
         this.endYear = endYear;
     }
     public void setProgress(String progress) {

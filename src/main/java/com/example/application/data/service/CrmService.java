@@ -159,7 +159,7 @@ public class CrmService {
     }
     public void terminateRequest(Request request){
         Student student = request.getStudent();
-        student.setProgress(PathFinder.getNext(student.getProgress(),student.getExchangeType().getName()));
+        student.setProgress(PathFinder.getNext(request.getProgress(),student.getExchangeType().getName()));
         studentRepository.save(student);
         requestRepository.delete(request);
     }
