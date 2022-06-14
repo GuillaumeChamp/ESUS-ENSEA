@@ -197,6 +197,6 @@ public class UploadView extends VerticalLayout {
         if (forbidden.contains(file.getName())) return;
         form.setVisible(true);
         form.setFile(file);
-        if(!service.getAuthenticatedUser().isAdmin() && file.getPath().contains("drive\\public")) form.disableDelete();
+        if(!service.getAuthenticatedUser().isAdmin() && file.getPath().contains("drive"+ File.separator +"public")) form.disableDelete();
     }
 }
