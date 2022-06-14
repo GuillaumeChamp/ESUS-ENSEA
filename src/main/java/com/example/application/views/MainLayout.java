@@ -97,6 +97,7 @@ public class MainLayout extends AppLayout{
         RouterLink schoolList = new RouterLink("Liste des Ecoles", SchoolView.class);
         RouterLink checkList = new RouterLink("CheckList", CheckList.class);
         RouterLink download = new RouterLink("My depository",UploadView.class);
+        RouterLink checkListAdmin = new RouterLink("Check List",StepList.class);
         if (!EN) download.setText("Mon drive");
         RouterLink parkour = new RouterLink("Liste des majeurs/options",ParkourGrid.class);
         RouterLink map = new RouterLink("Map",MapView.class);
@@ -107,6 +108,7 @@ public class MainLayout extends AppLayout{
                 list,
                 schoolList,
                 parkour,
+                checkListAdmin,
                 textView,
                 page2,
                 download,

@@ -10,6 +10,7 @@ public class Triggers extends AbstractEntity{
     public boolean register;
     public boolean french_account;
     public boolean flight_planning;
+    public boolean security_social;
 
     public void setFlightPlanning(boolean flightPlanning) {
         this.flight_planning = flightPlanning;
