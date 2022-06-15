@@ -8,6 +8,7 @@ import com.example.application.views.UserPage.GeneralInformation;
 import com.example.application.views.UserPage.TextView;
 
 import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.Unit;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.button.Button;
@@ -23,7 +24,6 @@ import com.vaadin.flow.component.progressbar.ProgressBarVariant;
 import com.vaadin.flow.router.HighlightConditions;
 import com.vaadin.flow.router.RouterLink;
 
-
 public class MainLayout extends AppLayout{
     private final SecurityService securityService;
     public static boolean EN = true;
@@ -33,13 +33,14 @@ public class MainLayout extends AppLayout{
 
     public MainLayout(SecurityService securityService) {
         this.securityService = securityService;
+        addClassName("main-layout");
         createHeader();
         createDrawer();
     }
 
     private void createHeader() {
-        H1 logo = new H1("Welcome at ENSEA");
-        logo.addClassNames("text-l", "m-m");
+        H1 name = new H1("ESUS");
+        name.addClassNames("text-l", "m-m");
         ComboBox<String> language = new ComboBox<>("language");
         language.setItems("French", "English");
         if (EN) language.setValue("English");
@@ -48,16 +49,18 @@ public class MainLayout extends AppLayout{
             EN = language.getValue().equals("English");
             UI.getCurrent().getPage().reload();
         });
+        language.setSizeUndefined();
         Button logout = new Button("Log out", e -> securityService.logout());
         logout.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         HorizontalLayout header = new HorizontalLayout(
-          new DrawerToggle(), 
-          logo
+          new DrawerToggle(),
+          name
         );
         if (!securityService.getAuthenticatedUser().isAdmin() && securityService.getAuthenticatedUser().getStudent()!=null) {
             VerticalLayout progressBox = new VerticalLayout();
             progressBarLabel= new Div();
             progressBar= new ProgressBar();
+            progressBox.addClassName("progressbar");
             try {
                 PathFinder.load();
             } catch (Exception ignored) {
@@ -69,11 +72,10 @@ public class MainLayout extends AppLayout{
             header.add(progressBox);
             header.expand(progressBox);
         }
-        header.add(logout,language);
+        header.addClassNames("size");
+        header.add(language,logout);
         header.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.CENTER);
-        header.expand(logo);
-        header.setWidth("100%");
-        header.addClassNames("py-0", "px-m");
+        //header.expand(name);
         addToNavbar(header);
     }
 

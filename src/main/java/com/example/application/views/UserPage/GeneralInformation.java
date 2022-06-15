@@ -30,8 +30,10 @@ public class GeneralInformation extends VerticalLayout {
      * Display all constant information that might be useful later
      */
     public GeneralInformation(){
+        addClassName("page");
         setSizeFull();
         menuBar.addThemeVariants(MenuBarVariant.LUMO_PRIMARY);
+        menuBar.setSizeFull();
         try {
             buildDrawer();
         } catch (IOException e) {

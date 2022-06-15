@@ -205,7 +205,7 @@ public class HeaderReader {
         if (!imageFile.exists()) imageResource = new StreamResource(parameter[1],
                 () -> HeaderReader.class.getResourceAsStream("/META-INF/resources/images/"+parameter[1]));
         img = new Image(imageResource, "error in Image name " + parameter[1]);
-
+        img.addClassName("resized-image");
         try {
             img.setWidth(parameter[2]);
             img.setHeight(parameter[3]);

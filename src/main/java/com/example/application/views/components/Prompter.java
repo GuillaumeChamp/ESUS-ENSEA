@@ -10,6 +10,7 @@ import com.example.application.views.components.forms.AbstractForm;
 import com.example.application.views.components.forms.SchoolForm;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -58,6 +59,12 @@ public class Prompter {
         layout.add(prompt);
         prompt.open();
     }
+
+    /**
+     * This prompter is used when an administrator decline an update request
+     * @param layout attached layout
+     * @param request hold student data
+     */
     public static void promptComment(VerticalLayout layout, Request request){
         Dialog prompt = new Dialog();
         Button close = new Button("close", e -> {
@@ -112,6 +119,44 @@ public class Prompter {
                 Prompter.prompt(layout,"Error while trying to recover, please contact the Admin at ri@ensea.fr");
             }
         });
+        layout.add(prompt);
+        prompt.open();
+    }
+
+    public static void askDeleteAll(VerticalLayout layout,CrmService service){
+
+        Checkbox c0 = new Checkbox("delete Account");
+        Checkbox c1 = new Checkbox("delete student");
+        c1.setEnabled(false);
+        c0.addValueChangeListener(e->{
+            c1.setEnabled(e.getValue());
+            if ((!e.getValue())) c1.setValue(false);
+        });
+        Checkbox c2 = new Checkbox("delete student associate data");
+        Checkbox c3 = new Checkbox("delete school");
+        c2.setEnabled(false);
+        c1.addValueChangeListener(e->{
+            c2.setEnabled(e.getValue());
+            c3.setEnabled(e.getValue());
+            if (!e.getValue()) {
+                c2.setValue(false);
+                c3.setValue(false);
+            }
+        });
+        Dialog prompt = new Dialog(new VerticalLayout(c0,c1,c2,c3));
+        prompt.setHeaderTitle("Selection d'option");
+        Button confirm = new Button("Valider",e->{
+            service.dropAll(c0.getValue(),c1.getValue(),c2.getValue(),c3.getValue());
+            prompt.close();
+            layout.remove(prompt);
+        });
+        confirm.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        Button cancel = new Button("Annuler",e->{
+            prompt.close();
+            layout.remove(prompt);
+        });
+        cancel.addThemeVariants(ButtonVariant.LUMO_ERROR);
+        prompt.getFooter().add(new HorizontalLayout(confirm,cancel));
         layout.add(prompt);
         prompt.open();
     }

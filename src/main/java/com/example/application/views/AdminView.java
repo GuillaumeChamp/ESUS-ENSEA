@@ -49,7 +49,7 @@ public class AdminView extends VerticalLayout {
 
     private void addContent(){
         Paragraph paragraph = new Paragraph("dev by guillaume Champtoussel (guillaume.champtoussel@ensea.fr) \nDisponible,\nCode source partiellement censuré");
-        Anchor anchor = new Anchor("https://github.com/GuillaumeChamp/FirstWebApp","GitHub");
+        Anchor anchor = new Anchor("https://github.com/GuillaumeChamp/ESUS-ENSEA","GitHub");
         H2 span = new H2("Create new account");
         H2 title = new H2("Request Manager");
         Button button = new Button("try mail");

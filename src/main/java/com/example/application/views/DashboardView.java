@@ -3,6 +3,7 @@ package com.example.application.views;
 import com.example.application.data.service.CrmService;
 import com.example.application.data.service.CsvExportService;
 import com.example.application.data.service.MailSender;
+import com.example.application.views.components.Prompter;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -14,11 +15,11 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import org.vaadin.olli.FileDownloadWrapper;
 
-import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import java.io.*;
 import java.util.Arrays;
 
-@PermitAll
+@RolesAllowed("ADMIN")
 @Route(value = "dash", layout = MainLayout.class)
 @PageTitle("Dashboard")
 @SuppressWarnings("SpellCheckingInspection")
@@ -112,6 +113,9 @@ public class DashboardView extends VerticalLayout {
             send4.setEnabled(false);
         });
         createSpan(new Paragraph("Envoie à FIP avec les coordonées de vol"),send4,wrapper4);
+        Button delete = new Button("SUPPRIMER",e-> Prompter.askDeleteAll(this,service));
+        delete.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        createSpan(new Paragraph("Supression de la base de données"),delete);
     }
 
     private Component getContactStats() {

@@ -3,7 +3,6 @@ package com.example.application.views;
 import com.example.application.data.entity.Student;
 import com.example.application.data.service.CrmService;
 import com.example.application.views.components.forms.StudentForm;
-import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -97,10 +96,7 @@ public class ListView extends VerticalLayout {
 
         Span stats = new Span(service.countStudents() + " étudiants inscrit");
 
-        Button addContactButton = new Button("Add contact");
-        addContactButton.addClickListener(click -> addContact());
-
-        HorizontalLayout toolbar = new HorizontalLayout(filterText, addContactButton,stats);
+        HorizontalLayout toolbar = new HorizontalLayout(filterText,stats);
         toolbar.addClassName("toolbar");
         return toolbar;
     }
@@ -119,11 +115,6 @@ public class ListView extends VerticalLayout {
         studentForm.setObject(null);
         studentForm.setVisible(false);
         removeClassName("editing");
-    }
-
-    private void addContact() {
-        grid.asSingleSelect().clear();
-        editContact(new Student());
     }
 
     private void updateList() {

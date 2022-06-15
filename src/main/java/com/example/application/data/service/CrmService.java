@@ -75,6 +75,18 @@ public class CrmService {
             }
         }
     }
+    public void dropAll(boolean deleteUser,boolean deleteStudent,boolean deleteStudentData,boolean deleteSchool){
+        if (deleteUser) userRepository.deleteAll();
+        if (deleteStudent) studentRepository.deleteAll();
+        if (deleteStudentData) {
+            flightRepository.deleteAll();
+            requestRepository.deleteAll();
+            triggersRepository.deleteAll();
+        }
+        if(deleteSchool) schoolRepository.deleteAll();
+
+        init();
+    }
 
     //STUDENT
     public List<Student> findAllStudents(String stringFilter) {

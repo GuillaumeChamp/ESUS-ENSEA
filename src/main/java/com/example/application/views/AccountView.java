@@ -22,7 +22,7 @@ public class AccountView extends RegisterView {
 
     public AccountView(CrmService service,SecurityService securityService){
         super(service,securityService);
-        addClassName("Account");
+        addClassName("size");
         removeClassName("Register");
         configureForm();
         removeAll();
