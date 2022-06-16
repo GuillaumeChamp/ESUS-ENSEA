@@ -34,7 +34,7 @@ public class TextView extends VerticalLayout implements BeforeLeaveObserver{
     public final CrmService crmService;
     public final User user;
 
-    public TextView(SecurityService service, CrmService crmService) throws Exception {
+    public TextView(SecurityService service, CrmService crmService) {
         this.service = service;
         this.crmService = crmService;
         this.user = service.getAuthenticatedUser().getUser();
@@ -49,9 +49,9 @@ public class TextView extends VerticalLayout implements BeforeLeaveObserver{
         addClassName("TextView");
         getElement().getStyle().set("background-image","url('images/test.png')");
         getElement().getStyle().set("background-repeat", "no-repeat");
-        setJustifyContentMode(JustifyContentMode.CENTER);
+        //setJustifyContentMode(JustifyContentMode.CENTER);
+        setSizeFull();
         setDefaultHorizontalComponentAlignment(FlexComponent.Alignment.CENTER);
-
     }
 
     public void next(){

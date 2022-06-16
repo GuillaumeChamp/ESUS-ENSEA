@@ -77,7 +77,6 @@ public class MainLayout extends AppLayout{
         header.add(language,logout);
         header.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.CENTER);
         header.getStyle().set("margin-right","10px");
-        //header.expand(name);
         header.setSizeFull();
         addToNavbar(header);
     }

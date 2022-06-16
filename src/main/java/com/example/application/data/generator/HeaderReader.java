@@ -120,7 +120,7 @@ public class HeaderReader {
             TextArea textArea = new TextArea();
             textArea.setValue(TextConverter.ConvertFile("text/"+parameter[1]));
             textArea.setReadOnly(true);
-            textArea.setSizeFull();
+            //textArea.setSizeFull();
             textArea.addClassName("text");
             layout.add(textArea);
             return;
@@ -128,7 +128,7 @@ public class HeaderReader {
 
         if(parameter[0].contains("para")){
             Paragraph textArea = new Paragraph(TextConverter.ConvertFile("text/"+parameter[1]));
-            textArea.setSizeFull();
+            //textArea.setSizeFull();
             textArea.addClassName("paragraph");
             textArea.getElement().getStyle().set("white-space", "pre-wrap");
             textArea.getElement().getStyle().set("text-align","center");

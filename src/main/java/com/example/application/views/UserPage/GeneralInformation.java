@@ -2,18 +2,13 @@ package com.example.application.views.UserPage;
 
 import com.example.application.data.generator.HeaderReader;
 import com.example.application.views.MainLayout;
-import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.Unit;
-import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.menubar.MenuBarVariant;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
 import javax.annotation.security.PermitAll;
-import java.awt.*;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -33,7 +28,6 @@ public class GeneralInformation extends VerticalLayout {
         addClassName("page");
         setSizeFull();
         menuBar.addThemeVariants(MenuBarVariant.LUMO_PRIMARY);
-        menuBar.setSizeFull();
         try {
             buildDrawer();
         } catch (IOException e) {

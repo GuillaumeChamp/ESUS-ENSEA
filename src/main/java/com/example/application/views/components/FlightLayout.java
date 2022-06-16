@@ -6,7 +6,6 @@ import com.example.application.data.service.CrmService;
 import com.example.application.views.MainLayout;
 import com.example.application.views.components.forms.AbstractForm;
 import com.example.application.views.components.forms.FlightForm;
-import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
@@ -25,7 +24,6 @@ public class FlightLayout extends VerticalLayout {
     public FlightLayout(User user, CrmService service){
         this.service = service;
         this.user = user;
-        setSizeFull();
         configureForm();
         add(form);
 
