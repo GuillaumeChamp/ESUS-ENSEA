@@ -9,7 +9,6 @@ import com.example.application.views.components.forms.SchoolForm;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.grid.Grid;
-import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -60,7 +59,7 @@ public class SchoolView extends VerticalLayout {
     }
 
     private void configureForm() {
-        schoolForm = new SchoolForm(service.findAllCountries());
+        schoolForm = new SchoolForm(service.findAllCountries(""));
         schoolForm.setWidth("25em");
         schoolForm.addListener(AbstractForm.SaveEvent.class, this::saveSchool);
         schoolForm.addListener(AbstractForm.DeleteEvent.class, this::deleteSchool);
@@ -102,7 +101,7 @@ public class SchoolView extends VerticalLayout {
             File file = new File("school.csv");
             file.createNewFile();
             FileWriter writer = new FileWriter(file, StandardCharsets.UTF_8);
-            CsvExportService.writeSchool(service.findAllSchools(),writer);
+            CsvExportService.writeSchool(service.findAllSchools(""),writer);
             wrapper = new FileDownloadWrapper("school.csv",file);
             wrapper.wrapComponent(download);
         }catch (Exception e){
@@ -115,6 +114,7 @@ public class SchoolView extends VerticalLayout {
 
         HorizontalLayout toolbar = new HorizontalLayout(filterText, addSchoolButton,stats,wrapper);
         toolbar.expand(stats);
+        toolbar.setWidth("100%");
         toolbar.addClassName("toolbar");
         return toolbar;
     }

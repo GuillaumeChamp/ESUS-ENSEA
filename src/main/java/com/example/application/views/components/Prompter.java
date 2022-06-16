@@ -38,7 +38,7 @@ public class Prompter {
      */
     public static void promptForm(RegisterView layout, CrmService service){
         Dialog prompt = new Dialog();
-        SchoolForm schoolForm = new SchoolForm(service.findAllCountries());
+        SchoolForm schoolForm = new SchoolForm(service.findAllCountries(""));
         schoolForm.setWidth("25em");
         schoolForm.setObject(new School());
 

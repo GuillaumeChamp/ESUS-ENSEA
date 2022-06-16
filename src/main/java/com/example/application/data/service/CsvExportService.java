@@ -204,4 +204,25 @@ public class CsvExportService {
             e.printStackTrace();
         }
     }
+    public static void writeParkour(List<Parkour> parkours, Writer writer) {
+        CSVFormat format = CSVFormat.Builder.create().setDelimiter(';').setHeader("ID",
+                "NOM",
+                "PAYS",
+                "NB_ETUDIANTS",
+                "CONTACT"
+        ).build();
+        try (CSVPrinter csvPrinter = new CSVPrinter(writer, format))
+        {
+            for (Parkour parkour : parkours) {
+                csvPrinter.printRecord(parkour.getId(),
+                        parkour.getSemester(),
+                        parkour.getMajor(),
+                        parkour.getOption_suivi(),
+                        parkour.getStudentCount()
+                );
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

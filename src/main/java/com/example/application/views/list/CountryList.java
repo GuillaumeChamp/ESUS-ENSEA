@@ -72,6 +72,7 @@ public class CountryList extends VerticalLayout {
         Span stats = new Span(service.countStudents() + " étudiants inscrit");
 
         HorizontalLayout toolbar = new HorizontalLayout(filterText,stats,wrapper);
+        toolbar.setWidth("100%");
         toolbar.expand(stats);
         toolbar.addClassName("toolbar");
         return toolbar;

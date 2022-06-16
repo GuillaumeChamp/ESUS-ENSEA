@@ -25,7 +25,7 @@ public class Country{
 
     @NotBlank
     private String country_name;
-    @Formula("(select count(s.country_id) from Student s where s.country_id = id)")
+    @Formula("(select count(s.nationality) from Student s where s.nationality = id)")
     private int studentCount;
 
     private int phone_code;

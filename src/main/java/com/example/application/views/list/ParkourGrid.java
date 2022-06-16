@@ -2,10 +2,12 @@ package com.example.application.views.list;
 
 import com.example.application.data.entity.Parkour;
 import com.example.application.data.service.CrmService;
+import com.example.application.data.service.CsvExportService;
 import com.example.application.views.MainLayout;
 import com.example.application.views.components.forms.AbstractForm;
 import com.example.application.views.components.forms.ParkourForm;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -14,8 +16,12 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import org.vaadin.olli.FileDownloadWrapper;
 
 import javax.annotation.security.RolesAllowed;
+import java.io.File;
+import java.io.FileWriter;
+import java.nio.charset.StandardCharsets;
 
 
 @RolesAllowed("ROLE_ADMIN")
@@ -77,7 +83,7 @@ public class ParkourGrid extends VerticalLayout {
         grid.asSingleSelect().addValueChangeListener(event ->
                 editParkour(event.getValue()));
     }
-
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     private HorizontalLayout getToolbar() {
         filterText.setPlaceholder("Filter by name...");
         filterText.setClearButtonVisible(true);
@@ -85,11 +91,25 @@ public class ParkourGrid extends VerticalLayout {
         filterText.addValueChangeListener(e -> updateList());
 
         Span stats = new Span(service.countStudents() + " étudiants inscrit");
+        Button download = new Button("DOWNLOAD");
+        FileDownloadWrapper wrapper = null;
+        try{
+            download.addThemeVariants(ButtonVariant.LUMO_PRIMARY,ButtonVariant.LUMO_SUCCESS);
+            File file = new File("country.csv");
+            file.createNewFile();
+            FileWriter writer = new FileWriter(file, StandardCharsets.UTF_8);
+            CsvExportService.writeParkour(service.findAllParkour(),writer);
+            wrapper = new FileDownloadWrapper("country.csv",file);
+            wrapper.wrapComponent(download);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
         Button addParkourButton = new Button("Add parkour");
         addParkourButton.addClickListener(click -> addParkour());
-
-        HorizontalLayout toolbar = new HorizontalLayout(filterText, addParkourButton,stats);
+        HorizontalLayout toolbar = new HorizontalLayout(filterText, addParkourButton,stats,wrapper);
+        toolbar.setWidth("100%");
+        toolbar.expand(stats);
         toolbar.addClassName("toolbar");
         return toolbar;
     }
@@ -117,6 +137,6 @@ public class ParkourGrid extends VerticalLayout {
     }
 
     private void updateList() {
-        grid.setItems(service.findAllParkour());
+        grid.setItems(service.findAllParkour(filterText.getValue()));
     }
 }

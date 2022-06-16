@@ -120,9 +120,6 @@ public class CrmService {
     }
 
     //SCHOOL
-    public List<School> findAllSchools() {
-        return schoolRepository.findAll();
-    }
     public List<School> findAllSchools(String stringFilter) {
         if (stringFilter == null || stringFilter.isEmpty())
             return schoolRepository.findAll();
@@ -140,7 +137,6 @@ public class CrmService {
         return exchangeTypeRepository.findAll();
     }
     //COUNTRY
-    public List<Country> findAllCountries(){return countryRepository.findAll();}
     public List<Country> findAllCountries(String stringFilter) {
         if (stringFilter == null || stringFilter.isEmpty())
             return countryRepository.findAll();
@@ -151,6 +147,11 @@ public class CrmService {
     //PARKOUR
     public List<Parkour> findAllParkour(){
         return parkourRepository.findAll();
+    }
+    public List<Parkour> findAllParkour(String stringFilter) {
+        if (stringFilter == null || stringFilter.isEmpty())
+            return parkourRepository.findAll();
+        return parkourRepository.search(stringFilter);
     }
     public Parkour findParkour(String semester,String major, String option){
         if (major==null) major="";

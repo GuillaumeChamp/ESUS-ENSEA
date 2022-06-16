@@ -41,6 +41,7 @@ public class StepList extends VerticalLayout {
 
         HorizontalLayout toolbar = new HorizontalLayout(filterText);
         toolbar.addClassName("toolbar");
+        toolbar.setWidth("100%");
         return toolbar;
     }
     private HorizontalLayout getContent() {

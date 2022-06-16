@@ -33,7 +33,7 @@ public class RegisterView extends VerticalLayout {
     }
 
     protected void configureForm() {
-        form = new StudentForm(service.findAllSchools(), service.findAllExchanges(),service.findAllCountries(),service.findAllJobs());
+        form = new StudentForm(service.findAllSchools(""), service.findAllExchanges(),service.findAllCountries(""),service.findAllJobs());
         form.setWidth("25em");
         form.addListener(StudentForm.SaveEvent.class, this::saveStudent);
         form.addListener(StudentForm.CloseEvent.class, e -> this.closeEditor());
@@ -57,7 +57,7 @@ public class RegisterView extends VerticalLayout {
     }
 
     public void updateSchool(CrmService service){
-        form.updateSchool(service.findAllSchools());
+        form.updateSchool(service.findAllSchools(""));
     }
 
     /**

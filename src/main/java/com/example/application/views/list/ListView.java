@@ -48,7 +48,7 @@ public class ListView extends VerticalLayout {
     }
 
     private void configureForm() {
-        studentForm = new StudentForm(service.findAllSchools(),service.findAllExchanges(),service.findAllCountries(),service.findAllJobs());
+        studentForm = new StudentForm(service.findAllSchools(""),service.findAllExchanges(),service.findAllCountries(""),service.findAllJobs());
         studentForm.setWidth("25em");
         studentForm.addListener(StudentForm.SaveEvent.class, this::saveContact);
         studentForm.addListener(StudentForm.DeleteEvent.class, this::deleteContact);
@@ -98,6 +98,7 @@ public class ListView extends VerticalLayout {
         Span stats = new Span(service.countStudents() + " étudiants inscrit");
 
         HorizontalLayout toolbar = new HorizontalLayout(filterText,stats);
+        toolbar.setWidth("100%");
         toolbar.addClassName("toolbar");
         return toolbar;
     }
