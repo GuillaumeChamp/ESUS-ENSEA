@@ -1,8 +1,6 @@
 package com.example.application.data.service;
 
-import com.example.application.data.entity.Flight;
-import com.example.application.data.entity.Parkour;
-import com.example.application.data.entity.Student;
+import com.example.application.data.entity.*;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import org.springframework.stereotype.Service;
@@ -162,6 +160,44 @@ public class CsvExportService {
                         student.getFlight().getDate(),
                         student.getFlight().getTransportID()
 
+                );
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public static void writeCountry(List<Country> countries, Writer writer) {
+        CSVFormat format = CSVFormat.Builder.create().setDelimiter(';').setHeader("ID",
+                "NOM",
+                "NB_ETUDIANTS"
+        ).build();
+        try (CSVPrinter csvPrinter = new CSVPrinter(writer, format))
+        {
+            for (Country country : countries) {
+                if (country.getStudentCount()!=0) csvPrinter.printRecord(country.getId(),
+                        country.getCountry_name(),
+                        country.getStudentCount()
+                );
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public static void writeSchool(List<School> schools, Writer writer) {
+        CSVFormat format = CSVFormat.Builder.create().setDelimiter(';').setHeader("ID",
+                "NOM",
+                "PAYS",
+                "NB_ETUDIANTS",
+                "CONTACT"
+        ).build();
+        try (CSVPrinter csvPrinter = new CSVPrinter(writer, format))
+        {
+            for (School school : schools) {
+                if (school.getStudentCount()!=0) csvPrinter.printRecord(school.getId(),
+                        school.getName(),
+                        school.getCountry().getCountry_name(),
+                        school.getStudentCount(),
+                        school.getContact()
                 );
             }
         } catch (IOException e) {

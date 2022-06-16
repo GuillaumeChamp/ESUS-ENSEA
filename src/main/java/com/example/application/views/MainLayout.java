@@ -7,6 +7,7 @@ import com.example.application.views.UserPage.CheckList;
 import com.example.application.views.UserPage.GeneralInformation;
 import com.example.application.views.UserPage.TextView;
 
+import com.example.application.views.list.*;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
@@ -74,6 +75,7 @@ public class MainLayout extends AppLayout{
             header.add(progressBox);
             header.expand(progressBox);
         }
+        else header.expand(name);
         header.add(language,logout);
         header.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.CENTER);
         header.getStyle().set("margin-right","10px");
@@ -93,6 +95,7 @@ public class MainLayout extends AppLayout{
         textView.setHighlightCondition(HighlightConditions.sameLocation());
         RouterLink admin = new RouterLink("Admin", AdminView.class);
         RouterLink list = new RouterLink("Liste des étudiants", ListView.class);
+        RouterLink countryList = new RouterLink("List des pays", CountryList.class);
         RouterLink page2 = new RouterLink("General information", GeneralInformation.class);
         if (!EN) page2.setText("Informations génerales");
         RouterLink account = new RouterLink("Account", AccountView.class);
@@ -101,9 +104,9 @@ public class MainLayout extends AppLayout{
         RouterLink schoolList = new RouterLink("Liste des Ecoles", SchoolView.class);
         RouterLink checkList = new RouterLink("CheckList", CheckList.class);
         RouterLink download = new RouterLink("My depository",UploadView.class);
-        RouterLink checkListAdmin = new RouterLink("Check List",StepList.class);
+        RouterLink checkListAdmin = new RouterLink("Check List", StepList.class);
         if (!EN) download.setText("Mon drive");
-        RouterLink parkour = new RouterLink("Liste des majeurs/options",ParkourGrid.class);
+        RouterLink parkour = new RouterLink("Liste des majeurs/options", ParkourGrid.class);
         RouterLink map = new RouterLink("Map",MapView.class);
         if (securityService.getAuthenticatedUser().isAdmin())
         addToDrawer(new VerticalLayout(
@@ -111,6 +114,7 @@ public class MainLayout extends AppLayout{
                 dashboard,
                 list,
                 schoolList,
+                countryList,
                 parkour,
                 checkListAdmin,
                 textView,

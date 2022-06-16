@@ -1,8 +1,9 @@
-package com.example.application.views;
+package com.example.application.views.list;
 
 import com.example.application.data.entity.Student;
 import com.example.application.data.generator.CheckListBuilder;
 import com.example.application.data.service.CrmService;
+import com.example.application.views.MainLayout;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;

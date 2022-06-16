@@ -1,7 +1,8 @@
-package com.example.application.views;
+package com.example.application.views.list;
 
 import com.example.application.data.entity.Student;
 import com.example.application.data.service.CrmService;
+import com.example.application.views.MainLayout;
 import com.example.application.views.components.forms.StudentForm;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Span;
@@ -70,7 +71,7 @@ public class ListView extends VerticalLayout {
         grid.addClassNames("Student-grid");
         grid.setSizeFull();
         grid.setColumns("civility","firstName", "lastName");
-        grid.addColumn(student -> student.getNationality().getCountry_name());
+        grid.addColumn(student -> student.getNationality().getCountry_name()).setHeader("Nationalité");
         grid.addColumn(student -> student.getExchangeType().getName()).setHeader("Type d'échange");
         grid.addColumn(Student::getProgress).setHeader("Etape");
         grid.addColumn(contact -> contact.getSchool().getName()).setHeader("School");

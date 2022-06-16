@@ -123,6 +123,11 @@ public class CrmService {
     public List<School> findAllSchools() {
         return schoolRepository.findAll();
     }
+    public List<School> findAllSchools(String stringFilter) {
+        if (stringFilter == null || stringFilter.isEmpty())
+            return schoolRepository.findAll();
+        return schoolRepository.search(stringFilter);
+    }
     public void saveSchool(School school){
         if(!(school==null)) schoolRepository.save(school);
     }
@@ -136,6 +141,11 @@ public class CrmService {
     }
     //COUNTRY
     public List<Country> findAllCountries(){return countryRepository.findAll();}
+    public List<Country> findAllCountries(String stringFilter) {
+        if (stringFilter == null || stringFilter.isEmpty())
+            return countryRepository.findAll();
+        return countryRepository.search(stringFilter);
+    }
     //JOB
     public List<Job> findAllJobs(){return jobRepository.findAll();}
     //PARKOUR
@@ -208,9 +218,6 @@ public class CrmService {
     }
 
     //TRIGGERS
-    public List<Triggers> findAllTriggers(){
-        return triggersRepository.findAll();
-    }
     public void updateTriggers(Triggers triggers){
         triggersRepository.save(triggers);
     }

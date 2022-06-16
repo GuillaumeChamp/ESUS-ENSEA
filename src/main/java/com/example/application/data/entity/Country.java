@@ -46,14 +46,23 @@ public class Country{
         return studentCount;
     }
 
+    public int getPhone_code() {
+        return phone_code;
+    }
+
+    public String getCountry_code() {
+        return country_code;
+    }
+
     //SETTER
     public void setCountry_name(String country_name) {
         this.country_name = country_name;
     }
-    public void setStudents(List<Student> students) {
+    public void setStudents(@Nullable List<Student> students) {
         this.students = students;
     }
     public void setId(int id) {
         this.id = id;
     }
+
 }

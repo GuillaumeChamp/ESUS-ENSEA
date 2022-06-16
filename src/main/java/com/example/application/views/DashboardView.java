@@ -17,6 +17,7 @@ import org.vaadin.olli.FileDownloadWrapper;
 
 import javax.annotation.security.RolesAllowed;
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 @RolesAllowed("ADMIN")
@@ -45,7 +46,7 @@ public class DashboardView extends VerticalLayout {
         downloadStudent.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         File file = new File("student.csv");
         file.createNewFile();
-        FileWriter writer = new FileWriter(file);
+        FileWriter writer = new FileWriter(file, StandardCharsets.UTF_8);
         CsvExportService.writeRI(service.findAllStudents(""),writer);
         FileDownloadWrapper wrapper = new FileDownloadWrapper("student.csv",file);
         wrapper.wrapComponent(downloadStudent);
@@ -59,7 +60,7 @@ public class DashboardView extends VerticalLayout {
         send.addThemeVariants(ButtonVariant.LUMO_SUCCESS,ButtonVariant.LUMO_PRIMARY);
         File file1 = new File("studentAURION.csv");
         file1.createNewFile();
-        CsvExportService.writeAurion(service.findAllStudents(""),new FileWriter(file1));
+        CsvExportService.writeAurion(service.findAllStudents(""),new FileWriter(file1, StandardCharsets.UTF_8));
         send.addClickListener(e->{
             MailSender.sendService("aurion",file1);
             send.setEnabled(false);
@@ -75,7 +76,7 @@ public class DashboardView extends VerticalLayout {
         FileDownloadWrapper wrapper2 = new FileDownloadWrapper("studentMOODLE.csv",file1);
         wrapper2.wrapComponent(downloadMoodle);
         send2.addThemeVariants(ButtonVariant.LUMO_PRIMARY,ButtonVariant.LUMO_SUCCESS);
-        CsvExportService.writeAurion(service.findAllStudents(""),new FileWriter(file1));
+        CsvExportService.writeAurion(service.findAllStudents(""),new FileWriter(file1, StandardCharsets.UTF_8));
         send2.addClickListener(e->{
             MailSender.sendService("moodle",file1);
             send2.setEnabled(false);
@@ -91,7 +92,7 @@ public class DashboardView extends VerticalLayout {
         FileDownloadWrapper wrapper3 = new FileDownloadWrapper("studentMAJOR.csv",file3);
         wrapper3.wrapComponent(downloadMajor);
         send3.addThemeVariants(ButtonVariant.LUMO_PRIMARY,ButtonVariant.LUMO_SUCCESS);
-        CsvExportService.writeMajor(service.findAllStudents(""),new FileWriter(file3));
+        CsvExportService.writeMajor(service.findAllStudents(""),new FileWriter(file3, StandardCharsets.UTF_8));
         send3.addClickListener(e->{
             MailSender.sendService("etude",file3);
             send3.setEnabled(false);
@@ -107,12 +108,14 @@ public class DashboardView extends VerticalLayout {
         FileDownloadWrapper wrapper4 = new FileDownloadWrapper("studentFIP.csv",file4);
         wrapper4.wrapComponent(downloadFIP);
         send4.addThemeVariants(ButtonVariant.LUMO_PRIMARY,ButtonVariant.LUMO_SUCCESS);
-        CsvExportService.writeFIP(service.findAllStudents(""),new FileWriter(file4));
+        CsvExportService.writeFIP(service.findAllStudents(""),new FileWriter(file4, StandardCharsets.UTF_8));
         send4.addClickListener(e->{
             MailSender.sendService("fip",file4);
             send4.setEnabled(false);
         });
         createSpan(new Paragraph("Envoie à FIP avec les coordonées de vol"),send4,wrapper4);
+
+        //Clear DATABASE
         Button delete = new Button("SUPPRIMER",e-> Prompter.askDeleteAll(this,service));
         delete.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         createSpan(new Paragraph("Supression de la base de données"),delete);

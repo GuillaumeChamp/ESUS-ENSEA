@@ -1,10 +1,9 @@
 package com.example.application.views.components;
 
 import com.example.application.data.PathFinder;
-import com.example.application.data.entity.User;
 import com.example.application.security.SecurityService;
 import com.example.application.security.UserPrincipal;
-import com.example.application.views.ListView;
+import com.example.application.views.list.ListView;
 import com.example.application.views.MainLayout;
 import com.example.application.views.UserPage.GeneralInformation;
 import com.example.application.views.UserPage.RegisterView;

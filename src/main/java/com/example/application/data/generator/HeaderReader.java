@@ -120,7 +120,7 @@ public class HeaderReader {
             TextArea textArea = new TextArea();
             textArea.setValue(TextConverter.ConvertFile("text/"+parameter[1]));
             textArea.setReadOnly(true);
-            //textArea.setSizeFull();
+            textArea.setSizeFull();
             textArea.addClassName("text");
             layout.add(textArea);
             return;
