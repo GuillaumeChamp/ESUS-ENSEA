@@ -8,7 +8,6 @@ import com.example.application.views.UserPage.GeneralInformation;
 import com.example.application.views.UserPage.TextView;
 
 import com.vaadin.flow.component.UI;
-import com.vaadin.flow.component.Unit;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.button.Button;
@@ -34,6 +33,7 @@ public class MainLayout extends AppLayout{
     public MainLayout(SecurityService securityService) {
         this.securityService = securityService;
         addClassName("main-layout");
+        addClassName("size");
         createHeader();
         createDrawer();
     }
@@ -42,20 +42,22 @@ public class MainLayout extends AppLayout{
         H1 name = new H1("ESUS");
         name.addClassNames("text-l", "m-m");
         ComboBox<String> language = new ComboBox<>("language");
-        language.setItems("French", "English");
-        if (EN) language.setValue("English");
-        else language.setValue("French");
+        language.setItems("FR", "EN");
+        if (EN) language.setValue("EN");
+        else language.setValue("FR");
         language.addValueChangeListener(e->{
-            EN = language.getValue().equals("English");
+            EN = language.getValue().equals("EN");
             UI.getCurrent().getPage().reload();
         });
-        language.setSizeUndefined();
+        language.setWidth("20%");
+        name.setWidth("20%");
         Button logout = new Button("Log out", e -> securityService.logout());
         logout.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         HorizontalLayout header = new HorizontalLayout(
           new DrawerToggle(),
           name
         );
+        logout.setWidth("20%");
         if (!securityService.getAuthenticatedUser().isAdmin() && securityService.getAuthenticatedUser().getStudent()!=null) {
             VerticalLayout progressBox = new VerticalLayout();
             progressBarLabel= new Div();
@@ -72,10 +74,11 @@ public class MainLayout extends AppLayout{
             header.add(progressBox);
             header.expand(progressBox);
         }
-        header.addClassNames("size");
         header.add(language,logout);
         header.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.CENTER);
+        header.getStyle().set("margin-right","10px");
         //header.expand(name);
+        header.setSizeFull();
         addToNavbar(header);
     }
 
