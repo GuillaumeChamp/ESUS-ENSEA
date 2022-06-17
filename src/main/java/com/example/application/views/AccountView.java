@@ -27,6 +27,7 @@ public class AccountView extends RegisterView {
         configureForm();
         removeAll();
         add(getContent());
+        setSizeFull();
     }
     private HorizontalLayout getContent() {
         HorizontalLayout content = new HorizontalLayout(accountForm,form);

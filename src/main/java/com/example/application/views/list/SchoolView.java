@@ -114,7 +114,7 @@ public class SchoolView extends VerticalLayout {
 
         HorizontalLayout toolbar = new HorizontalLayout(filterText, addSchoolButton,stats,wrapper);
         toolbar.expand(stats);
-        toolbar.setWidth("100%");
+        toolbar.setWidthFull();
         toolbar.addClassName("toolbar");
         return toolbar;
     }

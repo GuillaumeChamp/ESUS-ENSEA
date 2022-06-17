@@ -98,7 +98,7 @@ public class ListView extends VerticalLayout {
         Span stats = new Span(service.countStudents() + " étudiants inscrit");
 
         HorizontalLayout toolbar = new HorizontalLayout(filterText,stats);
-        toolbar.setWidth("100%");
+        toolbar.setWidthFull();
         toolbar.addClassName("toolbar");
         return toolbar;
     }

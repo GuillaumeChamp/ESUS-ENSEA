@@ -36,11 +36,12 @@ public class ParkourGrid extends VerticalLayout {
     public ParkourGrid(CrmService service) {
         this.service = service;
         addClassName("list-view");
-        setSizeFull();
         configureGrid();
         configureForm();
 
         add(getToolbar(), getContent());
+        setSizeFull();
+
         updateList();
         closeEditor();
     }
@@ -108,7 +109,7 @@ public class ParkourGrid extends VerticalLayout {
         Button addParkourButton = new Button("Add parkour");
         addParkourButton.addClickListener(click -> addParkour());
         HorizontalLayout toolbar = new HorizontalLayout(filterText, addParkourButton,stats,wrapper);
-        toolbar.setWidth("100%");
+        toolbar.setWidthFull();
         toolbar.expand(stats);
         toolbar.addClassName("toolbar");
         return toolbar;

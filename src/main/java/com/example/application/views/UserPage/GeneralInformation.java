@@ -25,18 +25,17 @@ public class GeneralInformation extends VerticalLayout {
      * Display all constant information that might be useful later
      */
     public GeneralInformation(){
-        addClassName("page");
-        setSizeFull();
         menuBar.addThemeVariants(MenuBarVariant.LUMO_PRIMARY);
         try {
             buildDrawer();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        HeaderReader.headerReader(content,"contact");
-        setFlexGrow(5,content);
+        HeaderReader.headerReader(content,"actuality");
         content.setSizeFull();
+        menuBar.setWidthFull();
         add(menuBar,content);
+        setSizeFull();
         content.setDefaultHorizontalComponentAlignment(FlexComponent.Alignment.CENTER);
         getElement().getStyle().set("background-image","url('images/test.png')");
         getElement().getStyle().set("background-repeat", "no-repeat");

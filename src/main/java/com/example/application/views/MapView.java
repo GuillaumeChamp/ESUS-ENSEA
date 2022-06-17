@@ -15,7 +15,7 @@ public class MapView extends VerticalLayout {
 
     public MapView(){
         IFrame frame = new IFrame();
-        frame.setSrc("//umap.openstreetmap.fr/fr/map/temp_771223?");
+        frame.setSrc("//umap.openstreetmap.fr/fr/map/esus_777866?");
         frame.setSizeFull();
         add(frame);
         setSizeFull();
