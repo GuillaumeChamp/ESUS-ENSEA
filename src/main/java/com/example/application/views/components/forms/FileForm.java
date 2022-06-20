@@ -1,5 +1,7 @@
 package com.example.application.views.components.forms;
 
+import com.example.application.data.generator.ZipDir;
+import com.example.application.views.EditorView;
 import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.Key;
@@ -31,21 +33,32 @@ public class FileForm extends FormLayout {
     public void setFile(File file) {
         this.file = file;
         delete.setVisible(true);
+        FileDownloadWrapper wrapper = null;
         if (file.isFile()) {
             name.setValue(file.getName());
             download.setEnabled(true);
-            FileDownloadWrapper buttonWrapper =
+            wrapper =
                     new FileDownloadWrapper(file.getName(),file);
-            //new FileDownloadWrapper(
-                    //new StreamResource(file.getName(), () -> new ByteArrayInputStream(file.getAbsolutePath().getBytes())));
-            buttonWrapper.wrapComponent(download);
-            add(buttonWrapper);
+
+            if (file.getName().contains(".txt")||file.getName().contains(".properties")){
+                add(new Button("edit",e-> add(new EditorView(file))));
+            }
         }
-        if (file.isDirectory()){
+        if (file.isDirectory()) {
             name.setValue(file.getName());
-            download.setEnabled(false);
+             wrapper = new FileDownloadWrapper(new StreamResource(file.getName() + ".zip", () -> {
+                try {
+                    return ZipDir.Compress(file);
+                } catch (Exception ex) {
+                    throw new RuntimeException(ex);
+                }
+            }));
         }
+        assert wrapper != null;
+        wrapper.wrapComponent(download);
+        add(wrapper);
     }
+
     public void disableDelete(){
         delete.setVisible(false);
         save.setVisible(false);
@@ -56,7 +69,6 @@ public class FileForm extends FormLayout {
         close.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
         download.addThemeVariants(ButtonVariant.LUMO_PRIMARY,ButtonVariant.LUMO_SUCCESS);
 
-        save.addClickShortcut(Key.ENTER);
         close.addClickShortcut(Key.ESCAPE);
         save.addClickListener(event -> fireEvent(new SaveEvent(this,file)));
         delete.addClickListener(event -> fireEvent(new DeleteEvent(this, file)));

@@ -90,7 +90,7 @@ public class SchoolView extends VerticalLayout {
     }
     @SuppressWarnings("ResultOfMethodCallIgnored")
     private HorizontalLayout getToolbar() {
-        filterText.setPlaceholder("Filter by name...");
+        filterText.setPlaceholder("Filter by name");
         filterText.setClearButtonVisible(true);
         filterText.setValueChangeMode(ValueChangeMode.LAZY);
         filterText.addValueChangeListener(e -> updateList());
@@ -113,8 +113,8 @@ public class SchoolView extends VerticalLayout {
         addSchoolButton.addClickListener(click -> addSchool());
 
         HorizontalLayout toolbar = new HorizontalLayout(filterText, addSchoolButton,stats,wrapper);
-        toolbar.expand(stats);
         toolbar.setWidthFull();
+        toolbar.expand(stats);
         toolbar.addClassName("toolbar");
         return toolbar;
     }

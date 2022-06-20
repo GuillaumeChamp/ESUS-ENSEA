@@ -9,10 +9,8 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
 import javax.annotation.security.PermitAll;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 
 @PermitAll
 @PageTitle("general information")
@@ -46,20 +44,24 @@ public class GeneralInformation extends VerticalLayout {
      * @throws IOException if the file general.properties have moved
      */
     private void buildDrawer() throws IOException {
-        Properties properties = new Properties();
         InputStream is;
         try{
             is = new  FileInputStream("./drive/resources/general.properties");
         }catch (Exception e) {
             is = getClass().getResourceAsStream("/META-INF/resources/general.properties");
         }
-        properties.load(is);
-        for (String prop: properties.stringPropertyNames()) {
-            menuBar.addItem(properties.getProperty(prop),e-> {
+        assert is != null;
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
+        String line = reader.readLine();
+        while (line!=null){
+            String[] parameters = line.split("=");
+            menuBar.addItem(parameters[1],e-> {
                 content.removeAll();
-                HeaderReader.headerReader(content,prop);
+                HeaderReader.headerReader(content,parameters[0]);
             });
+            line = reader.readLine();
         }
+
     }
 
 }

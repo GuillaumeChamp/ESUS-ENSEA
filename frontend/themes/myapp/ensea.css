@@ -64,4 +64,5 @@ a:where(:any-link) {
 p, blockquote {
     margin-top: 0px;
     margin-bottom: 0px;
+    white-space : pre-wrap;
 }

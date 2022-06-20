@@ -58,7 +58,7 @@ public class MainLayout extends AppLayout{
           new DrawerToggle(),
           name
         );
-        logout.setWidth("20%");
+        //logout.setWidth("20%");
         if (!securityService.getAuthenticatedUser().isAdmin() && securityService.getAuthenticatedUser().getStudent()!=null) {
             VerticalLayout progressBox = new VerticalLayout();
             progressBarLabel= new Div();
@@ -117,7 +117,6 @@ public class MainLayout extends AppLayout{
                 countryList,
                 parkour,
                 checkListAdmin,
-                textView,
                 page2,
                 download,
                 map,

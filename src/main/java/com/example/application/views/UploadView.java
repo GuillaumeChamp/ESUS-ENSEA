@@ -1,8 +1,11 @@
 package com.example.application.views;
 
+import com.example.application.data.generator.ZipDir;
 import com.example.application.security.SecurityService;
 import com.example.application.views.components.forms.FileForm;
 import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.grid.contextmenu.GridContextMenu;
+import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H4;
 import com.vaadin.flow.component.html.Paragraph;
@@ -13,7 +16,9 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.treegrid.TreeGrid;
 import com.vaadin.flow.component.upload.Upload;
 import com.vaadin.flow.component.upload.receivers.FileBuffer;
+import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.server.StreamResource;
 import org.apache.commons.io.FileUtils;
 import org.atmosphere.util.IOUtils;
 import org.vaadin.filesystemdataprovider.FilesystemData;
@@ -25,8 +30,10 @@ import java.nio.file.StandardCopyOption;
 import java.util.List;
 
 @PermitAll
+@PageTitle("drive")
 @Route(value = "upload",layout = MainLayout.class)
 public class UploadView extends VerticalLayout {
+    private final List<String> forbidden;
     private final SecurityService service;
     private String path = "./drive/";
     private FileForm form;
@@ -38,7 +45,10 @@ public class UploadView extends VerticalLayout {
      */
     public UploadView(SecurityService service){
         this.service = service;
-        setSizeFull();
+        forbidden = List.of(new String[]{service.getAuthenticatedUser().getUsername(),
+                "drive", "resources","header","images","mail","text","public"});
+        setHeightFull();
+        setWidth("100%");
 
         add(getUpload());
         add(getContent());
@@ -99,7 +109,8 @@ public class UploadView extends VerticalLayout {
         content.setFlexGrow(1, form);
         content.addClassNames("content");
         form.setVisible(false);
-        content.setSizeFull();
+        content.setWidth("100%");
+        content.setHeightFull();
         return content;
     }
 
@@ -149,12 +160,57 @@ public class UploadView extends VerticalLayout {
         if (!service.getAuthenticatedUser().isAdmin()) root.addRootItems(new File("./drive/public").listFiles());
         FilesystemDataProvider fileSystem = new FilesystemDataProvider(root);
         tree = new TreeGrid<>();
-        tree.setSizeFull();
+        tree.setWidth("100%");
+        tree.setHeightFull();
         tree.setDataProvider(fileSystem);
-        tree.addHierarchyColumn(File::getName).setHeader("Name").setAutoWidth(true).setResizable(true);
+        tree.addHierarchyColumn(File::getName).setHeader("Name").setWidth("25em").setFlexGrow(0);
         tree.addColumn(file -> FileUtils.sizeOf(file)>>10).setHeader("Size (ko)");
         tree.addColumn(file -> file.isDirectory() ? "Directory" : "File").setHeader("Type");
         tree.asSingleSelect().addValueChangeListener(e->fileSelected(e.getValue()));
+        GridContextMenu<File> menu = tree.addContextMenu();
+        menu.addItem("delete",e-> {
+            File file =e.getItem().get();
+            if (forbidden.contains(file.getName())||!service.getAuthenticatedUser().isAdmin() && file.getPath().contains("drive"+ File.separator +"public")) {
+                Notification notification = Notification.show("file protected",2000, Notification.Position.BOTTOM_START);
+                notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
+                return;
+            }
+            try {
+                FileUtils.forceDelete(file);
+                if(!service.getAuthenticatedUser().isAdmin()) refreshAll();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+        menu.addItem("download",e->{
+            File file = e.getItem().get();
+            StreamResource streamResource = generateResource(file);
+            Anchor hiddenDownloadLink = new Anchor(streamResource, "Workaround");
+            hiddenDownloadLink.getElement().setAttribute("style", "display: none");
+            UI.getCurrent().getElement().appendChild(hiddenDownloadLink.getElement());
+            UI.getCurrent().getPage().executeJs("$0.click();", hiddenDownloadLink.getElement());
+        });
+    }
+
+    private InputStream generateFile(File f) throws Exception{
+        if (f.isFile()) return new FileInputStream(f);
+        return ZipDir.Compress(f);
+    }
+    private StreamResource generateResource(File file){
+        if (file.isFile()) return new StreamResource(file.getName(), () -> {
+            try {
+                return generateFile(file);
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+        return new StreamResource(file.getName()+".zip", () -> {
+            try {
+                return generateFile(file);
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
+        });
     }
 
     /**
@@ -162,10 +218,9 @@ public class UploadView extends VerticalLayout {
      */
     private void configureForm(){
         form = new FileForm();
-        form.setWidth("25em");
         form.addListener(FileForm.SaveEvent.class, this::saveFile);
         form.addListener(FileForm.DeleteEvent.class, this::deleteFile);
-        form.addListener(FileForm.CloseEvent.class, e -> closeEditor());
+        form.addListener(FileForm.CloseEvent.class, e -> form.setVisible(false) );
     }
 
     /**
@@ -206,10 +261,12 @@ public class UploadView extends VerticalLayout {
      * @param file selected file to analyse
      */
     private void fileSelected(File file){
-        if (file.isDirectory() && (!file.getPath().contains("public") || service.getAuthenticatedUser().isAdmin())) path = file.getPath();
-        List<String> forbidden = List.of(new String[]{service.getAuthenticatedUser().getUsername(),
-                "drive", "resources","header","images","mail","text","public"});
-        if (forbidden.contains(file.getName())) return;
+        if (file.isDirectory() && (!file.getPath().contains("public") || service.getAuthenticatedUser().isAdmin())) {
+            path = file.getPath();
+            form.setVisible(false);
+        }
+
+        if (forbidden.contains(file.getName())) form.setVisible(false);
         form.setVisible(true);
         form.setFile(file);
         if(!service.getAuthenticatedUser().isAdmin() && file.getPath().contains("drive"+ File.separator +"public")) form.disableDelete();
