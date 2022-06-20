@@ -2,6 +2,7 @@ package com.example.application.views.UserPage;
 
 import com.example.application.views.MainLayout;
 import com.vaadin.flow.component.html.Paragraph;
+import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
@@ -14,6 +15,7 @@ import javax.annotation.security.PermitAll;
 public class ContactView extends VerticalLayout {
     public ContactView(){
         Paragraph paragraph;
+        add(new Span("Context"));
         if (MainLayout.EN) paragraph = new Paragraph("This application was developed by Guillaume Champtoussel in 2022 during an internship\n" +
                 "for ENSEA and funded by CAMPUS FRANCE\n" +
                 "The app is operated by international relation office contact : ri@ensea.fr");

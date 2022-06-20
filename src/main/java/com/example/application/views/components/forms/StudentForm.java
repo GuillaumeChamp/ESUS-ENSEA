@@ -41,10 +41,6 @@ public class StudentForm extends AbstractForm<Student> {
     public StudentForm(List<School> schools, List<ExchangeType> exchangeTypes,List<Country> countries,List<Job> jobs) {
         this.binder = new BeanValidationBinder<>(Student.class);
         configureField(schools,exchangeTypes,countries,jobs);
-        addSchool = new Button("School Not Found/école non trouvée");
-        startSuperior.setMin(2000);
-        endYear.setMin(2000);
-        addSchool.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         HorizontalLayout schoolLayout = new HorizontalLayout(school,addSchool);
         schoolLayout.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.CENTER);
         add(firstName,
@@ -80,6 +76,10 @@ public class StudentForm extends AbstractForm<Student> {
         exchangeType.setItemLabelGenerator(ExchangeType::getName_ext);
         country.setItems(countries);
         country.setItemLabelGenerator(Country::getCountry_name);
+        addSchool = new Button("School Not Found/école non trouvée");
+        startSuperior.setMin(2000);
+        endYear.setMin(2000);
+        addSchool.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         nationality.setItems(countries);
         nationality.setItemLabelGenerator(Country::getCountry_name);
         job1.setItems(jobs);
@@ -87,7 +87,7 @@ public class StudentForm extends AbstractForm<Student> {
         job1.setItemLabelGenerator(Job::getJob);
         job2.setItemLabelGenerator(Job::getJob);
         setResponsiveSteps();
-        phoneNumber.setPattern("^[+][0-9]{2,3}[ ][0-9]{9,10}$");
+        phoneNumber.setPattern("^[+]?[0-9]{2,3}[ ]?[0-9]{9,10}$");
         phoneNumber.setHelperText("Format : +123 456789000");
         born.setI18n(new DatePicker.DatePickerI18n().setDateFormat("dd.MM.yyyy"));
     }

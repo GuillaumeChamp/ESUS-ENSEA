@@ -14,6 +14,8 @@ import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextArea;
@@ -127,6 +129,14 @@ public class HeaderReader {
         }
 
         if(parameter[0].contains("para")){
+            if (!parameter[1].contains(".txt")){
+                Paragraph textArea = new Paragraph(parameter[1]);
+                textArea.addClassName("paragraph");
+                textArea.getElement().getStyle().set("white-space", "pre-wrap");
+                textArea.getElement().getStyle().set("text-align","center");
+                layout.add(textArea);
+                return;
+            }
             Paragraph textArea = new Paragraph(TextConverter.ConvertFile("text/"+parameter[1]));
             textArea.addClassName("paragraph");
             textArea.getElement().getStyle().set("white-space", "pre-wrap");
@@ -146,6 +156,10 @@ public class HeaderReader {
 
         if(parameter[0].contains("ima")){
             addImage(layout,parameter);
+            return;
+        }
+        if(parameter[0].contains("contact")){
+            addContact(layout,parameter[1],parameter[2],parameter[3],parameter[4]);
             return;
         }
 
@@ -233,6 +247,32 @@ public class HeaderReader {
         if (PathFinder.isNotFurther(layout.user.getStudent().getProgress(), layout.currentPageIndex, layout.user.getStudent().getExchangeType().getName())) form.disabled();
         layout.add(form);
     }
+    private static void addContact(VerticalLayout layout,String name,String phoneNumber,String email,String address){
+        HorizontalLayout subLayout = new HorizontalLayout();
+        subLayout.add(new HorizontalLayout(new Icon(VaadinIcon.USER_CARD),new Paragraph(name)));
+        subLayout.setWidthFull();
+        layout.add(subLayout);
+        if (!phoneNumber.isEmpty()) {
+            subLayout = new HorizontalLayout();
+            subLayout.add(new HorizontalLayout(new Icon(VaadinIcon.PHONE),new Anchor("tel:"+phoneNumber,phoneNumber)));
+            subLayout.setWidthFull();
+            layout.add(subLayout);
+        }
+        if (!email.isEmpty()){
+            subLayout = new HorizontalLayout();
+            subLayout.add(new HorizontalLayout(new Icon(VaadinIcon.ENVELOPE),new Anchor("mailto:"+email,email)));
+            subLayout.setWidthFull();
+            layout.add(subLayout);
+        }
+        if(!address.isEmpty()){
+            subLayout = new HorizontalLayout();
+            subLayout.add(new HorizontalLayout(new Icon(VaadinIcon.MAP_MARKER),new Paragraph(address)));
+            subLayout.setWidthFull();
+            layout.add(subLayout);
+        }
+
+    }
+
     private static void addForm(TextView layout, String type){
         layout.trigger++;
         layout.verify();
