@@ -68,6 +68,11 @@ public class PathFinder {
         return progression.get(currentId-1);
     }
 
+    /**
+     * Load the progress base on exchange internal name
+     * @param exchange internal name
+     * @return progression as an array list of step name
+     */
     private static ArrayList<String> getProgression(String exchange){
         if (!PathFinder.init) PathFinder.load();
         ArrayList<String> progression;
@@ -91,8 +96,11 @@ public class PathFinder {
             case "FAME" :
                 progression = fame;
                 break;
+            case "NON-EU Bilateral Exchange" :
+                progression =accordExtraEUStep;
+                break;
             default: //GE3 N+i autre double degree (EU/NON EU) échange bilateral
-                progression = accordExtraEUStep;
+                progression = freeStep;
                 break;
         }
         return progression;
