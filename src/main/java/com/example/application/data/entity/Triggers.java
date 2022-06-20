@@ -1,8 +1,5 @@
 package com.example.application.data.entity;
 
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.DynamicUpdate;
-
 import javax.persistence.CollectionTable;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;

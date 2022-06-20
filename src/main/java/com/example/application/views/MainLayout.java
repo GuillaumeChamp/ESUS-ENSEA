@@ -4,6 +4,7 @@ import com.example.application.data.PathFinder;
 import com.example.application.data.entity.Student;
 import com.example.application.security.SecurityService;
 import com.example.application.views.UserPage.CheckList;
+import com.example.application.views.UserPage.ContactView;
 import com.example.application.views.UserPage.GeneralInformation;
 import com.example.application.views.UserPage.TextView;
 
@@ -37,6 +38,7 @@ public class MainLayout extends AppLayout{
         addClassName("size");
         createHeader();
         createDrawer();
+
     }
 
     private void createHeader() {
@@ -90,6 +92,7 @@ public class MainLayout extends AppLayout{
     }
 
     private void createDrawer() {
+        RouterLink contact = new RouterLink("Contact", ContactView.class);
         RouterLink textView = new RouterLink("Information for incoming student", TextView.class);
         if (!EN) textView.setText("Information d'inscription");
         textView.setHighlightCondition(HighlightConditions.sameLocation());
@@ -120,7 +123,8 @@ public class MainLayout extends AppLayout{
                 page2,
                 download,
                 map,
-                account
+                account,
+                contact
         ));
         else
             addToDrawer(new VerticalLayout(
@@ -129,7 +133,9 @@ public class MainLayout extends AppLayout{
                     checkList,
                     download,
                     map,
-                    account
+                    account,
+                    contact
             ));
     }
+
 }

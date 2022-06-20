@@ -2,4 +2,5 @@ vaadin-text-area {
     background-color : white;
     border-style : none;
     text-align : center;
+    white-space : pre-wrap;
 }

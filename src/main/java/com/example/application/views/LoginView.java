@@ -34,6 +34,7 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
 		H1 greeting = new H1("Welcome at ENSEA");
 		add(logo,greeting, login);
 		login.addForgotPasswordListener(e-> Prompter.promptRecover(this,service));
+
 	}
 
 	@Override
@@ -45,4 +46,5 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
             login.setError(true);
         }
 	}
+
 }

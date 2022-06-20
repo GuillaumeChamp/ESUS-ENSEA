@@ -99,7 +99,7 @@ public class CrmService {
     }
     public long countCas(){
         List<Student> students = studentRepository.findAll();
-        students.removeIf(s -> s.getProgress().contains("0")||s.getProgress().contains("1"));
+        students.removeIf(s -> !PathFinder.isNotFurther("CAS",s.getProgress(),s.getExchangeType().getName()));
         return students.size();
     }
     public long countFlight(){

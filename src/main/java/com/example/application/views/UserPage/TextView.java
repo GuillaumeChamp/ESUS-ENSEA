@@ -49,7 +49,6 @@ public class TextView extends VerticalLayout implements BeforeLeaveObserver{
         addClassName("TextView");
         getElement().getStyle().set("background-image","url('images/test.png')");
         getElement().getStyle().set("background-repeat", "no-repeat");
-        //setJustifyContentMode(JustifyContentMode.CENTER);
         setSizeFull();
         setDefaultHorizontalComponentAlignment(FlexComponent.Alignment.CENTER);
     }
