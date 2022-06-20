@@ -44,10 +44,12 @@ a[highlight] {
 .validate-button {
     color: var(--lumo-success-color);
 }
-.resized-image{
-    height : 200px;
-    width : 200px;
+.square {
+  width: 20em;
+  height: 20em;
 }
+
+
 
 h1, h2, h3, h4, h5, h6 {
     font-weight: 600;
@@ -65,4 +67,10 @@ p, blockquote {
     margin-top: 0px;
     margin-bottom: 0px;
     white-space : pre-wrap;
+}
+span {
+    color : rgb(166,0,76);
+    font-weight: bolder;
+    font-size : large;
+    text-decoration : underline;
 }

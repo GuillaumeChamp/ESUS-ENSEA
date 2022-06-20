@@ -5,9 +5,12 @@ import org.hibernate.annotations.Type;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
 import java.time.LocalDateTime;
 
 @Entity
+@SuppressWarnings("unused")
 public class Flight {
     @Id
     @GeneratedValue
@@ -15,7 +18,9 @@ public class Flight {
     private int id;
 
     private String place;
-    private String phoneNumber;
+    @NotEmpty
+    @Pattern(regexp = "^[+]?\\d{2,3}\\s?\\d{9,10}$",message = "Doesn't match with pattern")
+    private String phoneNumber = "";
     private LocalDateTime date;
     private String meansOfTransport;
     private String airportTerminal;

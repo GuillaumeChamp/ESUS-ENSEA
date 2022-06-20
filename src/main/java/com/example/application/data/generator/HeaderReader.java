@@ -146,10 +146,6 @@ public class HeaderReader {
         }
         if (parameter[0].contains("span")){
             Span span = new Span(parameter[1]);
-            span.getElement().getStyle().set("font-size","large");
-            span.getElement().getStyle().set("text-decoration","underline");
-            span.getElement().getStyle().set("font-weight","bolder");
-            span.getElement().getStyle().set("color","rgb(166,0,76)");
             layout.add(span);
             return;
         }
@@ -218,7 +214,7 @@ public class HeaderReader {
         if (!imageFile.exists()) imageResource = new StreamResource(parameter[1],
                 () -> HeaderReader.class.getResourceAsStream("/META-INF/resources/images/"+parameter[1]));
         img = new Image(imageResource, "error in Image name " + parameter[1]);
-        img.addClassName("resized-image");
+        img.addClassName("square");
         try {
             img.setWidth(parameter[2]);
             img.setHeight(parameter[3]);

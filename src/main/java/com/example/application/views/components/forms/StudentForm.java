@@ -69,7 +69,6 @@ public class StudentForm extends AbstractForm<Student> {
     private void configureField(List<School> schools, List<ExchangeType> exchangeTypes,List<Country> countries,List<Job> jobs){
         civility.setItems(Arrays.asList("Mr","Ms"));
         gender.setItems(Arrays.asList("Male","Female","Non-Binary"));
-        binder.bindInstanceFields(this);
         school.setItems(schools);
         school.setItemLabelGenerator(School::getName);
         exchangeType.setItems(exchangeTypes);
@@ -87,9 +86,13 @@ public class StudentForm extends AbstractForm<Student> {
         job1.setItemLabelGenerator(Job::getJob);
         job2.setItemLabelGenerator(Job::getJob);
         setResponsiveSteps();
-        phoneNumber.setPattern("^[+]?[0-9]{2,3}[ ]?[0-9]{9,10}$");
         phoneNumber.setHelperText("Format : +123 456789000");
+        phoneNumber.setRequired(true);
+        phoneNumber.addValueChangeListener(e->{
+            if(!phoneNumber.isInvalid()) binder.validate();
+        });
         born.setI18n(new DatePicker.DatePickerI18n().setDateFormat("dd.MM.yyyy"));
+        binder.bindInstanceFields(this);
     }
 
 

@@ -11,11 +11,13 @@ import javax.persistence.ManyToOne;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 
 @Entity
+@SuppressWarnings(value = "unused")
 public class Student extends AbstractEntity {
 
     @NotEmpty
@@ -38,8 +40,9 @@ public class Student extends AbstractEntity {
     @JoinColumn(name = "step_list_id")
     @Cascade(CascadeType.ALL)
     private Triggers triggers;
-
-    private String phoneNumber;
+    @NotEmpty
+    @Pattern(regexp = "^[+]?\\d{2,3}\\s?\\d{9,10}$",message = "Doesn't match with pattern")
+    private String phoneNumber = "";
     @NotNull
     private String bornPlace;
     @NotNull
