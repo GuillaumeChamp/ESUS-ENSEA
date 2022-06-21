@@ -61,7 +61,7 @@ public class RegisterView extends VerticalLayout {
     }
 
     /**
-     * Close the student form and refresh the page (should reroute to main page)
+     * Close the student form and refresh the page to reroute to information pages
      */
     protected void closeEditor() {
         form.setObject(null);

@@ -8,6 +8,7 @@ import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.formlayout.FormLayout;
+import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -19,12 +20,14 @@ import java.io.*;
 
 
 public class FileForm extends FormLayout {
+    private File file;
     private final Button save = new Button("Rename");
     private final Button download = new Button("Download");
+    private FileDownloadWrapper wrapper;
     private final Button delete = new Button("Delete");
     private final Button close = new Button("Cancel");
     private final Button edit = new Button("Edit");
-    private File file;
+
     public TextField name = new TextField("File Name");
 
     public FileForm(){
@@ -37,19 +40,22 @@ public class FileForm extends FormLayout {
         this.file = file;
         delete.setVisible(true);
         edit.setVisible(false);
-        FileDownloadWrapper wrapper = null;
         name.setValue(file.getName());
         if (file.isFile()) {
-            download.setEnabled(true);
-            wrapper =
-                    new FileDownloadWrapper(file.getName(),file);
+            wrapper.setResource(new StreamResource(file.getName(),()-> {
+                try {
+                    return new FileInputStream(file);
+                } catch (FileNotFoundException e) {
+                    throw new RuntimeException(e);
+                }
+            }));
 
             if (file.getName().contains(".txt")||file.getName().contains(".properties")||file.getName().contains(".sql")){
                 edit.setVisible(true);
             }
         }
         if (file.isDirectory()) {
-             wrapper = new FileDownloadWrapper(new StreamResource(file.getName() + ".zip", () -> {
+            wrapper.setResource(new StreamResource(file.getName() + ".zip", () -> {
                 try {
                     return ZipDir.Compress(file);
                 } catch (Exception ex) {
@@ -57,9 +63,6 @@ public class FileForm extends FormLayout {
                 }
             }));
         }
-        assert wrapper != null;
-        wrapper.wrapComponent(download);
-        add(wrapper);
     }
 
     public void disableDelete(){
@@ -67,17 +70,25 @@ public class FileForm extends FormLayout {
         save.setVisible(false);
     }
     private VerticalLayout createButtonsLayout() {
-        save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        wrapper = new FileDownloadWrapper(null);
         delete.addThemeVariants(ButtonVariant.LUMO_ERROR);
-        close.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
+        close.addThemeVariants(ButtonVariant.LUMO_PRIMARY,ButtonVariant.LUMO_ERROR);
         download.addThemeVariants(ButtonVariant.LUMO_PRIMARY,ButtonVariant.LUMO_SUCCESS);
+        wrapper.wrapComponent(download);
+        download.setSizeFull();
+        wrapper.setSizeFull();
+        edit.setSizeFull();
+        edit.addThemeVariants(ButtonVariant.LUMO_PRIMARY,ButtonVariant.LUMO_ERROR);
 
         close.addClickShortcut(Key.ESCAPE);
         save.addClickListener(event -> fireEvent(new SaveEvent(this,file)));
         delete.addClickListener(event -> fireEvent(new DeleteEvent(this, file)));
         close.addClickListener(event -> fireEvent(new FileForm.CloseEvent(this)));
+        HorizontalLayout layout = new HorizontalLayout(save, delete, close);
+        //layout.setSizeFull();
+        layout.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.CENTER);
 
-        return new VerticalLayout(new HorizontalLayout(save, delete, close),new HorizontalLayout(download,edit));
+        return new VerticalLayout(wrapper,layout,edit);
     }
     // Events
     public static abstract class FormEvent extends ComponentEvent<FileForm> {

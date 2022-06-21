@@ -60,6 +60,7 @@ public class TextView extends VerticalLayout implements BeforeLeaveObserver{
             MainLayout.progress(PathFinder.index(user.getStudent().getExchangeType().getName(),nextId));}
         currentPageIndex = nextId;
         this.removeAll();
+        trigger=0;
 
         HeaderReader.headerRead(this,"page"+nextId);
     }
@@ -80,6 +81,7 @@ public class TextView extends VerticalLayout implements BeforeLeaveObserver{
         this.add(checkbox);
     }
     public void verify(){
+        if (PathFinder.isNotFurther(currentPageIndex,user.getStudent().getProgress(),user.getStudent().getExchangeType().getName())) return;
         buttonNext.setEnabled(trigger <= 0);
     }
 

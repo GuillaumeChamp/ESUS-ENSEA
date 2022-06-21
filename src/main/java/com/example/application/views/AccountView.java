@@ -6,6 +6,7 @@ import com.example.application.data.service.CrmService;
 import com.example.application.security.SecurityService;
 import com.example.application.views.UserPage.RegisterView;
 import com.example.application.views.components.forms.AccountForm;
+import com.example.application.views.components.forms.StudentForm;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -19,6 +20,7 @@ import javax.annotation.security.PermitAll;
 @Route(value = "Account",layout = MainLayout.class)
 public class AccountView extends RegisterView {
     AccountForm accountForm;
+    int oldExchange;
 
     public AccountView(CrmService service,SecurityService securityService){
         super(service,securityService);
@@ -42,13 +44,21 @@ public class AccountView extends RegisterView {
         Student student = securityService.getAuthenticatedUser().getStudent();
         if (student != null) {
             form.setObject(student);
-            form.setVisible(true);
+            oldExchange = student.getExchangeType().getId();
             addClassName("editing");
         }else form.setEnabled(false);
         accountForm = new AccountForm(securityService.getAuthenticatedUser().getUser());
         accountForm.removeDelete();
         accountForm.clear();
         accountForm.addListener(AccountForm.SaveEvent.class, this::saveAccount);
+    }
+    @Override
+    protected void saveStudent(StudentForm.SaveEvent event) {
+        Student formObject = (Student) event.getObject();
+        User user = securityService.getAuthenticatedUser().getUser();
+        if (user.getStudent().getExchangeType().getId()!=oldExchange) formObject.setProgress("0");
+        service.saveStudent(formObject);
+        closeEditor();
     }
 
     protected void saveAccount(AccountForm.SaveEvent event) {

@@ -38,7 +38,7 @@ public class ExclusiveCheckboxes extends VerticalLayout {
         confirm = new Button("send Answer");
         confirm.addThemeVariants(ButtonVariant.LUMO_SUCCESS,ButtonVariant.LUMO_PRIMARY);
         add(confirm);
-        setDefaultHorizontalComponentAlignment(Alignment.CENTER);
+        //setDefaultHorizontalComponentAlignment(Alignment.CENTER);
         setSizeFull();
 
     }

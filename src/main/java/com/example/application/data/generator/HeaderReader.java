@@ -10,6 +10,8 @@ import com.example.application.views.components.MajorLayout;
 import com.example.application.views.components.forms.AbstractForm;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.datepicker.DatePicker;
+import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Paragraph;
@@ -23,6 +25,7 @@ import com.vaadin.flow.server.StreamResource;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -171,20 +174,14 @@ public class HeaderReader {
         }
         if(line.contains("lock") && !PathFinder.isNotFurther( ((TextView) layout).currentPageIndex,((TextView) layout).user.getStudent().getProgress(),((TextView) layout).user.getStudent().getExchangeType().getName())){
             ((TextView) layout).buttonNext.setEnabled(false);
-            Paragraph paragraph;
-            Button contact = new Button("Click me to ask unlock");
-            if (MainLayout.EN) paragraph = new Paragraph("Congratulation, you reach the end for this part. ");
-            else {
-                paragraph = new Paragraph("Félicitation, vous avez fini cette partie");
-                contact.setText("Demande de débloquage");
-            }
-            layout.add(paragraph);
-            contact.addThemeVariants(ButtonVariant.LUMO_PRIMARY,ButtonVariant.LUMO_SUCCESS);
-            contact.addClickListener(e->{
-                contact.setEnabled(false);
+            Button generateUnlockRequest = new Button("Click me to ask unlock");
+            generateUnlockRequest.setText("Demande de débloquage");
+            generateUnlockRequest.addThemeVariants(ButtonVariant.LUMO_PRIMARY,ButtonVariant.LUMO_SUCCESS);
+            generateUnlockRequest.addClickListener(e->{
+                generateUnlockRequest.setEnabled(false);
                 ((TextView) layout).sendInformation();
             });
-            layout.add(contact);
+            layout.add(generateUnlockRequest);
             return;
         }
         if(parameter[0].contains("ask") && layout instanceof TextView){
@@ -229,6 +226,7 @@ public class HeaderReader {
      */
     private static void questionnaire(TextView layout,String[] parameter){
         String question = parameter[1];
+        layout.add(new Span(question));
         List<String> answers = new ArrayList<>(List.of(parameter));
         answers.remove(1);
         answers.remove(0);
@@ -236,8 +234,34 @@ public class HeaderReader {
         layout.buttonNext.setVisible(false);
         form.overrideConfirm(
                 e->{
-                    MailSender.sendAnswer(layout.user,question, form.getValue());
-                    layout.next();
+                    if(form.getValue().contains("***")) {
+                        Dialog dataPicker = new Dialog();
+                        dataPicker.setHeaderTitle("Please select your desired period");
+                        DatePicker from = new DatePicker("FROM");
+                        DatePicker to = new DatePicker("TO");
+                        from.setValue(LocalDate.now());
+                        to.setValue(LocalDate.now());
+                        dataPicker.add(from,to);
+                        Button confirm = new Button("SEND",ee->{
+                            MailSender.sendAnswer(layout.user,question, form.getValue()+" FROM "+ from.getValue()+ " TO "+ to.getValue());
+                            dataPicker.close();
+                            layout.remove(dataPicker);
+                            layout.next();
+                        });
+                        confirm.addThemeVariants(ButtonVariant.LUMO_PRIMARY,ButtonVariant.LUMO_SUCCESS);
+                        Button cancel = new Button("CANCEL",ee->{
+                            dataPicker.close();
+                            layout.remove(dataPicker);
+                        });
+                        cancel.addThemeVariants(ButtonVariant.LUMO_ERROR,ButtonVariant.LUMO_PRIMARY);
+                        dataPicker.getFooter().add(new HorizontalLayout(confirm,cancel));
+                        layout.add(dataPicker);
+                        dataPicker.open();
+                    }
+                    else {
+                        MailSender.sendAnswer(layout.user,question, form.getValue());
+                        layout.next();
+                    }
                 }
         );
         if (PathFinder.isNotFurther(layout.user.getStudent().getProgress(), layout.currentPageIndex, layout.user.getStudent().getExchangeType().getName())) form.disabled();
