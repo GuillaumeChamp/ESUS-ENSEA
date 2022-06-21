@@ -5,6 +5,7 @@ import com.example.application.data.entity.User;
 import com.example.application.data.service.CrmService;
 import com.example.application.security.SecurityService;
 import com.example.application.views.UserPage.RegisterView;
+import com.example.application.views.components.Prompter;
 import com.example.application.views.components.forms.AccountForm;
 import com.example.application.views.components.forms.StudentForm;
 import com.vaadin.flow.component.button.Button;
@@ -56,7 +57,10 @@ public class AccountView extends RegisterView {
     protected void saveStudent(StudentForm.SaveEvent event) {
         Student formObject = (Student) event.getObject();
         User user = securityService.getAuthenticatedUser().getUser();
-        if (user.getStudent().getExchangeType().getId()!=oldExchange) formObject.setProgress("0");
+        if (user.getStudent().getExchangeType().getId()!=oldExchange) {
+            Prompter.promptExchangeChanged(this,formObject,service);
+            return;
+        }
         service.saveStudent(formObject);
         closeEditor();
     }

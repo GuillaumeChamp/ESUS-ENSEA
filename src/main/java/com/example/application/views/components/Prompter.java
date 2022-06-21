@@ -2,12 +2,14 @@ package com.example.application.views.components;
 
 import com.example.application.data.entity.Request;
 import com.example.application.data.entity.School;
+import com.example.application.data.entity.Student;
 import com.example.application.data.entity.User;
 import com.example.application.data.service.CrmService;
 import com.example.application.data.service.MailSender;
 import com.example.application.views.UserPage.RegisterView;
 import com.example.application.views.components.forms.AbstractForm;
 import com.example.application.views.components.forms.SchoolForm;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.checkbox.Checkbox;
@@ -156,6 +158,28 @@ public class Prompter {
             layout.remove(prompt);
         });
         cancel.addThemeVariants(ButtonVariant.LUMO_ERROR);
+        prompt.getFooter().add(new HorizontalLayout(confirm,cancel));
+        layout.add(prompt);
+        prompt.open();
+    }
+
+    public static void promptExchangeChanged(VerticalLayout layout, Student student,CrmService service){
+        Dialog prompt = new Dialog();
+        Button confirm = new Button("confirm", e -> {
+            prompt.close();
+            layout.remove(prompt);
+            student.setProgress("0");
+            service.saveStudent(student);
+            UI.getCurrent().getPage().reload();
+        });
+        confirm.addThemeVariants(ButtonVariant.LUMO_SUCCESS,ButtonVariant.LUMO_PRIMARY);
+        Button cancel = new Button("cancel", e -> {
+            prompt.close();
+            layout.remove(prompt);
+        });
+        cancel.addThemeVariants(ButtonVariant.LUMO_ERROR,ButtonVariant.LUMO_PRIMARY);
+        prompt.setHeaderTitle("You have changed your exchange type");
+        prompt.add(new Paragraph("Your action will reset all your progress.\nAre you sure ?"));
         prompt.getFooter().add(new HorizontalLayout(confirm,cancel));
         layout.add(prompt);
         prompt.open();

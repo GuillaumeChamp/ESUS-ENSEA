@@ -122,6 +122,8 @@ public class PathFinder {
         return getProgression(exchange).size()-1;
     }
     public static int index(String exchange,String step){
-        return getProgression(exchange).lastIndexOf(step);
+        int ans = getProgression(exchange).lastIndexOf(step);
+        if (ans==-1) ans = 0;
+        return ans;
     }
 }
