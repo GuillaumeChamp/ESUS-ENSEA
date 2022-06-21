@@ -233,37 +233,39 @@ public class HeaderReader {
         ExclusiveCheckboxes form = new ExclusiveCheckboxes(answers);
         layout.buttonNext.setVisible(false);
         form.overrideConfirm(
-                e->{
-                    if(form.getValue().contains("***")) {
-                        Dialog dataPicker = new Dialog();
-                        dataPicker.setHeaderTitle("Please select your desired period");
-                        DatePicker from = new DatePicker("FROM");
-                        DatePicker to = new DatePicker("TO");
-                        from.setValue(LocalDate.now());
-                        to.setValue(LocalDate.now());
-                        dataPicker.add(from,to);
-                        Button confirm = new Button("SEND",ee->{
-                            MailSender.sendAnswer(layout.user,question, form.getValue()+" FROM "+ from.getValue()+ " TO "+ to.getValue());
-                            dataPicker.close();
-                            layout.remove(dataPicker);
-                            layout.next();
-                        });
-                        confirm.addThemeVariants(ButtonVariant.LUMO_PRIMARY,ButtonVariant.LUMO_SUCCESS);
-                        Button cancel = new Button("CANCEL",ee->{
-                            dataPicker.close();
-                            layout.remove(dataPicker);
-                        });
-                        cancel.addThemeVariants(ButtonVariant.LUMO_ERROR,ButtonVariant.LUMO_PRIMARY);
-                        dataPicker.getFooter().add(new HorizontalLayout(confirm,cancel));
-                        layout.add(dataPicker);
-                        dataPicker.open();
-                    }
-                    else {
-                        MailSender.sendAnswer(layout.user,question, form.getValue());
+            e->{
+                if(form.getValue().contains("\n\n")) {
+                    Dialog dataPicker = new Dialog();
+                    dataPicker.setHeaderTitle("Please select your desired period");
+                    DatePicker from = new DatePicker("FROM");
+                    DatePicker to = new DatePicker("TO");
+                    from.setValue(LocalDate.now());
+                    to.setValue(LocalDate.now());
+                    dataPicker.add(from,to);
+                    Button confirm = new Button("SEND",ee->{
+                        MailSender.sendAnswer(layout.user,question, form.getValue()+" FROM "+ from.getValue()+ " TO "+ to.getValue());
+                        dataPicker.close();
+                        layout.remove(dataPicker);
                         layout.next();
-                    }
+                    });
+                    confirm.addThemeVariants(ButtonVariant.LUMO_PRIMARY,ButtonVariant.LUMO_SUCCESS);
+                    Button cancel = new Button("CANCEL",ee->{
+                        dataPicker.close();
+                        layout.remove(dataPicker);
+                    });
+                    cancel.addThemeVariants(ButtonVariant.LUMO_ERROR,ButtonVariant.LUMO_PRIMARY);
+                    dataPicker.getFooter().add(new HorizontalLayout(confirm,cancel));
+                    layout.add(dataPicker);
+                    dataPicker.open();
                 }
+                else {
+                    MailSender.sendAnswer(layout.user,question, form.getValue());
+                    layout.next();
+                }
+            }
         );
+        if (!layout.user.getStudent().getSchool().getCountry().getCountry_name().contains("Argentina")) form.disableAnOption("***");
+        else form.removeMarker("*****");
         if (PathFinder.isNotFurther(layout.user.getStudent().getProgress(), layout.currentPageIndex, layout.user.getStudent().getExchangeType().getName())) form.disabled();
         layout.add(form);
     }

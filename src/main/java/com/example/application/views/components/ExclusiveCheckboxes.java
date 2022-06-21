@@ -1,8 +1,6 @@
 package com.example.application.views.components;
 
-import com.example.application.data.service.MailSender;
 import com.vaadin.flow.component.ClickEvent;
-import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -37,6 +35,7 @@ public class ExclusiveCheckboxes extends VerticalLayout {
         }
         confirm = new Button("send Answer");
         confirm.addThemeVariants(ButtonVariant.LUMO_SUCCESS,ButtonVariant.LUMO_PRIMARY);
+        confirm.setEnabled(false);
         add(confirm);
         //setDefaultHorizontalComponentAlignment(Alignment.CENTER);
         setSizeFull();
@@ -52,5 +51,18 @@ public class ExclusiveCheckboxes extends VerticalLayout {
     public void disabled(){
         for (Checkbox c : checkboxes) c.setEnabled(false);
         confirm.setEnabled(false);
+    }
+    public void disableAnOption(String filter){
+        for(Checkbox c : checkboxes)
+            if (c.getLabel().contains(filter))
+                c.setVisible(false);
+        checkboxes.removeIf(c -> c.getLabel().contains(filter));
+    }
+    public void removeMarker(String marker){
+        for (Checkbox c : checkboxes)
+            if (c.getLabel().contains(marker)){
+                c.setLabel(c.getLabel().replace(marker,"\n\n"));
+            }
+
     }
 }

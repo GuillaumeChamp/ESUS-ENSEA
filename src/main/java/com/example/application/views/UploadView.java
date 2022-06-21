@@ -46,7 +46,7 @@ public class UploadView extends VerticalLayout {
     public UploadView(SecurityService service){
         this.service = service;
         forbidden = List.of(new String[]{service.getAuthenticatedUser().getUsername(),
-                "drive", "resources","header","images","mail","text","public"});
+                "drive", "resources","header","images","mail","text","public","FR"});
         setHeightFull();
         setWidth("100%");
 
@@ -261,13 +261,12 @@ public class UploadView extends VerticalLayout {
      * @param file selected file to analyse
      */
     private void fileSelected(File file){
+        form.setVisible(true);
         if (file.isDirectory() && (!file.getPath().contains("public") || service.getAuthenticatedUser().isAdmin())) {
             path = file.getPath();
-            form.setVisible(false);
+            //form.setVisible(false);
         }
-
         if (forbidden.contains(file.getName())) form.setVisible(false);
-        form.setVisible(true);
         form.setFile(file);
         if(!service.getAuthenticatedUser().isAdmin() && file.getPath().contains("drive"+ File.separator +"public")) form.disableDelete();
     }
