@@ -97,9 +97,11 @@ public class PathFinder {
                 progression = fame;
                 break;
             case "NON-EU Bilateral Exchange" :
+            case "EU Bilateral Exchange" :
+            case "GE3" :
                 progression =accordExtraEUStep;
                 break;
-            default: //GE3 N+i autre double degree (EU/NON EU) échange bilateral
+            default: // N+i autre double degree (EU/NON EU)
                 progression = freeStep;
                 break;
         }
