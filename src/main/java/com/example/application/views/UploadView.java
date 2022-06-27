@@ -139,7 +139,7 @@ public class UploadView extends VerticalLayout {
     @SuppressWarnings("ResultOfMethodCallIgnored")
     private void FTPManager(){
         File rootFile = new File(path);
-        if (! rootFile.exists()){
+        if (! new File(path+File.separator+"public").exists()){
             System.out.println("creating repository "+rootFile.mkdirs());
             File resource = new File("./drive/resources/header");
             resource.mkdirs();
