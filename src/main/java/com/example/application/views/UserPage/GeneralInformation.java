@@ -41,21 +41,29 @@ public class GeneralInformation extends VerticalLayout {
 
     /**
      * Create an homemade drawer
-     * @throws IOException if the file general.properties have moved
+     * @throws IOException if the file general.txt have moved
      */
     private void buildDrawer() throws IOException {
         InputStream is;
+        int index =2;
+        if (MainLayout.EN) index=1;
         try{
-            is = new  FileInputStream("./drive/resources/general.properties");
+            is = new  FileInputStream("./drive/resources/general.txt");
         }catch (Exception e) {
-            is = getClass().getResourceAsStream("/META-INF/resources/general.properties");
+            is = getClass().getResourceAsStream("/META-INF/resources/general.txt");
         }
         assert is != null;
         BufferedReader reader = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
         String line = reader.readLine();
         while (line!=null){
-            String[] parameters = line.split("=");
-            menuBar.addItem(parameters[1],e-> {
+            String[] parameters = line.split(";");
+            String name;
+            try{
+                name = parameters[index];
+            }catch (IndexOutOfBoundsException ee){
+                name = parameters[1];
+            }
+            menuBar.addItem(name,e-> {
                 content.removeAll();
                 HeaderReader.headerReader(content,parameters[0]);
             });
