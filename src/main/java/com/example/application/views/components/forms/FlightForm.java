@@ -1,8 +1,10 @@
 package com.example.application.views.components.forms;
 
 import com.example.application.data.entity.Flight;
+import com.example.application.views.MainLayout;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.datetimepicker.DateTimePicker;
+import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 
@@ -14,7 +16,8 @@ public class FlightForm extends AbstractForm<Flight>{
     DateTimePicker date = new DateTimePicker("Arrival day");
     ComboBox<String> meansOfTransport = new ComboBox<>("Means of transport");
     TextField airportTerminal = new TextField("Airport Terminal (if applicable)");
-    TextField network = new TextField("Are you using any social network ENSEA’s students could use to join you (WhatsApp, Facebook, Telegram…)?");
+    Paragraph networkLabel = new Paragraph("Are you using any social network ENSEA’s students could use to join you (WhatsApp, Facebook, Telegram…)?");
+    TextField network = new TextField();
     TextField departure = new TextField("Departure City");
     TextField transportID = new TextField("Transport ID");
 
@@ -23,9 +26,23 @@ public class FlightForm extends AbstractForm<Flight>{
         binder.bindInstanceFields(this);
         phoneNumber.setPattern("^[+][0-9]{2,3}[ ][0-9]{9,10}$");
         phoneNumber.setHelperText("Format : +123 456789000");
-        meansOfTransport.setItems("Plane", "Train","Cars","Other");
+        meansOfTransport.setItems("Plane/avion", "Train/train","Car/voiture","Other/autre");
+        this.setLabel();
         date.setStep(Duration.ofMinutes(10));
-        add(network,phoneNumber,meansOfTransport,place,airportTerminal,departure,date,transportID,createButtonsLayout());
+        add(networkLabel,network,phoneNumber,meansOfTransport,place,airportTerminal,departure,date,transportID,createButtonsLayout());
         removeDelete();
+    }
+    private void setLabel(){
+        if (MainLayout.EN){
+            return;
+        }
+        place.setLabel("Station/aéoroport d'arrivé");
+        phoneNumber.setLabel("Numéro de téléphone");
+        date.setLabel("date d'arrivée");
+        meansOfTransport.setLabel("Moyen de transport");
+        airportTerminal.setLabel("Terminal (si existe)");
+        networkLabel.setText("Utilisez vous un réseau social sur lequel les étudiants de l'ENSEA pourrait vous contacter (WhatsApp, Facebook, Telegram…) ?");
+        departure.setLabel("Ville de départ");
+        transportID.setLabel("Numéro de train/vol");
     }
 }

@@ -12,7 +12,7 @@ public class PathFinder {
     private static boolean init = false;
     private static ArrayList<String> KA171Step;
     private static ArrayList<String> freeStep;
-    private static ArrayList<String> internERAStep;
+    private static ArrayList<String> internKA107Step;
     private static ArrayList<String> internNonEraStep;
     private static ArrayList<String> fame;
     private static ArrayList<String> accordExtraEUStep;
@@ -40,8 +40,8 @@ public class PathFinder {
         String[] prop = properties.getProperty("fame").split(",");
         fame = new ArrayList<>(Arrays.asList(prop));
 
-        prop = properties.getProperty("internERA").split(",");
-        internERAStep = new ArrayList<>(Arrays.asList(prop));
+        prop = properties.getProperty("internKA107").split(",");
+        internKA107Step = new ArrayList<>(Arrays.asList(prop));
 
         prop = properties.getProperty("internNonEra").split(",");
         internNonEraStep = new ArrayList<>(Arrays.asList(prop));
@@ -78,16 +78,16 @@ public class PathFinder {
         ArrayList<String> progression;
         switch (exchange){
             case "KA171Intern":
-                progression = internERAStep;
+                progression = internKA107Step;
                 break;
             case "KA171Student" :
                 progression = KA171Step;
                 break;
             case "KA131Student":
-            case "KA131Intern":
                 progression = KA131Step;
                 break;
             case "STAGIARE NON ERASMUS":
+            case "KA131Intern":
                 progression = internNonEraStep;
                 break;
             case "Admis sur titre":

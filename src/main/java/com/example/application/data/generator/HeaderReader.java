@@ -175,7 +175,7 @@ public class HeaderReader {
         if(line.contains("lock") && !PathFinder.isNotFurther( ((TextView) layout).currentPageIndex,((TextView) layout).user.getStudent().getProgress(),((TextView) layout).user.getStudent().getExchangeType().getName())){
             ((TextView) layout).buttonNext.setEnabled(false);
             Button generateUnlockRequest = new Button("Click me to ask unlock");
-            generateUnlockRequest.setText("Demande de débloquage");
+            if (!MainLayout.EN) generateUnlockRequest.setText("Demande de débloquage");
             generateUnlockRequest.addThemeVariants(ButtonVariant.LUMO_PRIMARY,ButtonVariant.LUMO_SUCCESS);
             generateUnlockRequest.addClickListener(e->{
                 generateUnlockRequest.setEnabled(false);
@@ -198,7 +198,7 @@ public class HeaderReader {
      * @param layout the view
      * @param parameter parameters
      */
-    private static void addImage(VerticalLayout layout,String[] parameter){
+    public static void addImage(VerticalLayout layout,String[] parameter){
         Image img;
         File imageFile = new File("./drive/resources/images/"+parameter[1]);
         StreamResource imageResource = new StreamResource(imageFile.getName(), () -> {
@@ -226,7 +226,7 @@ public class HeaderReader {
      */
     private static void questionnaire(TextView layout,String[] parameter){
         String question = parameter[1];
-        layout.add(new Span(question));
+        //layout.add(new Span(question));
         List<String> answers = new ArrayList<>(List.of(parameter));
         answers.remove(1);
         answers.remove(0);

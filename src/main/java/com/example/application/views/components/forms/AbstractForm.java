@@ -28,6 +28,7 @@ public abstract class AbstractForm<T> extends FormLayout {
         delete.addClickListener(event -> fireEvent(new DeleteEvent(this, object)));
         close.addClickListener(event -> fireEvent(new CloseEvent(this)));
 
+
         binder.addStatusChangeListener(e -> save.setEnabled(binder.isValid()));
 
         return new HorizontalLayout(save, delete, close);

@@ -23,7 +23,6 @@ public class MailSender {
 
     private static final BasicTextEncryptor encryptor= new BasicTextEncryptor();
     private static String APP_ADRESS;
-    private static final String host = "smtp.office365.com";
     private static Session session;
     private static String aurion;
     private static String etude;
@@ -38,6 +37,7 @@ public class MailSender {
      */
     private static void init(){
         String password;
+        String host;
         try {
             Properties log = new Properties();
             try{
@@ -54,6 +54,7 @@ public class MailSender {
             ri = log.getProperty("ri");
             cas = log.getProperty("cas");
             fip = log.getProperty("fip");
+            host = log.getProperty("host","smtp.office365.com");
             String encodedpass = log.getProperty("encoded");
             password =  encryptor.decrypt(
                     encodedpass

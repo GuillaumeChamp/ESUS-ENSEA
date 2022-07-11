@@ -1,6 +1,7 @@
 package com.example.application.views.components.forms;
 
 import com.example.application.data.entity.User;
+import com.example.application.views.MainLayout;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
@@ -19,6 +20,7 @@ public class AccountForm extends AbstractForm<User>{
     public AccountForm(User user){
         this.binder = new BeanValidationBinder<>(User.class);
         addClassName("AccountForm");
+        translate();
         binder.bindInstanceFields(this);
         username.setEnabled(false);
         generate.addClickListener(e->{
@@ -31,6 +33,11 @@ public class AccountForm extends AbstractForm<User>{
                 horizontalLayout,
                 createButtonsLayout());
         setObject(user);
+    }
+    private void translate(){
+        if(MainLayout.EN) return;
+        username.setLabel("Nom d'utilisateur");
+        password.setLabel("Mot de passe");
     }
     public void clear(){
         this.password.clear();

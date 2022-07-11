@@ -2,6 +2,7 @@ package com.example.application.views.components.forms;
 
 import com.example.application.data.generator.ZipDir;
 import com.example.application.views.EditorView;
+import com.example.application.views.MainLayout;
 import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.Key;
@@ -32,8 +33,19 @@ public class FileForm extends FormLayout {
 
     public FileForm(){
         edit.addClickListener(e->new EditorView(file));
+        translate();
         add(name,
                 createButtonsLayout());
+    }
+    @SuppressWarnings("SpellCheckingInspection")
+    private void translate(){
+        if (MainLayout.EN) return;
+        delete.setText("Supprimer");
+        close.setText("Fermer");
+        edit.setText("Editer");
+        save.setText("Renomer");
+        name.setLabel("Nom du fichier");
+        download.setText("Télécharger");
     }
 
     public void setFile(File file) {

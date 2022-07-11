@@ -53,6 +53,9 @@ public class TextView extends VerticalLayout implements BeforeLeaveObserver{
         setDefaultHorizontalComponentAlignment(FlexComponent.Alignment.CENTER);
     }
 
+    /**
+     * Make user go to the next page and update his progression if needed
+     */
     public void next(){
         Student student = user.getStudent();
         if (PathFinder.isNotFurther(student.getProgress(), nextId,student.getExchangeType().getName())){

@@ -93,6 +93,7 @@ public class UploadView extends VerticalLayout {
 
         H4 title = new H4("Upload file");
         Paragraph hint = new Paragraph("Maximum file size: 5 MB");
+        if (!MainLayout.EN) hint.setText("Taille maximal par fichier 5 Mo");
         return new Div(title,hint,upload);
     }
 
@@ -136,7 +137,7 @@ public class UploadView extends VerticalLayout {
     /**
      * Manage the drive (create directory if they do not exist)
      */
-    @SuppressWarnings("ResultOfMethodCallIgnored")
+    @SuppressWarnings({"ResultOfMethodCallIgnored"})
     private void FTPManager(){
         File rootFile = new File(path);
         if (! new File(path+File.separator+"public").exists()){

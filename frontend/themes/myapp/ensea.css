@@ -45,11 +45,9 @@ a[highlight] {
     color: var(--lumo-success-color);
 }
 .square {
-  width: 20em;
-  height: 20em;
+  width: 10em;
+  height: 10em;
 }
-
-
 
 h1, h2, h3, h4, h5, h6 {
     font-weight: 600;

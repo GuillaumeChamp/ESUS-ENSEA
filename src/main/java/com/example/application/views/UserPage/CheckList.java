@@ -9,7 +9,6 @@ import com.example.application.views.MainLayout;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.html.H1;
-import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
 
@@ -44,8 +43,7 @@ public class CheckList extends VerticalLayout {
     private void buildStudent(){
         Student student = logUser.getStudent();
         H1 header = new H1("Student CheckList | " + student.getFirstName() + " " + student.getLastName());
-        H3 subHeader = new H3("some information are shared with admin" );
-        add(header,subHeader);
+        add(header);
         CheckListBuilder.fill(this,student.getTriggers());
     }
 

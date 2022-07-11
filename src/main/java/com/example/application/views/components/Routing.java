@@ -36,7 +36,8 @@ public class Routing extends VerticalLayout implements BeforeEnterObserver {
             beforeEnterEvent.rerouteTo(RegisterView.class);
             return;
         }
-        if (PathFinder.index(user.getStudent().getExchangeType().getName(),user.getStudent().getProgress()) == PathFinder.lastIndex(user.getStudent().getExchangeType().getName())) {
+        String exchange = user.getStudent().getExchangeType().getName();
+        if (PathFinder.index(exchange,user.getStudent().getProgress()) == PathFinder.lastIndex(exchange)) {
             beforeEnterEvent.rerouteTo(GeneralInformation.class);
             return;
         }
