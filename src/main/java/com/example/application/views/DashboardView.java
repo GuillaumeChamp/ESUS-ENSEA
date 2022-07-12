@@ -27,6 +27,10 @@ import java.util.Arrays;
 public class DashboardView extends VerticalLayout {
     private final CrmService service;
 
+    /**
+     * Create a dashboard page which usefull indicators
+     * @param service database manager
+     */
     public DashboardView(CrmService service) { 
         this.service = service;
         addClassName("dashboard-view");
@@ -39,6 +43,10 @@ public class DashboardView extends VerticalLayout {
         setDefaultHorizontalComponentAlignment(Alignment.CENTER);
     }
 
+    /**
+     * build buttons and associated files
+     * @throws Exception in case of lack of permission in the application directory
+     */
     @SuppressWarnings("ResultOfMethodCallIgnored")
     private void addDownloadButton() throws Exception {
         //AURION + Exchange
@@ -121,6 +129,10 @@ public class DashboardView extends VerticalLayout {
         createSpan(new Paragraph("Supression de la base de données"),delete);
     }
 
+    /**
+     * Use database to build indicators
+     * @return a span holding indicators
+     */
     private Component getContactStats() {
         Span stats = new Span(service.countStudents() + " étudiants inscrits\n"
             + service.countCas() + " comptes CAS créés\n"
@@ -129,6 +141,11 @@ public class DashboardView extends VerticalLayout {
         stats.addClassNames("text-xl", "mt-m");
         return stats;
     }
+
+    /**
+     * sub-function of buildDownload used to manage the visual part
+     * @param components formated span
+     */
     private void createSpan(Component... components){
         HorizontalLayout layout = new HorizontalLayout(components);
         layout.setJustifyContentMode(JustifyContentMode.END);

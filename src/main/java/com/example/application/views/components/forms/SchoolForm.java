@@ -14,6 +14,10 @@ public class SchoolForm extends AbstractForm<School>{
     TextField contact = new TextField("International relation office address/contact");
     ComboBox<Country> country = new ComboBox<>("Country/Pays");
 
+    /**
+     * Create a school form adapted to a list view or a creation prompt
+     * @param countries list of all countries that can be selected
+     */
     public SchoolForm(List<Country> countries){
         this.binder = new BeanValidationBinder<>(School.class);
         country.setItems(countries);

@@ -10,7 +10,7 @@ public class TextConverter {
     /**
      * Convert a file into a string
      * @param fileName name of file
-     * @return one string with all the content of the file
+     * @return one string with all the content of the file formatted
      */
     public static String ConvertFile(String fileName){
         StringBuilder string = new StringBuilder();
@@ -27,6 +27,12 @@ public class TextConverter {
         }
         return string.toString();
     }
+
+    /**
+     * Convert a file into a string using file
+     * @param file file descriptor
+     * @return one string with all the content of the file formatted
+     */
     public static String ConvertFile(File file){
         StringBuilder string = new StringBuilder();
         try {

@@ -68,7 +68,7 @@ public class AdminView extends VerticalLayout {
     }
 
     private void configureForm(){
-        accountForm = new CreateAccountForm(new User());
+        accountForm = new CreateAccountForm();
         accountForm.setWidth("25em");
         accountForm.addListener(AccountForm.SaveEvent.class, this::createAccount);
         accountForm.addListener(AccountForm.CloseEvent.class, e -> this.closeEditor());

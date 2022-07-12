@@ -1,6 +1,6 @@
 package com.example.application.data.generator;
 
-import com.example.application.data.PathFinder;
+import com.example.application.data.service.PathFinder;
 import com.example.application.data.service.MailSender;
 import com.example.application.views.MainLayout;
 import com.example.application.views.components.FlightLayout;
@@ -264,7 +264,7 @@ public class HeaderReader {
                 }
             }
         );
-        if (!layout.user.getStudent().getSchool().getCountry().getCountry_name().contains("Argentina")) form.disableAnOption("***");
+        if (!layout.user.getStudent().getSchool().getCountry().getCountry_name().contains("Argentina")) form.disableAnOption("^[***]");
         else form.removeMarker("*****");
         if (PathFinder.isNotFurther(layout.user.getStudent().getProgress(), layout.currentPageIndex, layout.user.getStudent().getExchangeType().getName())) form.disabled();
         layout.add(form);

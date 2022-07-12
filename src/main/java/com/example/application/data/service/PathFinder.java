@@ -1,4 +1,4 @@
-package com.example.application.data;
+package com.example.application.data.service;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -13,11 +13,15 @@ public class PathFinder {
     private static ArrayList<String> KA171Step;
     private static ArrayList<String> freeStep;
     private static ArrayList<String> internKA107Step;
+    private static ArrayList<String> internKA131Step;
     private static ArrayList<String> internNonEraStep;
     private static ArrayList<String> fame;
     private static ArrayList<String> accordExtraEUStep;
 
-    public static void load(){
+    /**
+     * This methode is called to load all path
+     */
+    private static void load(){
         if (KA131Step != null) return;
         init = true;
         Properties properties = new Properties();
@@ -47,6 +51,9 @@ public class PathFinder {
         internNonEraStep = new ArrayList<>(Arrays.asList(prop));
 
         prop = properties.getProperty("accordExtraEU").split(",");
+        accordExtraEUStep = new ArrayList<>(Arrays.asList(prop));
+
+        prop = properties.getProperty("internKA131").split(",");
         accordExtraEUStep = new ArrayList<>(Arrays.asList(prop));
     }
 
@@ -86,8 +93,10 @@ public class PathFinder {
             case "KA131Student":
                 progression = KA131Step;
                 break;
-            case "STAGIARE NON ERASMUS":
             case "KA131Intern":
+                progression = internKA131Step;
+                break;
+            case "STAGIARE NON ERASMUS":
                 progression = internNonEraStep;
                 break;
             case "Admis sur titre":

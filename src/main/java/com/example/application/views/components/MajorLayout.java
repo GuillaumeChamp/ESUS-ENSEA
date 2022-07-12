@@ -21,6 +21,11 @@ public class MajorLayout extends VerticalLayout {
     public ComboBox<String> semester = new ComboBox<>("Semester/Semestre");
     public Button confirm = new Button("confirm/confirmer");
 
+    /**
+     * Create the major/semester selector in drawer type form
+     * @param service database that recover majors and save answer
+     * @param user logged in user
+     */
     public MajorLayout(CrmService service, User user) {
         this.service = service;
         this.user = user;
@@ -95,6 +100,9 @@ public class MajorLayout extends VerticalLayout {
         });
     }
 
+    /**
+     * Validate the answer
+     */
     public void submit(){
         Parkour parkour = service.findParkour(semester.getValue(),major.getValue(),option_suivi.getValue());
         if (user.getStudent()==null) {

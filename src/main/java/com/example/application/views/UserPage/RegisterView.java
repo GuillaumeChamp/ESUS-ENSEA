@@ -22,16 +22,24 @@ import java.time.Month;
 public class RegisterView extends VerticalLayout {
     protected StudentForm form;
     protected CrmService service;
-    protected SecurityService securityService;
+    protected final User user;
 
+    /**
+     * This view is use as a first page that ask all needed information
+     * @param service database manager
+     * @param securityService use to recover active user
+     */
     public RegisterView(CrmService service,SecurityService securityService){
         this.service = service;
-        this.securityService = securityService;
+        this.user = securityService.getAuthenticatedUser().getUser();
         addClassName("Register");
         setAlignItems(Alignment.CENTER);
         configureForm();
     }
 
+    /**
+     * Setup function
+     */
     protected void configureForm() {
         form = new StudentForm(service.findAllSchools(""), service.findAllExchanges(),service.findAllCountries(""),service.findAllJobs());
         form.setWidth("25em");
@@ -43,19 +51,27 @@ public class RegisterView extends VerticalLayout {
         newStudent.setBorn(LocalDate.of(2000, Month.MAY,10));
         newStudent.setTriggers(new Triggers());
         form.setObject(newStudent);
-        form.addEvent(e->Prompter.promptForm(this,service));
+        form.defineAddSchoolAction(e->Prompter.promptForm(this,service));
         add(form);
         setHorizontalComponentAlignment(Alignment.CENTER,form);
     }
+
+    /**
+     * save student in database
+     * @param event event which triggered the methods
+     */
     protected void saveStudent(StudentForm.SaveEvent event) {
         Student formObject = (Student) event.getObject();
-        User user = securityService.getAuthenticatedUser().getUser();
         service.saveStudent(formObject);
         user.setStudent(formObject);
         service.updateAccount(user);
         closeEditor();
     }
 
+    /**
+     * Update school list
+     * @param service database manager
+     */
     public void updateSchool(CrmService service){
         form.updateSchool(service.findAllSchools(""));
     }

@@ -9,6 +9,9 @@ public class ParkourForm extends AbstractForm<Parkour> {
     TextField option_suivi = new TextField("Options");
     TextField major = new TextField("Major");
 
+    /**
+     * Create the parkour form for a list view
+     */
     public ParkourForm(){
         this.binder = new BeanValidationBinder<>(Parkour.class);
         addClassName("AccountForm");

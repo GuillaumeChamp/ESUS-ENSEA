@@ -125,6 +125,11 @@ public class Prompter {
         prompt.open();
     }
 
+    /**
+     * Prompt a message to ask which data you want to purge
+     * @param layout where to attach (active layout)
+     * @param service database manager used to perform delete action
+     */
     public static void askDeleteAll(VerticalLayout layout,CrmService service){
 
         Checkbox c0 = new Checkbox("delete Account");
@@ -163,6 +168,12 @@ public class Prompter {
         prompt.open();
     }
 
+    /**
+     * Used to prompt a warming when trying to change progression path
+     * @param layout active layout
+     * @param student student who want to change
+     * @param service database manager (which change path and save student)
+     */
     public static void promptExchangeChanged(VerticalLayout layout, Student student,CrmService service){
         Dialog prompt = new Dialog();
         Button confirm = new Button("confirm", e -> {

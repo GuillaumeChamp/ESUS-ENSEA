@@ -1,6 +1,6 @@
 package com.example.application.views.UserPage;
 
-import com.example.application.data.PathFinder;
+import com.example.application.data.service.PathFinder;
 import com.example.application.data.entity.Request;
 import com.example.application.data.entity.Student;
 import com.example.application.data.entity.User;
@@ -45,7 +45,6 @@ public class TextView extends VerticalLayout implements BeforeLeaveObserver{
             currentPageIndex="-1";
             HeaderReader.headerRead(this,"admin");
         }
-        PathFinder.load();
         addClassName("TextView");
         getElement().getStyle().set("background-image","url('images/test.png')");
         getElement().getStyle().set("background-repeat", "no-repeat");

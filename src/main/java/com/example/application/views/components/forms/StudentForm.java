@@ -38,6 +38,13 @@ public class StudentForm extends AbstractForm<Student> {
     TextField bornPlace = new TextField("BornPlace/lieu de naissance");
     Button addSchool;
 
+    /**
+     * Create a student form
+     * @param schools all available school
+     * @param exchangeTypes all available exchange types
+     * @param countries all existing country
+     * @param jobs all jobs that can be chosen as parents jobs
+     */
     public StudentForm(List<School> schools, List<ExchangeType> exchangeTypes,List<Country> countries,List<Job> jobs) {
         this.binder = new BeanValidationBinder<>(Student.class);
         configureField(schools,exchangeTypes,countries,jobs);
@@ -62,10 +69,22 @@ public class StudentForm extends AbstractForm<Student> {
             job2,
             createButtonsLayout());
     }
-    public void updateSchool(List<School> newSchool){
-        school.setItems(newSchool);
+
+    /**
+     * Update school list if modified during editing (case of adding a new school)
+     * @param updatedSchoolList the new school list
+     */
+    public void updateSchool(List<School> updatedSchoolList){
+        school.setItems(updatedSchoolList);
     }
 
+    /**
+     * Fill field possible answer and init other field's elements
+     * @param schools list of all possible school
+     * @param exchangeTypes all exchange type
+     * @param countries all countries
+     * @param jobs all jobs
+     */
     private void configureField(List<School> schools, List<ExchangeType> exchangeTypes,List<Country> countries,List<Job> jobs){
         civility.setItems(Arrays.asList("Mr","Ms"));
         gender.setItems(Arrays.asList("Male","Female","Non-Binary"));
@@ -97,9 +116,9 @@ public class StudentForm extends AbstractForm<Student> {
 
 
     /**
-     * Allow to add a school on the database
+     * use this methode to define what the addSchool button do (maybe fire event is better to stuck to OOP but not really efficiency here)
      */
-    public void addEvent(ComponentEventListener<ClickEvent<Button>> event){
+    public void defineAddSchoolAction(ComponentEventListener<ClickEvent<Button>> event){
         addSchool.addClickListener(event);
     }
 }

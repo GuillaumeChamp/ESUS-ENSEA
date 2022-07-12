@@ -13,9 +13,6 @@ import com.vaadin.flow.router.Route;
 
 import javax.annotation.security.PermitAll;
 
-@PermitAll
-@PageTitle("Flight")
-@Route(value = "flight", layout = MainLayout.class)
 public class FlightLayout extends VerticalLayout {
     public FlightForm form;
     User user;

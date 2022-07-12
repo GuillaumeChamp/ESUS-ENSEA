@@ -21,18 +21,25 @@ public class FlightForm extends AbstractForm<Flight>{
     TextField departure = new TextField("Departure City");
     TextField transportID = new TextField("Transport ID");
 
+    /**
+     * Create a flight form setting up the constraints
+     */
     public FlightForm(){
         this.binder = new BeanValidationBinder<>(Flight.class);
         binder.bindInstanceFields(this);
         phoneNumber.setPattern("^[+][0-9]{2,3}[ ][0-9]{9,10}$");
         phoneNumber.setHelperText("Format : +123 456789000");
         meansOfTransport.setItems("Plane/avion", "Train/train","Car/voiture","Other/autre");
-        this.setLabel();
+        this.translate();
         date.setStep(Duration.ofMinutes(10));
         add(networkLabel,network,phoneNumber,meansOfTransport,place,airportTerminal,departure,date,transportID,createButtonsLayout());
         removeDelete();
     }
-    private void setLabel(){
+
+    /**
+     * This method is used to translate labels in French
+     */
+    private void translate(){
         if (MainLayout.EN){
             return;
         }

@@ -18,6 +18,10 @@ public abstract class AbstractForm<T> extends FormLayout {
     Binder<T> binder;
     protected T object;
 
+    /**
+     * Create all buttons needed to perform actions
+     * @return a horizontal layout composed by all buttons
+     */
     protected HorizontalLayout createButtonsLayout() {
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         delete.addThemeVariants(ButtonVariant.LUMO_ERROR);
@@ -33,15 +37,24 @@ public abstract class AbstractForm<T> extends FormLayout {
 
         return new HorizontalLayout(save, delete, close);
     }
+
+    /**
+     * This method is used to remove the possibility of deleting the entity
+     */
     public void removeDelete(){
-        delete.setEnabled(false);
         delete.setVisible(false);
     }
+
+    /**
+     * Most of the time graphics, remove close option
+     */
     public void removeClose(){
-        close.setEnabled(false);
         close.setVisible(false);
     }
 
+    /**
+     * Generate a saveEvent if there are no error
+     */
     protected void validateAndSave() {
         try {
             binder.writeBean(object);

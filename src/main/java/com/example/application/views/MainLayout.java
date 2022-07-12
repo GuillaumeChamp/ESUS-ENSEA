@@ -1,6 +1,6 @@
 package com.example.application.views;
 
-import com.example.application.data.PathFinder;
+import com.example.application.data.service.PathFinder;
 import com.example.application.data.entity.Student;
 import com.example.application.security.SecurityService;
 import com.example.application.views.UserPage.CheckList;
@@ -32,6 +32,10 @@ public class MainLayout extends AppLayout{
     private static Student student;
     private static ProgressBar progressBar;
 
+    /**
+     * Build the main layout
+     * @param securityService used to recover user and trigger log out action
+     */
     public MainLayout(SecurityService securityService) {
         this.securityService = securityService;
         addClassName("main-layout");
@@ -41,6 +45,9 @@ public class MainLayout extends AppLayout{
 
     }
 
+    /**
+     * Create the header part (language box, progress bar if applicable and name) with format
+     */
     private void createHeader() {
         H1 name = new H1("ESUS");
         name.addClassNames("text-l", "m-m");
@@ -66,10 +73,6 @@ public class MainLayout extends AppLayout{
             progressBarLabel= new Div();
             progressBar= new ProgressBar();
             progressBox.addClassName("progressbar");
-            try {
-                PathFinder.load();
-            } catch (Exception ignored) {
-            }
             student = securityService.getAuthenticatedUser().getStudent();
             progress(PathFinder.index(student.getExchangeType().getName(), student.getProgress()));
             progressBox.add(progressBarLabel,progressBar);
@@ -85,12 +88,19 @@ public class MainLayout extends AppLayout{
         addToNavbar(header);
     }
 
+    /**
+     * Use these methods to make the progress bar move
+     * @param value index of the new step
+     */
     public static void progress(int value){
         int lastIndex = PathFinder.lastIndex(student.getExchangeType().getName());
         progressBar.setValue((float)value/lastIndex);
         progressBarLabel.setText("Admission process "+value +"/"+ lastIndex);
     }
 
+    /**
+     * Create the drawer with all link
+     */
     private void createDrawer() {
         RouterLink contact = new RouterLink("Contact", ContactView.class);
         RouterLink textView = new RouterLink("Information for incoming student", TextView.class);

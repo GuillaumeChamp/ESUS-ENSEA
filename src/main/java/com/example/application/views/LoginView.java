@@ -21,6 +21,10 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
 
 	private final LoginForm login = new LoginForm();
 
+	/**
+	 * First View of the application that ask to log in
+	 * @param service database manager (use to check if login's details are true)
+	 */
 	public LoginView(CrmService service){
 		addClassName("login-view");
 		setSizeFull(); 
@@ -37,6 +41,10 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
 
 	}
 
+	/**
+	 * Used to check if there was an error on the previous attempt
+	 * @param beforeEnterEvent event triggered while connecting to this page
+	 */
 	@Override
 	public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
 		if(beforeEnterEvent.getLocation()

@@ -12,7 +12,9 @@ import javax.annotation.security.PermitAll;
 @Route(value="map", layout = MainLayout.class)
 @PageTitle("Map")
 public class MapView extends VerticalLayout {
-
+    /**
+     * Build a simple layout holding a map in an iframe
+     */
     public MapView(){
         IFrame frame = new IFrame();
         frame.setSrc("//umap.openstreetmap.fr/fr/map/esus_777866?scaleControl=true&miniMap=false&scrollWheelZoom=false&zoomControl=true&allowEdit=false&moreControl=true&searchControl=null&tilelayersControl=null&embedControl=null&datalayersControl=expanded&onLoadPanel=databrowser&captionBar=false");

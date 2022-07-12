@@ -11,12 +11,22 @@ public class RequestForm extends AbstractForm<Request>{
     TextField lastname = new TextField("lastname");
     TextField progress = new TextField("step");
 
+    /**
+     * Create a request form for a list view
+     */
     public RequestForm(){
         this.binder = new BeanValidationBinder<>(Request.class);
         this.save.setText("Validate");
         binder.bindInstanceFields(this);
+        save.setText("Accept");
+        delete.setText("Decline");
         add(firstname,lastname,progress,createButtonsLayout());
     }
+
+    /**
+     * fill field in more efficiency/easily way than a binder in the context
+     * @param student student associated to the request
+     */
     public void setField(Student student){
         firstname.setValue(student.getFirstName());
         lastname.setValue(student.getLastName());

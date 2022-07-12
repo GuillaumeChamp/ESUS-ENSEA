@@ -39,6 +39,11 @@ public class ZipDir extends SimpleFileVisitor<Path> {
         return FileVisitResult.CONTINUE;
     }
 
+    /**
+     * Compress a directory
+     * @param directory directory to compress
+     * @return a byteArrayInput Stream describing the zipped file
+     */
     public static ByteArrayInputStream Compress(File directory) {
         String dirPath = directory.getPath();
         Path sourceDir = Paths.get(dirPath);

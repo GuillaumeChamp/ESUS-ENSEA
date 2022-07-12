@@ -193,10 +193,22 @@ public class UploadView extends VerticalLayout {
         });
     }
 
+    /**
+     * prepare the file to download according to its type
+     * @param f file to prepare
+     * @return InputStream that can be use for a streamResource
+     * @throws Exception File not found exception (manage it upper)
+     */
     private InputStream generateFile(File f) throws Exception{
         if (f.isFile()) return new FileInputStream(f);
         return ZipDir.Compress(f);
     }
+
+    /**
+     * Generate the resource ready to download
+     * @param file file to download
+     * @return file ready to download
+     */
     private StreamResource generateResource(File file){
         if (file.isFile()) return new StreamResource(file.getName(), () -> {
             try {

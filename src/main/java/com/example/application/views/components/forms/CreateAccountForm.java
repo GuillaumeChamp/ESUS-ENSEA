@@ -10,7 +10,10 @@ public class CreateAccountForm extends AbstractForm<User>{
     TextField password = new TextField("password");
     TextField email = new TextField("Student email");
 
-    public CreateAccountForm(User user){
+    /**
+     * This form is used to create new account
+     */
+    public CreateAccountForm(){
         this.binder = new BeanValidationBinder<>(User.class);
         addClassName("AccountForm");
         binder.bindInstanceFields(this);
@@ -18,12 +21,16 @@ public class CreateAccountForm extends AbstractForm<User>{
         add(    email,
                 username,
                 createButtonsLayout());
-        setObject(user);
+        setObject(new User());
     }
 
     public String getUsername() {
         return username.getValue();
     }
+
+    /**
+     * Clear email address filed (used as a minor optimization while creating several account)
+     */
     public void clear(){
         email.clear();
     }
@@ -35,6 +42,10 @@ public class CreateAccountForm extends AbstractForm<User>{
     public String getPassword() {
         return password.getValue();
     }
+
+    /**
+     * Generate a random 12 length password
+     */
     public void generatePassword(){
         String password = new RandomString(12).nextString();
         this.password.setValue(password);

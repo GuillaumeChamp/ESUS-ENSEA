@@ -15,6 +15,10 @@ public class EditorView extends Dialog {
     Button save = new Button("SAVE");
     Button close = new Button("CLOSE",e->this.close());
 
+    /**
+     * A simple text editor layout for UTF8 files
+     * @param file file to edit
+     */
     public EditorView(File file) {
         setHeaderTitle("Editing " + file.getName());
         editor.setValue(TextConverter.ConvertFile(file));

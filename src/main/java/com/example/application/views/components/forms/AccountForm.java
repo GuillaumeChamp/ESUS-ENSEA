@@ -17,6 +17,10 @@ public class AccountForm extends AbstractForm<User>{
     PasswordField password = new PasswordField("password");
     Button generate = new Button(new Icon(VaadinIcon.RANDOM));
 
+    /**
+     * This form is used to allow change password
+     * @param user active user
+     */
     public AccountForm(User user){
         this.binder = new BeanValidationBinder<>(User.class);
         addClassName("AccountForm");
@@ -34,11 +38,19 @@ public class AccountForm extends AbstractForm<User>{
                 createButtonsLayout());
         setObject(user);
     }
+
+    /**
+     * Translate the fields label
+     */
     private void translate(){
         if(MainLayout.EN) return;
         username.setLabel("Nom d'utilisateur");
         password.setLabel("Mot de passe");
     }
+
+    /**
+     * clear password field used to mask password
+     */
     public void clear(){
         this.password.clear();
     }

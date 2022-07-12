@@ -14,10 +14,13 @@ import javax.annotation.security.PermitAll;
 @PageTitle("Contact")
 @Route(value = "/contact",layout = MainLayout.class)
 public class ContactView extends VerticalLayout {
+    /**
+     * This view is used to prompt author and administrator
+     */
     @SuppressWarnings("SpellCheckingInspection")
     public ContactView(){
         Paragraph paragraph;
-        Span context = new Span("Context");
+        Span context = new Span("Context (V1.0)");
         context.addClassName("span");
         add(context);
         if (MainLayout.EN) paragraph = new Paragraph("This application was developed by Guillaume Champtoussel in 2022 during an internship\n" +

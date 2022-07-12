@@ -37,7 +37,10 @@ public class MailSender {
      */
     private static void init(){
         String password;
+        String tls;
         String host;
+        String port;
+        String authState;
         try {
             Properties log = new Properties();
             try{
@@ -55,6 +58,9 @@ public class MailSender {
             cas = log.getProperty("cas");
             fip = log.getProperty("fip");
             host = log.getProperty("host","smtp.office365.com");
+            port = log.getProperty("port","587");
+            authState = log.getProperty("auth","true");
+            tls = log.getProperty("starttls","true");
             String encodedpass = log.getProperty("encoded");
             password =  encryptor.decrypt(
                     encodedpass
@@ -65,9 +71,9 @@ public class MailSender {
         }
         Properties properties = System.getProperties();
         properties.put("mail.smtp.host", host);
-        properties.put("mail.smtp.port","587");
-        properties.put("mail.smtp.auth","true");
-        properties.put("mail.smtp.starttls.enable","true");
+        properties.put("mail.smtp.port",port);
+        properties.put("mail.smtp.auth",authState);
+        properties.put("mail.smtp.starttls.enable",tls);
 
         Authenticator auth = new Authenticator() {
             @Override

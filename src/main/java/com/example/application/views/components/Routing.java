@@ -1,6 +1,6 @@
 package com.example.application.views.components;
 
-import com.example.application.data.PathFinder;
+import com.example.application.data.service.PathFinder;
 import com.example.application.security.SecurityService;
 import com.example.application.security.UserPrincipal;
 import com.example.application.views.list.ListView;
@@ -21,6 +21,10 @@ import javax.annotation.security.PermitAll;
 public class Routing extends VerticalLayout implements BeforeEnterObserver {
     private final SecurityService service;
 
+    /**
+     * This page is used to route the user where he has to start
+     * @param service security service which hold the active user (bean)
+     */
     public Routing(SecurityService service){
         this.service = service;
     }

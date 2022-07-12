@@ -48,6 +48,10 @@ public class FileForm extends FormLayout {
         download.setText("Télécharger");
     }
 
+    /**
+     * Load a file in the form managing file typed options and preparing the download
+     * @param file the drive's file
+     */
     public void setFile(File file) {
         this.file = file;
         delete.setVisible(true);
@@ -77,10 +81,18 @@ public class FileForm extends FormLayout {
         }
     }
 
+    /**
+     * Remove the delete button (use to manage permission)
+     */
     public void disableDelete(){
         delete.setVisible(false);
         save.setVisible(false);
     }
+
+    /**
+     * Create the layout of buttons formatted according the desired design
+     * @return the formatted layout holding buttons
+     */
     private VerticalLayout createButtonsLayout() {
         wrapper = new FileDownloadWrapper(null);
         delete.addThemeVariants(ButtonVariant.LUMO_ERROR);
@@ -97,7 +109,6 @@ public class FileForm extends FormLayout {
         delete.addClickListener(event -> fireEvent(new DeleteEvent(this, file)));
         close.addClickListener(event -> fireEvent(new FileForm.CloseEvent(this)));
         HorizontalLayout layout = new HorizontalLayout(save, delete, close);
-        //layout.setSizeFull();
         layout.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.CENTER);
 
         return new VerticalLayout(wrapper,layout,edit);

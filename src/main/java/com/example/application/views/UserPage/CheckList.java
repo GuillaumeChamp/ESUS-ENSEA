@@ -38,7 +38,7 @@ public class CheckList extends VerticalLayout {
     }
 
     /**
-     * Construct the elements
+     * Construct the elements using checklistBuilder
      */
     private void buildStudent(){
         Student student = logUser.getStudent();
@@ -48,13 +48,16 @@ public class CheckList extends VerticalLayout {
     }
 
     /**
-     * Construct the admin check list
+     * Construct the admin check list to avoid error (admin shouldn't be here)
      */
     private void buildAdmin(){
         H1  header = new H1("Admin CheckList | " + logUser.getUsername());
         add(header);
     }
 
+    /**
+     * save modification in the database
+     */
     private void save(){
         database.updateTriggers(this.logUser.getStudent().getTriggers());
     }
