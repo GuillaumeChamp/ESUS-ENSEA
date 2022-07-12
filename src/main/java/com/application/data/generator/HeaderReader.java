@@ -226,7 +226,6 @@ public class HeaderReader {
      */
     private static void questionnaire(TextView layout,String[] parameter){
         String question = parameter[1];
-        //layout.add(new Span(question));
         List<String> answers = new ArrayList<>(List.of(parameter));
         answers.remove(1);
         answers.remove(0);
@@ -243,7 +242,10 @@ public class HeaderReader {
                     to.setValue(LocalDate.now());
                     dataPicker.add(from,to);
                     Button confirm = new Button("SEND",ee->{
-                        MailSender.sendAnswer(layout.user,question, form.getValue()+" FROM "+ from.getValue()+ " TO "+ to.getValue());
+                        try {
+                            MailSender.sendAnswer(layout.user,question, form.getValue()+" FROM "+ from.getValue()+ " TO "+ to.getValue());
+                        } catch (Exception ignored) {
+                        }
                         dataPicker.close();
                         layout.remove(dataPicker);
                         layout.next();
@@ -259,7 +261,10 @@ public class HeaderReader {
                     dataPicker.open();
                 }
                 else {
-                    MailSender.sendAnswer(layout.user,question, form.getValue());
+                    try {
+                        MailSender.sendAnswer(layout.user,question, form.getValue());
+                    } catch (Exception ignored) {
+                    }
                     layout.next();
                 }
             }

@@ -9,6 +9,8 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
@@ -70,7 +72,12 @@ public class DashboardView extends VerticalLayout {
         file1.createNewFile();
         CsvExportService.writeAurion(service.findAllStudents(""),new FileWriter(file1, StandardCharsets.UTF_8));
         send.addClickListener(e->{
-            MailSender.sendService("aurion",file1);
+            try {
+                MailSender.sendService("aurion",file1);
+            } catch (Exception ex) {
+                Notification notification = Notification.show("Email not send Test mailSender or check aurion email adress");
+                notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
+            }
             send.setEnabled(false);
         });
         FileDownloadWrapper wrapper1 = new FileDownloadWrapper("studentAURION.csv",file1);
@@ -86,7 +93,12 @@ public class DashboardView extends VerticalLayout {
         send2.addThemeVariants(ButtonVariant.LUMO_PRIMARY,ButtonVariant.LUMO_SUCCESS);
         CsvExportService.writeAurion(service.findAllStudents(""),new FileWriter(file1, StandardCharsets.UTF_8));
         send2.addClickListener(e->{
-            MailSender.sendService("moodle",file1);
+            try {
+                MailSender.sendService("moodle",file1);
+            } catch (Exception ex) {
+                Notification notification = Notification.show("Email not send Test mailSender or check moodle email adress");
+                notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
+            }
             send2.setEnabled(false);
         });
         createSpan(new Paragraph("Envoie de mail pour création de compte Moodle"),send2,wrapper2);
@@ -102,7 +114,12 @@ public class DashboardView extends VerticalLayout {
         send3.addThemeVariants(ButtonVariant.LUMO_PRIMARY,ButtonVariant.LUMO_SUCCESS);
         CsvExportService.writeMajor(service.findAllStudents(""),new FileWriter(file3, StandardCharsets.UTF_8));
         send3.addClickListener(e->{
-            MailSender.sendService("etude",file3);
+            try {
+                MailSender.sendService("etude",file3);
+            } catch (Exception ex) {
+                Notification notification = Notification.show("Email not send Test mailSender or check etude email adress");
+                notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
+            }
             send3.setEnabled(false);
         });
         createSpan(new Paragraph("Envoie de mail pour les majeurs et options"),send3,wrapper3);
@@ -118,7 +135,12 @@ public class DashboardView extends VerticalLayout {
         send4.addThemeVariants(ButtonVariant.LUMO_PRIMARY,ButtonVariant.LUMO_SUCCESS);
         CsvExportService.writeFIP(service.findAllStudents(""),new FileWriter(file4, StandardCharsets.UTF_8));
         send4.addClickListener(e->{
-            MailSender.sendService("fip",file4);
+            try {
+                MailSender.sendService("fip",file4);
+            } catch (Exception ex) {
+                Notification notification = Notification.show("Email not send Test mailSender or check fip email adress");
+                notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
+            }
             send4.setEnabled(false);
         });
         createSpan(new Paragraph("Envoie à FIP avec les coordonées de vol"),send4,wrapper4);

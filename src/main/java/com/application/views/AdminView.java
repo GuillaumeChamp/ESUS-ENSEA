@@ -18,6 +18,8 @@ import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Paragraph;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
@@ -57,7 +59,14 @@ public class AdminView extends VerticalLayout {
         H2 title = new H2("Request Manager");
         Button button = new Button("try mail");
         button.addThemeVariants(ButtonVariant.LUMO_ERROR);
-        button.addClickListener(e-> MailSender.TestMail(securityService.getAuthenticatedUser().getUser()));
+        button.addClickListener(e-> {
+            try {
+                MailSender.TestMail(securityService.getAuthenticatedUser().getUser());
+            } catch (Exception ex) {
+                Notification notification = Notification.show("Error mail not send check RI address or smtp configuration");
+                notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
+            }
+        });
         HorizontalLayout request = new HorizontalLayout(grid,requestForm);
         request.setFlexGrow(2,grid);
         request.setFlexGrow(1,requestForm);
@@ -90,14 +99,25 @@ public class AdminView extends VerticalLayout {
         user.setRole("ROLE_USER");
         user.setActive(1);
         user.setPassword(accountForm.getPassword());
-        if (!service.accountExist(user.getUsername())) {
-            if (!accountForm.getEmail().isEmpty())MailSender.accountCreation(user.getUsername(), accountForm.getPassword(), accountForm.getEmail());
+        if (service.accountExist(user.getUsername())) {
+            Prompter.prompt(this,"this user already exist");
+            return;
+        }
+        if (accountForm.getEmail().isEmpty()) {
+            Notification notification = Notification.show("Error mail not send check email adress");
+            notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
+            return;
+        }
+        try {
+            MailSender.accountCreation(user.getUsername(), accountForm.getPassword(), accountForm.getEmail());
             service.updateAccount(user);
             Prompter.prompt(this,"user successfully created");
             closeEditor();
-            return;
+        } catch (Exception e) {
+            Notification notification = Notification.show("Email not send Test mailSender or check email adress");
+            notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
         }
-        Prompter.prompt(this,"this user already exist");
+
     }
 
     private void deleteAccount(){
@@ -107,7 +127,11 @@ public class AdminView extends VerticalLayout {
     private void validate(AbstractForm.SaveEvent event){
         service.terminateRequest((Request) event.getObject());
         updateRequestList();
-        MailSender.InformRequestSucess((Request) event.getObject());
+        try {
+            MailSender.InformRequestSucess((Request) event.getObject());
+        } catch (Exception e) {
+            Notification.show("User not notified check his email address or Mail sender");
+        }
         closeRequestEditor();
     }
     private void delete(AbstractForm.DeleteEvent event){

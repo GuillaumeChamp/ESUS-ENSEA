@@ -88,7 +88,7 @@ public class MailSender {
      * Send a mail with a pattern
      * @param user the one who generate the request
      */
-    public static void TestMail(User user){
+    public static void TestMail(User user) throws Exception {
         if(session==null) init();
         String to;
         String subject;
@@ -106,11 +106,10 @@ public class MailSender {
 
             Transport.send(mail);
         } catch (Exception e) {
-            e.printStackTrace();
-            init();
+            throw new Exception("MailSenderNotWorking");
         }
     }
-    public static void accountCreation(String user,String password,String email){
+    public static void accountCreation(String user,String password,String email) throws Exception {
         if(session==null) init();
         String message = TextConverter.ConvertFile("mail/welcome.txt");
         if (message.contains("USER")) message = message.replace("USER",user);
@@ -125,11 +124,10 @@ public class MailSender {
             mail.setText(message);
             Transport.send(mail);
         } catch (Exception e) {
-            e.printStackTrace();
-            init();
+            throw new Exception("MailSenderNotWorking");
         }
     }
-    public static void recover(String email,String password){
+    public static void recover(String email,String password) throws Exception {
         if(session==null) init();
         String message = "Your password have been set to \""+password+"\"\n Log you and change it fast.";
         try {
@@ -140,11 +138,10 @@ public class MailSender {
             mail.setText(message);
             Transport.send(mail);
         } catch (Exception e) {
-            e.printStackTrace();
-            init();
+            throw new Exception("MailSenderNotWorking");
         }
     }
-    public static void InformRequestSucess(Request request){
+    public static void InformRequestSucess(Request request) throws Exception {
         if(session==null) init();
 
         String content = TextConverter.ConvertFile("mail/requestAccepted.txt");
@@ -158,11 +155,10 @@ public class MailSender {
             mail.setText(content);
             Transport.send(mail);
         } catch (Exception e) {
-            e.printStackTrace();
-            init();
+            throw new Exception("MailSenderNotWorking");
         }
     }
-    public static void InformRequestFailure(Request request,String motif){
+    public static void InformRequestFailure(Request request,String motif) throws Exception {
         if(session==null) init();
         String content = TextConverter.ConvertFile("mail/requestRejected.txt");
         if (content.contains("MOTIF")) content = content.replace("MOTIF",motif);
@@ -176,11 +172,10 @@ public class MailSender {
             mail.setText(content);
             Transport.send(mail);
         } catch (Exception e) {
-            e.printStackTrace();
-            init();
+            throw new Exception("MailSenderNotWorking");
         }
     }
-    public static void sendAnswer(User student,String question,String answerValue){
+    public static void sendAnswer(User student,String question,String answerValue) throws Exception {
         if(session==null) init();
         String content = "The student "+ student.getStudent().getFirstName()+ " "+student.getStudent().getLastName().toUpperCase()+" answer to the question :" +question
                 +"\nThe answer is : " + answerValue;
@@ -193,8 +188,7 @@ public class MailSender {
             mail.setText(content);
             Transport.send(mail);
         } catch (Exception e) {
-            e.printStackTrace();
-            init();
+            throw new Exception("MailSenderNotWorking");
         }
     }
 
@@ -203,7 +197,7 @@ public class MailSender {
      * @param service who receive
      * @param file attached file
      */
-    public static void sendService(String service,File file){
+    public static void sendService(String service,File file) throws Exception {
         if(session==null) init();
         try {
             MimeMessage mail = new MimeMessage(session);
@@ -239,8 +233,7 @@ public class MailSender {
             mail.setContent(multipart);
             Transport.send(mail);
         } catch (Exception e) {
-            e.printStackTrace();
-            init();
+            throw new Exception("MailSenderNotWorking");
         }
     }
 

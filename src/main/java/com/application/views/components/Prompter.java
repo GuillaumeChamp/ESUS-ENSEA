@@ -15,6 +15,8 @@ import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.Paragraph;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -77,7 +79,16 @@ public class Prompter {
         close.addThemeVariants(ButtonVariant.LUMO_ERROR,ButtonVariant.LUMO_TERTIARY);
         Button send = new Button("Send Mail");
         send.addThemeVariants(ButtonVariant.LUMO_PRIMARY,ButtonVariant.LUMO_SUCCESS);
-        send.addClickListener(e-> MailSender.InformRequestFailure(request,textField.getValue()));
+        send.addClickListener(e-> {
+            try {
+                MailSender.InformRequestFailure(request,textField.getValue());
+                prompt.close();
+                layout.remove(prompt);
+            } catch (Exception ex) {
+                Notification notification = Notification.show("Error while sending mail, check if student email work or Mail Sender state");
+                notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
+            }
+        });
         prompt.setHeaderTitle("Motif de refus");
         prompt.getFooter().add(send,close);
         layout.add(prompt);
