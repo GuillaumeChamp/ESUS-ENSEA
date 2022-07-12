@@ -1,0 +1,11 @@
+com.example.application
+com.example.application.data.entity
+com.example.application.data.generator
+com.example.application.data.repository
+com.example.application.data.service
+com.example.application.security
+com.example.application.views
+com.example.application.views.components
+com.example.application.views.components.forms
+com.example.application.views.list
+com.example.application.views.UserPage
