@@ -58,6 +58,7 @@ public class HeaderReader {
      * Add all the element text, hyperlink and image contained in the heard
      * className of the view must be the name of the file
      * @param layout all elements will be added here
+     * @param file filename of the file to read
      */
     public static void headerRead(TextView layout,String file){
         layout.buttonNext = new Button("next");

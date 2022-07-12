@@ -117,6 +117,7 @@ public class StudentForm extends AbstractForm<Student> {
 
     /**
      * use this methode to define what the addSchool button do (maybe fire event is better to stuck to OOP but not really efficiency here)
+     * @param event new action performed by the addSchool button
      */
     public void defineAddSchoolAction(ComponentEventListener<ClickEvent<Button>> event){
         addSchool.addClickListener(event);

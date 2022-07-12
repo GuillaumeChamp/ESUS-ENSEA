@@ -89,8 +89,9 @@ public class MailSender {
     /**
      * Send a mail with a pattern
      * @param user the one who generate the request
+     * @throws MailNotSendException if mail not send
      */
-    public static void TestMail(User user) throws Exception {
+    public static void TestMail(User user) throws MailNotSendException {
         if(!isInit) init();
         String to;
         String subject;
@@ -109,10 +110,18 @@ public class MailSender {
             Transport.send(mail);
         } catch (Exception e) {
             isInit=false;
-            throw new Exception("MailSenderNotWorking");
+            throw new MailNotSendException();
         }
     }
-    public static void accountCreation(String user,String password,String email) throws Exception {
+
+    /**
+     * Send a mail to a newly created user to give him is loggin
+     * @param user newly created user
+     * @param password first password
+     * @param email personne to mention
+     * @throws MailNotSendException if email not send
+     */
+    public static void accountCreation(String user,String password,String email) throws MailNotSendException {
         if(!isInit) init();
         String message = TextConverter.ConvertFile("mail/welcome.txt");
         if (message.contains("USER")) message = message.replace("USER",user);
@@ -128,10 +137,17 @@ public class MailSender {
             Transport.send(mail);
         } catch (Exception e) {
             isInit=false;
-            throw new Exception("MailSenderNotWorking");
+            throw new MailNotSendException();
         }
     }
-    public static void recover(String email,String password) throws Exception {
+
+    /**
+     * Email someone who want to recover his password with the actual password
+     * @param email email adress contened in user data
+     * @param password password to include
+     * @throws MailNotSendException if email not send
+     */
+    public static void recover(String email,String password) throws MailNotSendException {
         if(!isInit) init();
         String message = "Your password have been set to \""+password+"\"\n Log you and change it fast.";
         try {
@@ -143,10 +159,16 @@ public class MailSender {
             Transport.send(mail);
         } catch (Exception e) {
             isInit=false;
-            throw new Exception("MailSenderNotWorking");
+            throw new MailNotSendException();
         }
     }
-    public static void InformRequestSucess(Request request) throws Exception {
+
+    /**
+     * Email a user to notify him that he is unlocked
+     * @param request request accepted holding user and user email
+     * @throws MailNotSendException if email not send
+     */
+    public static void InformRequestSucess(Request request) throws MailNotSendException {
         if(!isInit) init();
 
         String content = TextConverter.ConvertFile("mail/requestAccepted.txt");
@@ -161,10 +183,17 @@ public class MailSender {
             Transport.send(mail);
         } catch (Exception e) {
             isInit=false;
-            throw new Exception("MailSenderNotWorking");
+            throw new MailNotSendException();
         }
     }
-    public static void InformRequestFailure(Request request,String motif) throws Exception {
+
+    /**
+     * Inform a user that his unlock request have been declined and tell him why
+     * @param request rejected request holding user and user email
+     * @param motif reason of rejection
+     * @throws MailNotSendException if email not send
+     */
+    public static void InformRequestFailure(Request request,String motif) throws MailNotSendException {
         if(!isInit) init();
         String content = TextConverter.ConvertFile("mail/requestRejected.txt");
         if (content.contains("MOTIF")) content = content.replace("MOTIF",motif);
@@ -179,10 +208,18 @@ public class MailSender {
             Transport.send(mail);
         } catch (Exception e) {
             isInit = false;
-            throw new Exception("MailSenderNotWorking");
+            throw new MailNotSendException();
         }
     }
-    public static void sendAnswer(User student,String question,String answerValue) throws Exception {
+
+    /**
+     * Email admin with the answer to a question
+     * @param student user who answer
+     * @param question question he is answering
+     * @param answerValue response
+     * @throws MailNotSendException if email not send
+     */
+    public static void sendAnswer(User student,String question,String answerValue) throws MailNotSendException {
         if(!isInit) init();
         String content = "The student "+ student.getStudent().getFirstName()+ " "+student.getStudent().getLastName().toUpperCase()+" answer to the question :" +question
                 +"\nThe answer is : " + answerValue;
@@ -196,7 +233,7 @@ public class MailSender {
             Transport.send(mail);
         } catch (Exception e) {
             isInit=false;
-            throw new Exception("MailSenderNotWorking");
+            throw new MailNotSendException();
         }
     }
 
@@ -204,8 +241,9 @@ public class MailSender {
      * Send a mail with a file to the service
      * @param service who receive
      * @param file attached file
+     * @throws MailNotSendException if email not send
      */
-    public static void sendService(String service,File file) throws Exception {
+    public static void sendService(String service,File file) throws MailNotSendException {
         if(!isInit) init();
         try {
             MimeMessage mail = new MimeMessage(session);
@@ -242,8 +280,9 @@ public class MailSender {
             Transport.send(mail);
         } catch (Exception e) {
             isInit=false;
-            throw new Exception("MailSenderNotWorking");
+            throw new MailNotSendException();
         }
     }
 
 }
+class MailNotSendException extends Exception{}

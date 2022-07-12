@@ -15,6 +15,7 @@ public class CsvExportService {
 
     /**
      * Create CSV describing students
+     * @param students list of all student to write
      * @param writer service writer
      */
     public static void writeAurion(List<Student> students, Writer writer) {

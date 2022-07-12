@@ -121,6 +121,7 @@ public class PathFinder {
      * Check the position
      * @param studentProgress actual progress
      * @param destination where you want to send it
+     * @param exchange name of the exchange type
      * @return true if second greater than first
      */
     public static boolean isNotFurther(String studentProgress, String destination,String exchange){
