@@ -54,7 +54,7 @@ public class PathFinder {
         accordExtraEUStep = new ArrayList<>(Arrays.asList(prop));
 
         prop = properties.getProperty("internKA131").split(",");
-        accordExtraEUStep = new ArrayList<>(Arrays.asList(prop));
+        internKA131Step = new ArrayList<>(Arrays.asList(prop));
     }
 
     /**
