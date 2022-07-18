@@ -21,7 +21,6 @@ import javax.mail.internet.MimeMultipart;
 @SuppressWarnings("SpellCheckingInspection")
 public class MailSender {
 
-    private static final BasicTextEncryptor encryptor= new BasicTextEncryptor();
     private static String APP_ADRESS;
     private static Session session;
     private static String aurion;
@@ -31,10 +30,10 @@ public class MailSender {
     private static String dev;
     private static String ri;
     private static String fip;
-    private static boolean isInit = false;
+    public static boolean isInit = false;
 
     /**
-     * Create the session
+     * Create the session and load address
      */
     private static void init(){
         String password;
@@ -42,6 +41,7 @@ public class MailSender {
         String host;
         String port;
         String authState;
+        BasicTextEncryptor encryptor= new BasicTextEncryptor();
         try {
             Properties log = new Properties();
             try{
@@ -75,14 +75,17 @@ public class MailSender {
         properties.put("mail.smtp.port",port);
         properties.put("mail.smtp.auth",authState);
         properties.put("mail.smtp.starttls.enable",tls);
-
-        Authenticator auth = new Authenticator() {
-            @Override
-            protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(APP_ADRESS,password);
-            }
-        };
-        session = Session.getInstance(properties,auth);
+        Authenticator auth = null;
+        if (authState.equals("true")) {
+            auth = new Authenticator() {
+                @Override
+                protected PasswordAuthentication getPasswordAuthentication() {
+                    return new PasswordAuthentication(APP_ADRESS, password);
+                }
+            };
+        }
+        if (authState.equals("false")||authState.equals("")) session=Session.getInstance(properties);
+        else session = Session.getInstance(properties,auth);
         isInit=true;
     }
 
@@ -93,23 +96,22 @@ public class MailSender {
      */
     public static void TestMail(User user) throws MailNotSendException {
         if(!isInit) init();
-        String to;
         String subject;
         String message = "Message de l'Application Esus \n --------------------------------------------------------------\n";
-        to = dev;
-        subject = "testmail";
+        subject = "TEST";
         message = message.concat("\nEssaie de l'envoie automatique par "+ user.getUsername());
         message = message + "\n --------------------------------------------------------------\n";
         try {
             MimeMessage mail = new MimeMessage(session);
             mail.setFrom(new InternetAddress(APP_ADRESS));
-            mail.addRecipients(Message.RecipientType.TO, String.valueOf(new InternetAddress(to)));
+            mail.addRecipients(Message.RecipientType.TO, String.valueOf(new InternetAddress(ri)));
             mail.setSubject(subject);
             mail.setText(message);
 
             Transport.send(mail);
-        } catch (Exception e) {
+        } catch (MessagingException e) {
             isInit=false;
+            e.printStackTrace();
             throw new MailNotSendException();
         }
     }
@@ -137,6 +139,7 @@ public class MailSender {
             Transport.send(mail);
         } catch (Exception e) {
             isInit=false;
+            e.printStackTrace();
             throw new MailNotSendException();
         }
     }
@@ -159,6 +162,7 @@ public class MailSender {
             Transport.send(mail);
         } catch (Exception e) {
             isInit=false;
+            e.printStackTrace();
             throw new MailNotSendException();
         }
     }
@@ -183,6 +187,7 @@ public class MailSender {
             Transport.send(mail);
         } catch (Exception e) {
             isInit=false;
+            e.printStackTrace();
             throw new MailNotSendException();
         }
     }
@@ -208,6 +213,7 @@ public class MailSender {
             Transport.send(mail);
         } catch (Exception e) {
             isInit = false;
+            e.printStackTrace();
             throw new MailNotSendException();
         }
     }
@@ -223,16 +229,16 @@ public class MailSender {
         if(!isInit) init();
         String content = "The student "+ student.getStudent().getFirstName()+ " "+student.getStudent().getLastName().toUpperCase()+" answer to the question :" +question
                 +"\nThe answer is : " + answerValue;
-        String email = dev;
         try {
             MimeMessage mail = new MimeMessage(session);
             mail.setFrom(new InternetAddress(APP_ADRESS));
-            mail.addRecipients(Message.RecipientType.TO, String.valueOf(new InternetAddress(email)));
+            mail.addRecipients(Message.RecipientType.TO, String.valueOf(new InternetAddress(ri)));
             mail.setSubject(question);
             mail.setText(content);
             Transport.send(mail);
         } catch (Exception e) {
             isInit=false;
+            e.printStackTrace();
             throw new MailNotSendException();
         }
     }
@@ -280,9 +286,27 @@ public class MailSender {
             Transport.send(mail);
         } catch (Exception e) {
             isInit=false;
+            e.printStackTrace();
             throw new MailNotSendException();
         }
     }
 
+    /**
+     * Use to Prompt dev address
+     * @return dev email
+     */
+    public static String getDev(){
+        if(!MailSender.isInit) MailSender.init();
+        return dev;
+    }
+
+    /**
+     * Use to Prompt admin address
+     * @return admin address
+     */
+    public static String getRi() {
+        if(!MailSender.isInit) MailSender.init();
+        return ri;
+    }
 }
 class MailNotSendException extends Exception{}

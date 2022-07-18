@@ -50,7 +50,7 @@ public class AdminView extends VerticalLayout {
     }
 
     private void addContent(){
-        Paragraph paragraph = new Paragraph("dev by guillaume Champtoussel (guillaume.champtoussel@ensea.fr) \nDisponible,\nCode source partiellement censuré");
+        Paragraph paragraph = new Paragraph("dev by guillaume Champtoussel "+ MailSender.getDev()+"\nDisponible,\nCode source partiellement censuré");
         Anchor anchor = new Anchor("https://github.com/GuillaumeChamp/ESUS-ENSEA","GitHub");
         anchor.setTarget("_blank");
         Anchor map = new Anchor("http://umap.openstreetmap.fr/fr/map/anonymous-edit/777866:S29ISI9HqyK8lItAMatlwk5Z3rY","umap");

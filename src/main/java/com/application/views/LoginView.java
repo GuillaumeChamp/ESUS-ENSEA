@@ -11,7 +11,6 @@ import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-
 import javax.annotation.security.PermitAll;
 
 @PermitAll

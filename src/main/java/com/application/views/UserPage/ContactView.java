@@ -1,6 +1,7 @@
 package com.application.views.UserPage;
 
 import com.application.data.generator.HeaderReader;
+import com.application.data.service.MailSender;
 import com.application.views.MainLayout;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.html.Span;
@@ -25,10 +26,10 @@ public class ContactView extends VerticalLayout {
         add(context);
         if (MainLayout.EN) paragraph = new Paragraph("This application was developed by Guillaume Champtoussel in 2022 during an internship\n" +
                 "for ENSEA and funded by CAMPUS FRANCE\n" +
-                "The app is operated by international relations office contact : ri@ensea.fr");
+                "The app is operated by international relations office contact : "+ MailSender.getRi());
         else paragraph = new Paragraph("Cette application a été developpé par Guillaume Champtoussel en 2022 durant un stage\n" +
                 "pour l'ENSEA et financé par CAMPUS FRANCE\n" +
-                "L'application est administré par le bureau des relations internationales contact : ri@ensea.fr");
+                "L'application est administré par le bureau des relations internationales contact : "+ MailSender.getRi());
         add(paragraph);
         HeaderReader.addImage(this, new String[]{"image","logo-campus-france.png"});
         add(new Paragraph("dev : Guillaume Champtoussel"));

@@ -25,6 +25,7 @@ public class ListView extends VerticalLayout {
     TextField filterText = new TextField();
     StudentForm studentForm;
     CrmService service;
+    TextField progress;
 
     public ListView(CrmService service) {
         this.service = service;
@@ -53,10 +54,14 @@ public class ListView extends VerticalLayout {
         studentForm.addListener(StudentForm.SaveEvent.class, this::saveContact);
         studentForm.addListener(StudentForm.DeleteEvent.class, this::deleteContact);
         studentForm.addListener(StudentForm.CloseEvent.class, e -> closeEditor());
+        progress = new TextField("step");
+        studentForm.add(progress);
     }
 
     private void saveContact(StudentForm.SaveEvent event) {
-        service.saveStudent((Student) event.getObject());
+        Student student =(Student) event.getObject();
+        if (progress.getValue()!=null && !progress.getValue().isEmpty()) student.setProgress(progress.getValue());
+        service.saveStudent(student);
         updateList();
         closeEditor();
     }

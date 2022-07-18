@@ -1,6 +1,7 @@
 package com.application.views;
 
 import com.application.data.generator.TextConverter;
+import com.application.data.service.MailSender;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dialog.Dialog;
@@ -29,6 +30,7 @@ public class EditorView extends Dialog {
             try {
                 FileOutputStream fileOutputStream = new FileOutputStream(file);
                 fileOutputStream.write(editor.getValue().getBytes(StandardCharsets.UTF_8));
+                if(file.getName().contains("mailconf")) MailSender.isInit = false;
                 this.close();
             }catch (Exception exception){
                 exception.printStackTrace();
