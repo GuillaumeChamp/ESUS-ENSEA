@@ -59,7 +59,7 @@ public class TextView extends VerticalLayout implements BeforeLeaveObserver{
         Student student = user.getStudent();
         if (PathFinder.isNotFurther(student.getProgress(), nextId,student.getExchangeType().getName())){
             student.setProgress(nextId);
-            MainLayout.progress(PathFinder.index(user.getStudent().getExchangeType().getName(),nextId));}
+            MainLayout.progress(PathFinder.index(student.getExchangeType().getName(),nextId));}
         currentPageIndex = nextId;
         this.removeAll();
         trigger=0;

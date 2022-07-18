@@ -11,6 +11,7 @@ import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class MajorLayout extends VerticalLayout {
@@ -54,6 +55,7 @@ public class MajorLayout extends VerticalLayout {
         for(Parkour p : list){
             if (!list_semester.contains(p.getSemester())) list_semester.add(p.getSemester());
         }
+        list_semester.sort(Comparator.naturalOrder());
         semester.setItems(list_semester);
         semester.addValueChangeListener(e->{
             String value = e.getValue();

@@ -107,8 +107,8 @@ public class MainLayout extends AppLayout{
         if (!EN) textView.setText("Information d'inscription");
         textView.setHighlightCondition(HighlightConditions.sameLocation());
         RouterLink admin = new RouterLink("Admin", AdminView.class);
-        RouterLink list = new RouterLink("Liste des étudiants", ListView.class);
-        RouterLink countryList = new RouterLink("List des pays", CountryList.class);
+        RouterLink list = new RouterLink("Liste des Etudiants", ListView.class);
+        RouterLink countryList = new RouterLink("Liste des Pays", CountryList.class);
         RouterLink page2 = new RouterLink("General information", GeneralInformation.class);
         if (!EN) page2.setText("Informations génerales");
         RouterLink account = new RouterLink("Account", AccountView.class);

@@ -160,7 +160,32 @@ public class CsvExportService {
                         student.getFlight().getDeparture(),
                         student.getFlight().getDate(),
                         student.getFlight().getTransportID()
-
+                );
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public static void writeMoodle(List<Student> students, Writer writer) {
+        CSVFormat format = CSVFormat.Builder.create().setDelimiter(';').setHeader(
+                "PRENOM",
+                "NOM",
+                "EMAIL",
+                "SEMESTRE",
+                "MAJEUR",
+                "OPTION"
+        ).build();
+        try (CSVPrinter csvPrinter = new CSVPrinter(writer, format))
+        {
+            for (Student student : students) {
+                if (student.getParkour()==null) student.setParkour(new Parkour());
+                csvPrinter.printRecord(
+                        student.getFirstName(),
+                        student.getLastName(),
+                        student.getEmail(),
+                        student.getParkour().getSemester(),
+                        student.getParkour().getMajor(),
+                        student.getParkour().getOption_suivi()
                 );
             }
         } catch (IOException e) {
@@ -226,4 +251,5 @@ public class CsvExportService {
             e.printStackTrace();
         }
     }
+
 }

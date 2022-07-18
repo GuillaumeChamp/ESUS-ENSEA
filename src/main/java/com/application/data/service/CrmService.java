@@ -96,9 +96,20 @@ public class CrmService {
     public long countStudents() {
         return studentRepository.count();
     }
+
+    /**
+     * Count the number of CAS account create by comparing the progression index at the index of the step "CAS"
+     * If CAS not exist for this exchange, the students count as having a CAS account
+     * @return the number of student that have a CAS account (+ those we don't check if)
+     */
     public long countCas(){
         List<Student> students = studentRepository.findAll();
         students.removeIf(s -> !PathFinder.isNotFurther("CAS",s.getProgress(),s.getExchangeType().getName()));
+        return students.size();
+    }
+    public long countEnd(){
+        List<Student> students = studentRepository.findAll();
+        students.removeIf(s -> PathFinder.index(s.getExchangeType().getName(),s.getProgress())!=PathFinder.lastIndex(s.getExchangeType().getName()));
         return students.size();
     }
     public long countFlight(){

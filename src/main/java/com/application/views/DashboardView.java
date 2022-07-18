@@ -91,7 +91,7 @@ public class DashboardView extends VerticalLayout {
         FileDownloadWrapper wrapper2 = new FileDownloadWrapper("studentMOODLE.csv",file1);
         wrapper2.wrapComponent(downloadMoodle);
         send2.addThemeVariants(ButtonVariant.LUMO_PRIMARY,ButtonVariant.LUMO_SUCCESS);
-        CsvExportService.writeAurion(service.findAllStudents(""),new FileWriter(file1, StandardCharsets.UTF_8));
+        CsvExportService.writeMoodle(service.findAllStudents(""),new FileWriter(file1, StandardCharsets.UTF_8));
         send2.addClickListener(e->{
             try {
                 MailSender.sendService("moodle",file1);
@@ -159,6 +159,7 @@ public class DashboardView extends VerticalLayout {
         Span stats = new Span(service.countStudents() + " étudiants inscrits\n"
             + service.countCas() + " comptes CAS créés\n"
             + service.countFlight() + " trajets programmés"
+                + service.countEnd() + "étudiants ayant fini"
                 );
         stats.addClassNames("text-xl", "mt-m");
         return stats;

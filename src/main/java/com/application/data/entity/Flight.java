@@ -14,8 +14,8 @@ import java.time.LocalDateTime;
 public class Flight {
     @Id
     @GeneratedValue
-    @Type(type = "int")
-    private int id;
+    @Type(type = "long")
+    private long id;
 
     private String place;
     @NotEmpty

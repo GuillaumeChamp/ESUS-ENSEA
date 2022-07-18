@@ -5,6 +5,7 @@ import com.application.data.service.CrmService;
 import com.application.views.MainLayout;
 import com.application.views.components.forms.StudentForm;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -55,7 +56,7 @@ public class ListView extends VerticalLayout {
         studentForm.addListener(StudentForm.DeleteEvent.class, this::deleteContact);
         studentForm.addListener(StudentForm.CloseEvent.class, e -> closeEditor());
         progress = new TextField("step");
-        studentForm.add(progress);
+        studentForm.add(new Paragraph("Dangerous area"),progress);
     }
 
     private void saveContact(StudentForm.SaveEvent event) {

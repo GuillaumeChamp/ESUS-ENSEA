@@ -120,7 +120,7 @@ public class HeaderReader {
      */
     @SuppressWarnings("SpellCheckingInspection")
     private static void readLine(VerticalLayout layout,String line){
-        String[] parameter = line.split(",");
+        String[] parameter = line.split(",",-1);
 
         if(parameter[0].contains("text")){
             TextArea textArea = new TextArea();
@@ -275,6 +275,15 @@ public class HeaderReader {
         if (PathFinder.isNotFurther(layout.user.getStudent().getProgress(), layout.currentPageIndex, layout.user.getStudent().getExchangeType().getName())) form.disabled();
         layout.add(form);
     }
+
+    /**
+     * Add a contact card
+     * @param layout the view
+     * @param name contact name
+     * @param phoneNumber contact numbers
+     * @param email contact email
+     * @param address contact address
+     */
     private static void addContact(VerticalLayout layout,String name,String phoneNumber,String email,String address){
         HorizontalLayout subLayout = new HorizontalLayout();
         subLayout.add(new HorizontalLayout(new Icon(VaadinIcon.USER_CARD),new Paragraph(name)));
